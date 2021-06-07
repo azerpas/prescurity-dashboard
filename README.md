@@ -4,15 +4,15 @@ Prescurity dashboard.
 Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/IyhCpbbaLwfUO4TRwOuBGF/Prescurity?node-id=1%3A10402)
 
 ## Stack
-### Platform
+### Platform 📑
 - [NextJS (React Framework)](https://nextjs.org/)
-### UI (User Interaction)
+### UI (User Interaction) 🎨
 - [chakraUI (Component library)](https://chakra-ui.com/)
-### Deployment
+### Deployment 🚀
 - [Vercel (Deploy platform)](https://vercel.com/home)
-### Coding style
+### Coding style 🔨
 - [Typescript support (Typed Javascript)](https://www.typescriptlang.org/)
-### Blockchain support
+### Blockchain support ⛓
 - [Web3.js (Ethereum support)](https://web3js.readthedocs.io/en/v1.3.4/getting-started.html)
 
 ## Notes
