@@ -6,7 +6,8 @@ import {
     HStack,
     Icon,
     IconButton,
-    Link,
+    Text,
+    Heading,
     useColorMode,
     useColorModeValue,
     useDisclosure,
@@ -19,10 +20,12 @@ import React, { HTMLProps } from "react"
 import { MobileNavButton, MobileNavContent } from "./mobile";
 import { useViewportScroll } from "framer-motion";
 import styled from '@emotion/styled';
+import Logo from "../logo";
 
 const HeaderContent = () => {
     const mobileNav = useDisclosure();
     const text = useColorModeValue("dark", "light");
+    const button = useColorModeValue("black", "light");
     const { toggleColorMode: toggleMode } = useColorMode();
     const SwitchIcon = useColorModeValue(FaMoon, FaSun);
     const mobileNavBtnRef = React.useRef<HTMLButtonElement>();
@@ -34,9 +37,12 @@ const HeaderContent = () => {
     return(
         <>
             <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
-                <Flex align="center">
+                <Flex align="center" py="3">
                     <NextLink href="/" passHref>
-                        Prescurity
+                        <>
+                            <Logo/>
+                            <Heading size="xl" fontWeight="bold" ml="2">Prescurity</Heading>
+                        </>
                     </NextLink>
                 </Flex>
 
@@ -47,22 +53,22 @@ const HeaderContent = () => {
                 color="gray.400"
                 maxW="1100px"
                 >
-                <IconButton
-                    size="md"
-                    fontSize="lg"
-                    aria-label={`Switch to ${text} mode`}
-                    variant="ghost"
-                    color="current"
-                    ml={{ base: "0", md: "3" }}
-                    onClick={toggleMode}
-                    icon={<SwitchIcon />}
-                />
-                <Button ml="5" shadow="lg">Login</Button>
-                <MobileNavButton
-                    ref={mobileNavBtnRef}
-                    aria-label="Open Menu"
-                    onClick={mobileNav.onOpen}
-                />
+                    <IconButton
+                        size="md"
+                        fontSize="lg"
+                        aria-label={`Switch to ${text} mode`}
+                        variant="ghost"
+                        color="current"
+                        ml={{ base: "0", md: "3" }}
+                        onClick={toggleMode}
+                        icon={<SwitchIcon />}
+                    />
+                    <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                    <MobileNavButton
+                        ref={mobileNavBtnRef}
+                        aria-label="Open Menu"
+                        onClick={mobileNav.onOpen}
+                    />
                 </Flex>
             </Flex>
             <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
