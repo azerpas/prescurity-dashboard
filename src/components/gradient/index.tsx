@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
-type GradientProps = {number: number,colorFrom: string, colorTo: string, content: string, children: React.ReactNode, top?: string}
+type GradientProps = {number: number,colorFrom: string, colorTo: string, content: string, children: React.ReactNode, top?: string, bottom?: string}
 
 const fade_1 = keyframes`
     0%,16.667%,to {
@@ -38,7 +38,8 @@ const faded = [fade_1,fade_2,fade_3];
 const Gradient = styled.span<GradientProps>`
     position: absolute;
     left: 0;
-    top: ${props => props.top ? `${props.top}` : `2px`};
+    top: ${props => props.top ? `${props.top}` : `none`};
+    bottom: ${props => props.bottom ? `${props.bottom}` : `none`};
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
