@@ -1,5 +1,6 @@
 import {
     Box,
+    Flex,
     Heading,
     Link,
     SimpleGrid,
@@ -15,11 +16,24 @@ import ContractSvg from '../components/svg/contract'
 const Index = () => (
     <Container height="100vh">
         <Header/>
-        <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold" my={{base: "6"}}>
-            <GradientWrapper content="Unique" colorFrom="#805AD5" colorTo="#ED64A6" number={0}>Unique</GradientWrapper>&nbsp;&nbsp;
-            <GradientWrapper content="Secure" colorFrom="#00A3C4" colorTo="#90CDF4" number={1}>Secure</GradientWrapper>&nbsp;&nbsp;
-            <GradientWrapper content="Fast" colorFrom="#48BB78" colorTo="#38B2AC" number={2}>Fast</GradientWrapper>
-        </Text>
+        <Flex direction={{base: "column", md: "row"}} textAlign="center" my={{base: "10"}}>
+            <Box>
+                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                    <GradientWrapper content="Unique" colorFrom="#805AD5" colorTo="#ED64A6" number={0}>Unique</GradientWrapper>
+                </Text>
+            </Box>
+            <Box mx={{base: "0", md: "20"}} my={{base: "6", md: "0"}}>
+                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                    <GradientWrapper content="Secure" colorFrom="#00A3C4" colorTo="#90CDF4" number={1}>Secure</GradientWrapper>
+                </Text>
+            </Box>
+            <Box>
+                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                    <GradientWrapper content="Fast" colorFrom="#48BB78" colorTo="#38B2AC" number={2}>Fast</GradientWrapper> 
+                </Text>
+            </Box>
+        </Flex>
+        
         <Container mx={{base: "5"}}>
             <SimpleGrid columns={{sm: 1, md: 2}} spacing={{base: 3, md: 5}} >
                 <Box maxW={{md: "sm"}} mx="auto">
