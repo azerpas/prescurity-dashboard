@@ -13,24 +13,30 @@ import { GradientWrapper } from '../components/gradient'
 import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
 
+const Word = (props: {children: React.ReactNode}) => {
+    return(
+        <Text fontSize={{base: "6xl"}} fontWeight="bold">{props.children}</Text>
+    );
+}
+
 const Index = () => (
     <Container height="100vh">
         <Header/>
         <Flex direction={{base: "column", md: "row"}} textAlign="center" my={{base: "10"}}>
             <Box>
-                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                <Word>
                     <GradientWrapper content="Unique" colorFrom="#805AD5" colorTo="#ED64A6" number={0}>Unique</GradientWrapper>
-                </Text>
+                </Word>
             </Box>
             <Box mx={{base: "0", md: "20"}} my={{base: "6", md: "0"}}>
-                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                <Word>
                     <GradientWrapper content="Secure" colorFrom="#00A3C4" colorTo="#90CDF4" number={1}>Secure</GradientWrapper>
-                </Text>
+                </Word>
             </Box>
             <Box>
-                <Text fontSize={{base: "3xl", md: "6xl"}} fontWeight="bold">
+                <Word>
                     <GradientWrapper content="Fast" colorFrom="#48BB78" colorTo="#38B2AC" number={2}>Fast</GradientWrapper> 
-                </Text>
+                </Word>
             </Box>
         </Flex>
         
@@ -45,7 +51,6 @@ const Index = () => (
                 </Box>
             </SimpleGrid>
         </Container>
-        <DarkModeSwitch />
         <Footer>
             <Text>Next ❤️ Chakra ❤️ EFREI</Text>
         </Footer>
