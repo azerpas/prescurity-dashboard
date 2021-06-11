@@ -53,17 +53,19 @@ const HeaderContent = () => {
                 color="gray.400"
                 maxW="1100px"
                 >
-                    <IconButton
-                        size="md"
-                        fontSize="lg"
-                        aria-label={`Switch to ${text} mode`}
-                        variant="ghost"
-                        color="current"
-                        ml={{ base: "0", md: "3" }}
-                        onClick={toggleMode}
-                        icon={<SwitchIcon />}
-                    />
-                    <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                    <HStack display={{base: "none", md: "flex"}}>
+                        <IconButton
+                            size="md"
+                            fontSize="lg"
+                            aria-label={`Switch to ${text} mode`}
+                            variant="ghost"
+                            color="current"
+                            ml={{ base: "0", md: "3" }}
+                            onClick={toggleMode}
+                            icon={<SwitchIcon />}
+                        />
+                        <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                    </HStack>
                     <MobileNavButton
                         ref={mobileNavBtnRef}
                         aria-label="Open Menu"
