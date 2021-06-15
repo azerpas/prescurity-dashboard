@@ -1,4 +1,4 @@
-import { IconButton, CloseButton, useColorModeValue, IconButtonProps, useBreakpointValue, useUpdateEffect, Flex, Box, BoxProps, Button, HStack, Center } from "@chakra-ui/react";
+import { IconButton, CloseButton, useColorModeValue, IconButtonProps, useBreakpointValue, useUpdateEffect, Flex, Box, BoxProps, Button, HStack, Center, Heading, Divider } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 import NextLink from "next/link";
@@ -98,20 +98,20 @@ export const MobileNavContent = (props: MobileNavContentProps) => {
             >
                 <Box>
                     <Flex justify="space-between" px="6" pt="5" pb="4">
-                        <HStack spacing="5">
-                            <Button ml="5" shadow="lg">Login</Button>
+                        <HStack spacing="5" justifyContent="space-between" w="100%">
+                            <Heading>Menu</Heading>
                             <CloseButton ref={closeBtnRef} onClick={onClose} />
                         </HStack>
                     </Flex>
                     <Box px="6" pb="6" pt="2" shadow={shadow}>
+                        <Heading mb="2" fontSize="lg" bgGradient="linear(to-l, purple.800,#FF0080)" bgClip="text">I am a...</Heading>
                         <HStack>
-                            <NavLink href="/docs/getting-started">Docs</NavLink>
-                            <NavLink href="/guides/integrations/with-cra">
-                                Guides
-                            </NavLink>
-                            <NavLink href="/team">Team</NavLink>
+                            <NavLink href="#">Patient 👱‍♂️</NavLink>
+                            <NavLink href="#">Doctor 👨‍⚕️</NavLink>
+                            <NavLink href="/team">Pharma 👨‍🔬</NavLink>
                         </HStack>
                     </Box>
+                    <Divider />
                 </Box>
 
                 <ScrollView

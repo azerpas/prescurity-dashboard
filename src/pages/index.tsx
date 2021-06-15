@@ -20,7 +20,7 @@ const Word = (props: {children: React.ReactNode}) => {
 }
 
 const Index = () => (
-    <Container height="100vh">
+    <Container height="100vh" bg="none">
         <Header/>
         <Flex direction={{base: "column", md: "row"}} textAlign="center" my={{base: "10"}}>
             <Box>
@@ -40,7 +40,7 @@ const Index = () => (
             </Box>
         </Flex>
         
-        <Container mx={{base: "5"}}>
+        <Container mx={{base: "5"}} bg="none">
             <SimpleGrid columns={{sm: 1, md: 2}} spacing={{base: 3, md: 5}} >
                 <Box maxW={{md: "sm"}} mx="auto">
                     <ContractSvg width="20rem"/>
