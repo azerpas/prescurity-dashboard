@@ -63,7 +63,9 @@ const HeaderContent = () => {
                         onClick={toggleMode}
                         icon={<SwitchIcon />}
                     />
-                    <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                    <NextLink href="/login">
+                        <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                    </NextLink>
                     <MobileNavButton
                         ref={mobileNavBtnRef}
                         aria-label="Open Menu"
