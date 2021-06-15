@@ -1,21 +1,32 @@
 import {
     Box,
-    Flex,
+    Button,
+    Flex, Grid,
     Heading,
     Link,
     SimpleGrid,
     Text
 } from '@chakra-ui/react'
-import { Container } from '../components/Container'
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
-import { Footer } from '../components/Footer'
-import { GradientWrapper } from '../components/gradient'
+import {Container} from '../components/Container'
+import {DarkModeSwitch} from '../components/DarkModeSwitch'
+import {Footer} from '../components/Footer'
+import {GradientWrapper} from '../components/gradient'
 import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
 
-const Word = (props: {children: React.ReactNode}) => {
-    return(
+const Word = (props: { children: React.ReactNode }) => {
+    return (
         <Text fontSize={{base: "6xl"}} fontWeight="bold">{props.children}</Text>
+    );
+}
+
+const BigBlock = (props: { title: String, children: React.ReactNode, button: String }) => {
+    return (
+        <Flex direction={{base: "column"}} p={{base: "1rem"}} width={"70%"} margin={"auto"}>
+            <Heading fontSize={{base: "lg"}} mb={{base: "1rem"}} fontWeight="bold">{props.title}</Heading>
+            <Text fontSize={{base: "lg"}} mb={{base: "1rem"}}>{props.children}</Text>
+            <Button m={{base: "auto"}} ml={{base: "0"}} backgroundColor={{base: "black"}} color={{base: "white"}} fontWeight="bold">{props.button}</Button>
+        </Flex>
     );
 }
 
@@ -35,13 +46,13 @@ const Index = () => (
             </Box>
             <Box>
                 <Word>
-                    <GradientWrapper content="Fast" colorFrom="#48BB78" colorTo="#38B2AC" number={2}>Fast</GradientWrapper> 
+                    <GradientWrapper content="Fast" colorFrom="#48BB78" colorTo="#38B2AC" number={2}>Fast</GradientWrapper>
                 </Word>
             </Box>
         </Flex>
-        
+
         <Container mx={{base: "5"}} bg="none">
-            <SimpleGrid columns={{sm: 1, md: 2}} spacing={{base: 3, md: 5}} >
+            <SimpleGrid columns={{sm: 1, md: 2}} spacing={{base: 3, md: 5}}>
                 <Box maxW={{md: "sm"}} mx="auto">
                     <ContractSvg width="20rem"/>
                 </Box>
@@ -51,6 +62,19 @@ const Index = () => (
                 </Box>
             </SimpleGrid>
         </Container>
+
+
+        <SimpleGrid columns={{sm: 1, md: 3}}  mt={{base: "5"}} >
+            <BigBlock title={"Doctor"} button={"I am a doctor 👨‍"}>
+                <Text>Generate a <Text display={"inline-block"} color={"#00A3C4"}>secured</Text> and unique prescription in a few seconds  </Text>
+            </BigBlock>
+            <BigBlock title={"Patient"} button={"I am a patient 👨‍"}>
+                <Text>Redeem your medecine digitally <Text display={"inline-block"} color={"#48BB78"}>in a instant</Text></Text>
+            </BigBlock>
+            <BigBlock title={"Pharmacist"} button={"I am a pharmacist 👨‍"}>
+                <Text>Deliver the <Text display={"inline-block"} color={"#00A3C4"}>right goods</Text  > to the <Text color={"#00A3C4"}>right person</Text> </Text>
+            </BigBlock>
+        </SimpleGrid>
         <Footer>
             <Text>Next ❤️ Chakra ❤️ EFREI</Text>
         </Footer>
