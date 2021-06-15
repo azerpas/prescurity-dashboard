@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    chakra,
     Flex, Grid,
     Heading,
     Link,
@@ -13,6 +14,7 @@ import {Footer} from '../components/Footer'
 import {GradientWrapper} from '../components/gradient'
 import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
+import {Span} from "next/dist/telemetry/trace";
 
 const Word = (props: { children: React.ReactNode }) => {
     return (
@@ -63,16 +65,15 @@ const Index = () => (
             </SimpleGrid>
         </Container>
 
-
-        <SimpleGrid columns={{sm: 1, md: 3}}  mt={{base: "5"}} >
+        <SimpleGrid columns={{sm: 1, md: 3}} mt={{base: "5"}}>
             <BigBlock title={"Doctor"} button={"I am a doctor 👨‍"}>
-                <Text>Generate a <Text display={"inline-block"} color={"#00A3C4"}>secured</Text> and unique prescription in a few seconds  </Text>
+                <Text>Generate a <chakra.span color={"#00A3C4"}>secured</chakra.span> and unique prescription in a few seconds </Text>
             </BigBlock>
             <BigBlock title={"Patient"} button={"I am a patient 👨‍"}>
-                <Text>Redeem your medecine digitally <Text display={"inline-block"} color={"#48BB78"}>in a instant</Text></Text>
+                <Text>Redeem your medecine digitally <chakra.span color={"#48BB78"}>in a instant</chakra.span></Text>
             </BigBlock>
             <BigBlock title={"Pharmacist"} button={"I am a pharmacist 👨‍"}>
-                <Text>Deliver the <Text display={"inline-block"} color={"#00A3C4"}>right goods</Text  > to the <Text color={"#00A3C4"}>right person</Text> </Text>
+                <Text>Deliver the <chakra.span  color={"#00A3C4"}>right goods</chakra.span> to the <Text color={"#00A3C4"}>right person</Text> </Text>
             </BigBlock>
         </SimpleGrid>
         <Footer>
