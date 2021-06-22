@@ -1,20 +1,33 @@
-import Header from "../components/header";
-import {Footer} from "../components/Footer";
-import {Container} from "../components/Container";
+import {Button, Text} from "@chakra-ui/react";
+import firebase from "../utils/client";
+
+interface LoginProps {
+    email: string
+}
+
+const Index = () => {
 
 
-import admin from "../utils/admin";
+    var actionCodeSettings = {
+        url: "http://localhost:3000",
+        handleCodeInApp: true
+    };
+    const login = async (props: LoginProps) => {
+        try {
+            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
+            console.log(user);
+            if(user != undefined){
+                window.localStorage.setItem('emailForSignIn', props.email);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    return (
+        <Button onClick={() => login({email: "martin.lenaerts@hotmail.fr"})}>Login</Button>
+    )
 
-console.log(admin.initializeApp().name);
-console.log(admin.initializeApp().auth().getUser("fYEHnHSzc3UHm22Lo6zKbfzRLs12"));
-
-
-const Index = () => (
-    <>
-        <Header/>
-        <Footer/>
-    </>
-);
+};
 
 
 export default Index;
