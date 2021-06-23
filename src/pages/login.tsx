@@ -13,6 +13,7 @@ import firebase from "firebase";
 import { useRouter } from 'next/router';
 import { useAsync } from "react-async"
 import FormLogin from "../components/form";
+import { useEffect } from 'react';
 
 function Login() {
     var res = (
@@ -27,34 +28,34 @@ function Login() {
         </Container>
     );
     const router = useRouter();
-    if(router.isFallback){
-        return <div>Loading</div>
-    }
-    if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
-        var email = window.localStorage.getItem('emailForSignIn');
-        console.log(email);
-        if (!email) {
-            console.error("NO MAIL");
-        }
-        try {
-            const userCredential = useAsync({PromiseFn:firebase.auth().signInWithEmailLink(email, router.asPath)});
-            console.log(userCredential);
-            window.localStorage.removeItem('emailForSignIn');
-            res =  (
-                <Container height="100vh">
-                    <Header/>
-                    <Container mt="4em">
-                        <Heading>Login to Prescurity</Heading>
-                        <Text>Your are sign in with {email} </Text>
-                        <Link href="/"><Button>Return to home</Button></Link>
+    useEffect(() => {
+        if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
+            var email = window.localStorage.getItem('emailForSignIn');
+            console.log(email);
+            if (!email) {
+                console.error("NO MAIL");
+            }
+            try {
+                const userCredential = useAsync({PromiseFn:firebase.auth().signInWithEmailLink(email, router.asPath)});
+                console.log(userCredential);
+                window.localStorage.removeItem('emailForSignIn');
+                res =  (
+                    <Container height="100vh">
+                        <Header/>
+                        <Container mt="4em">
+                            <Heading>Login to Prescurity</Heading>
+                            <Text>Your are sign in with {email} </Text>
+                            <Link href="/"><Button>Return to home</Button></Link>
+                        </Container>
+                        <Divider mt="2em" borderColor="gray.600"/>
                     </Container>
-                    <Divider mt="2em" borderColor="gray.600"/>
-                </Container>
-            );
-        } catch (e) {
-            console.log(e);
+                );
+            } catch (e) {
+                console.log(e);
+            }
         }
-    }
+    },[])
+    
 
 
     return res;
