@@ -14,23 +14,25 @@ import { useRouter } from 'next/router';
 
 const Login = () => {
     const router = useRouter()
-    if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
-        var email = window.localStorage.getItem('emailForSignIn');
-        console.log(email);
-        if (!email) {
-            email = window.prompt('Please provide your email for confirmation');
+    if(router.asPath){
+        if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
+            var email = window.localStorage.getItem('emailForSignIn');
+            console.log(`email: ${email}`);
+            if (!email) {
+                email = window.prompt('Please provide your email for confirmation');
+            }
+            //TODO: await/async
+            firebase.auth().signInWithEmailLink(email, router.asPath)
+                .then((result) => {
+                    console.log(result);
+                    window.localStorage.removeItem('emailForSignIn');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
-        //TODO: await/async
-        firebase.auth().signInWithEmailLink(email, router.asPath)
-            .then((result) => {
-                console.log(result);
-                window.localStorage.removeItem('emailForSignIn');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
     }
-        
+    
     return (
         <Container height="100vh">
             <Header/>
