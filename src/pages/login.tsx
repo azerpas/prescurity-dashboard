@@ -34,20 +34,24 @@ function Login() {
             console.error("NO MAIL");
         }
         try {
-            const userCredential = useAsync({PromiseFn:firebase.auth().signInWithEmailLink(email, router.asPath)});
-            console.log(userCredential);
-            window.localStorage.removeItem('emailForSignIn');
-            res =  (
-                <Container height="100vh">
-                    <Header/>
-                    <Container mt="4em">
-                        <Heading>Login to Prescurity</Heading>
-                        <Text>Your are sign in with {email} </Text>
-                        <Link href="/"><Button>Return to home</Button></Link>
+            const a = async() => {
+                const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
+                window.localStorage.removeItem('emailForSignIn');
+                console.log(userCredential.additionalUserInfo.isNewUser)
+
+                res = (
+                    <Container height="100vh">
+                        <Header/>
+                        <Container mt="4em">
+                            <Heading>Login to Prescurity</Heading>
+                            <Text>Your are sign in with {email} </Text>
+                            <Link href="/"><Button>Return to home</Button></Link>
+                        </Container>
+                        <Divider mt="2em" borderColor="gray.600"/>
                     </Container>
-                    <Divider mt="2em" borderColor="gray.600"/>
-                </Container>
-            );
+                );
+            }
+            a();
         } catch (e) {
             console.log(e);
         }

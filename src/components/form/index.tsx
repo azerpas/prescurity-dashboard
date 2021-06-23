@@ -45,7 +45,7 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
 
     return (
         <Grid p="0.5em" w="25em" border='1px' flex-direction='column' mt="2em">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} >
                 <Flex>
                     <FormControl id="email">
                         <FormLabel>Email adress 👤</FormLabel>
