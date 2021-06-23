@@ -28,6 +28,7 @@ function Login() {
                 const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
                 console.log(userCredential);
                 window.localStorage.removeItem('emailForSignIn');
+                setSuccess(true)
             } catch (e) {
                 console.log(e);
             }
