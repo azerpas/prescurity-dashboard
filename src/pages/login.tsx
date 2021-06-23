@@ -13,6 +13,7 @@ import firebase from "firebase";
 import { useRouter } from 'next/router';
 
 const Login = () => {
+    /*
     const router = useRouter()
     if(router.asPath){
         if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
@@ -32,6 +33,7 @@ const Login = () => {
                 });
         }
     }
+    */
     
     return (
         <Container height="100vh">
