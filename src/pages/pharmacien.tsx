@@ -29,11 +29,11 @@ import React from 'react'
 const Pharmacien = () => (
     <Container height="100vh" bg="none">
         <Header/>
-        <Flex direction="column" justify="center">
-            <Box>
-                <Heading as="h1" size="20px" color="#718096" font-family="Inter">Welcome to your prescurity pharmacist area</Heading>
-                <Stack spacing={3} bg="">
-                    <Heading as="h2" size="16px" color="#2D3748">Patient area</Heading>
+        <Flex direction="column" justify="center" height="100vh" padding="10px" align="center">
+            <Box >
+                <Heading as="h2" fontSize="20px" color="#718096" fontFamily="Inter" textAlign="center" marginBottom="10px">Welcome to your Prescurity pharmacist area</Heading>
+                <Stack spacing={3} bg="none" maxW="320px" margin="auto" padding="15px">
+                    <Heading as="h2" fontSize="16px" color="#2D3748" fontFamily="Inter">Patient adress</Heading>
                     <Input placeholder="Search ..." size="sm"/>
                     <Text as="u" fontSize="14px" color="#718096">OR scan the QR code</Text>
                 </Stack> 
