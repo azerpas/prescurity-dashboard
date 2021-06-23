@@ -9,7 +9,8 @@ import {
     Text,
     Input,
     Stack,
-    As
+    As,
+    Spacer
 
 } from '@chakra-ui/react'
 import {Container} from '../components/Container'
@@ -22,25 +23,24 @@ import {Span} from "next/dist/telemetry/trace";
 import React from 'react'
 
 
-const Title = (props: { size: string, color: string, as: As, children: React.ReactNode }) => {
-    return (
-        <Heading as={props.as} size={props.size} color={props.color}>{props.children}</Heading>
-    )
-}
+
 
 
 const Pharmacien = () => (
     <Container height="100vh" bg="none">
         <Header/>
-        <Container bg="none">
-            <Title as="h1" size="xl" color="grey">Welcome to your prescurity pharmacist area</Title>
+        <Flex direction="column" justify="center">
+            <Box>
+                <Heading as="h1" size="20px" color="#718096" font-family="Inter">Welcome to your prescurity pharmacist area</Heading>
+                <Stack spacing={3} bg="">
+                    <Heading as="h2" size="16px" color="#2D3748">Patient area</Heading>
+                    <Input placeholder="Search ..." size="sm"/>
+                    <Text as="u" fontSize="14px" color="#718096">OR scan the QR code</Text>
+                </Stack> 
+            </Box>
+        </Flex>
             
-            <Stack spacing={3}>
-                <Title as="h2" size="md" color="grey">Patient area</Title>
-                <Input placeholder="medium size" size="md"/>
-                <Text fontSize="md">OR scan the QR code</Text>
-            </Stack> 
-        </Container>
+        
     </Container>
 )
     
