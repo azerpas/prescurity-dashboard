@@ -22,7 +22,7 @@ interface LoginProps {
 }
 
 
-const Form_exp = (props: HTMLChakraProps<"form">) => {
+const FormLogin = (props: HTMLChakraProps<"form">) => {
     var actionCodeSettings = {
         url: "http://localhost:3000/login",
         handleCodeInApp: true
@@ -68,4 +68,4 @@ const Form_exp = (props: HTMLChakraProps<"form">) => {
     );
 }
 
-export default Form_exp
+export default FormLogin
