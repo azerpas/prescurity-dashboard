@@ -12,7 +12,7 @@ import Form_exp from '../components/form'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 
-function Login({data}) {
+const Login = () => {
     const router = useRouter()
     if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
         var email = window.localStorage.getItem('emailForSignIn');
@@ -31,7 +31,6 @@ function Login({data}) {
             });
     }
         
-
     return (
         <Container height="100vh">
             <Header/>
