@@ -17,7 +17,6 @@ import React from "react"
 import {useForm} from "react-hook-form";
 import {useViewportScroll} from "framer-motion";
 import firebase from "../../utils/client";
-import * as url from "url";
 interface LoginProps {
     email: string
 }
@@ -29,22 +28,27 @@ const Form_exp = (props: HTMLChakraProps<"form">) => {
         handleCodeInApp: true
     };
     const login = async (props: LoginProps) => {
-        try {
-            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
-            if (user != undefined) {
+        firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings)
+            .then(() => {
+                // The link was successfully sent. Inform the user.
+                // Save the email locally so you don't need to ask the user for it again
+                // if they open the link on the same device.
                 window.localStorage.setItem('emailForSignIn', props.email);
-            }else{
-                window.localStorage.setItem('nop', props.email);
-            }
-        } catch (e) {
-            console.log(e);
-        }
+                console.log("then")
+                // ...
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.warn(errorCode , " ==> " , errorMessage);
+            });
     }
 
 
     const {register, formState: {errors}, handleSubmit} = useForm();
     const onSubmit = async (data) => {
-        await login({email: data.email})
+        await login({email: data.email});
+        console.log("submit");
     };
 
     return (
