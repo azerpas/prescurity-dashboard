@@ -14,53 +14,52 @@ import { useRouter } from 'next/router';
 import { useAsync } from "react-async"
 import FormLogin from "../components/form";
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 function Login() {
-    var res = (
-        <Container height="100vh">
-            <Header/>
-            <Container mt="4em">
-                <Heading>Login to Prescurity</Heading>
-                <FormLogin/>
-            </Container>
-            <Divider mt="2em" borderColor="gray.600"/>
-            <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex>
-        </Container>
-    );
     const router = useRouter();
+    const [success, setSuccess] = useState(false);
+    let email: null | string = null;
     useEffect(() => {
-        if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
-            var email = window.localStorage.getItem('emailForSignIn');
-            console.log(email);
-            if (!email) {
-                console.error("NO MAIL");
-            }
+        const signedWithLink = async () => {
+            email = window.localStorage.getItem('emailForSignIn');
+            if (!email) console.error("NO MAIL");
             try {
-                const userCredential = useAsync({PromiseFn:firebase.auth().signInWithEmailLink(email, router.asPath)});
+                const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
                 console.log(userCredential);
                 window.localStorage.removeItem('emailForSignIn');
-                res =  (
-                    <Container height="100vh">
-                        <Header/>
-                        <Container mt="4em">
-                            <Heading>Login to Prescurity</Heading>
-                            <Text>Your are sign in with {email} </Text>
-                            <Link href="/"><Button>Return to home</Button></Link>
-                        </Container>
-                        <Divider mt="2em" borderColor="gray.600"/>
-                    </Container>
-                );
             } catch (e) {
                 console.log(e);
             }
         }
+        if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
+            signedWithLink();
+        }
     },[])
     
-
-
-    return res;
-
-
+    return (
+        <Container height="100vh">
+            <Header/>
+            <Container mt="4em">
+                <Heading>Login to Prescurity</Heading>
+                { success ? 
+                    <>
+                        <Text>Your are sign in with {email} </Text>
+                        <Link href="/"><Button>Return to home</Button></Link>
+                    </>
+                    :
+                    <FormLogin/>
+                }
+                
+            </Container>
+            { !success &&
+                <>
+                    <Divider mt="2em" borderColor="gray.600"/>
+                    <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex> 
+                </>
+            }
+        </Container>
+    );
 }
 
 export default Login
