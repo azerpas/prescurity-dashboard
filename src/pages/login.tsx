@@ -10,8 +10,6 @@ import {Container} from '../components/Container'
 import Header from '../components/header'
 import Form_exp from '../components/form'
 import firebase from "firebase";
-import { useEffect } from 'react';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 function Login({data}) {
