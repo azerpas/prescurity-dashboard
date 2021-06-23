@@ -26,7 +26,10 @@ function Login() {
             <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex>
         </Container>
     );
-    const router = useRouter()
+    const router = useRouter();
+    if(router.isFallback){
+        return <div>Loading</div>
+    }
     if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
         var email = window.localStorage.getItem('emailForSignIn');
         console.log(email);
