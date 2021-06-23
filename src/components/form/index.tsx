@@ -3,7 +3,7 @@ import {
     Grid,
     FormControl,
     Input,
-    FormLabel, HTMLChakraProps, Heading, Text
+    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage
 
 } from "@chakra-ui/react"
 import React, {useState} from "react"
@@ -14,20 +14,20 @@ interface LoginProps {
     email: string
 }
 
+const actionCodeSettings = {
+    url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/login`,
+    handleCodeInApp: true
+};
 
 const FormLogin = (props: HTMLChakraProps<"form">) => {
-    var actionCodeSettings = {
-        url: "http://localhost:3000/login",
-        handleCodeInApp: true
-    };
-
+    // States
     const [emailSended, setEmailSended] = useState(false);
+    const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<LoginProps>();
+
     const login = async (props: LoginProps) => {
         try {
             const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
             window.localStorage.setItem('emailForSignIn', props.email);
-            console.log(" props ==> ", props);
-            console.log("localSTorage  ==> ", window.localStorage);
             setEmailSended(true);
         } catch (error) {
             var errorCode = error.code;
@@ -36,31 +36,31 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
         }
     }
 
-
-    const {register, formState: {errors}, handleSubmit} = useForm();
-    const onSubmit = async (data) => {
-        await login({email: data.email});
-        console.log("submit");
-    };
+    const onSubmit = async (data) => await login({email: data.email});
 
     return (
         <Grid p="0.5em" w="25em" border='1px' flex-direction='column' mt="2em">
             {emailSended ?
                 <>
-                    <Heading>Un email de confirmation a été envoyé à l'adresse suivante : </Heading>
+                    <Text>Un email de confirmation a été envoyé à l'adresse suivante : </Text>
                     <br/>
-                    <Text>{ window.localStorage.getItem("emailForSignIn")}</Text>
+                    <Text><i>{ window.localStorage.getItem("emailForSignIn")}</i></Text>
                 </>
                 :
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Flex>
-                        <FormControl id="email">
+                        <FormControl id="email" isInvalid={errors.email ? true : false}>
                             <FormLabel>Email adress 👤</FormLabel>
-                            <Input  {...register("email")}/>
+                            <Input  {...register("email", { required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im })}/>
+                            <FormErrorMessage>
+                                {errors.email?.type === "pattern" && "Format de l'email invalide"}
+                                {errors.email?.type === "required" && "Entrez votre email"}
+                                {!["pattern", "required"].includes(errors.email?.type) && errors.email?.message}
+                            </FormErrorMessage>
                         </FormControl>
                     </Flex>
-                    <Flex text-align="center">
-                        <Input type="submit" color="white" value="Sign In" bgColor="black"/>
+                    <Flex text-align="center" mt="3">
+                        <Input type="submit" color="white" value="Sign In" bgColor="black" disabled={emailSended || isSubmitting}/>
                     </Flex>
                 </form>
             }
