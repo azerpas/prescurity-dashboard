@@ -64,6 +64,7 @@ function Patient() {
                     <Select placeholder="QR Code">        </Select>
 
                     <Select icon={<ChevronRightIcon />} placeholder="Prescurity" />
+                    <Select icon={<ChevronRightIcon />} placeholder="QR Code" />
 
                 </Box>
             </Center>   

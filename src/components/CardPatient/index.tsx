@@ -44,7 +44,6 @@ const WelcomePatient = () => {
                 
                 <Box gb="black" w="100%" p={4} color = "black">
                 
-                
                 <Text font-size="lg"> Welcome, </Text>
                 
                 <Select placeholder="Prescriptions" >  </Select>
