@@ -10,24 +10,29 @@ import {Container} from '../components/Container'
 import Header from '../components/header'
 import Form_exp from '../components/form'
 import firebase from "firebase";
+import { useEffect } from 'react';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
-function Login() {
-        if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-            var email = window.localStorage.getItem('emailForSignIn');
-            console.log(email);
-            if (!email) {
-                email = window.prompt('Please provide your email for confirmation');
-            }
-            firebase.auth().signInWithEmailLink(email, window.location.href)
-                .then((result) => {
-                    console.log(result);
-                    window.localStorage.removeItem('emailForSignIn');
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+function Login({data}) {
+    const router = useRouter()
+    if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
+        var email = window.localStorage.getItem('emailForSignIn');
+        console.log(email);
+        if (!email) {
+            email = window.prompt('Please provide your email for confirmation');
         }
-
+        //TODO: await/async
+        firebase.auth().signInWithEmailLink(email, router.asPath)
+            .then((result) => {
+                console.log(result);
+                window.localStorage.removeItem('emailForSignIn');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+        
 
     return (
         <Container height="100vh">
