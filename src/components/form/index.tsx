@@ -1,21 +1,13 @@
 import {
-    chakra,
     Flex,
     Grid,
-    useDisclosure,
-    useUpdateEffect,
-    HTMLChakraProps,
     FormControl,
     Input,
-    FormLabel,
-    Spacer,
-    Link,
-    Box, Button,
+    FormLabel, HTMLChakraProps,
 
 } from "@chakra-ui/react"
 import React from "react"
 import {useForm} from "react-hook-form";
-import {useViewportScroll} from "framer-motion";
 import firebase from "../../utils/client";
 interface LoginProps {
     email: string

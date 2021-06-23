@@ -9,12 +9,12 @@ import {
 
 import {Container} from '../components/Container'
 import Header from '../components/header'
-import FormLogin from '../components/form'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 import { useAsync } from "react-async"
-function Login() {
+import FormLogin from "../components/form";
 
+function Login() {
     var res = (
         <Container height="100vh">
             <Header/>
