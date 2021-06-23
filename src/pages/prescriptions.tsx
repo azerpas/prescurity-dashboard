@@ -32,14 +32,14 @@ import React from 'react'
 
 
 
-function Datashow(props) {
+function Datashow() {
     return (
-            <Tr>
-                <Td>Date</Td>
-                <Td>Docteur</Td>
-                <Td>Pharmacien</Td>
-                <Td><Button colorScheme="#718096">view prescription</Button></Td>
-            </Tr>
+        <Tr>
+            <Td>Date</Td>
+            <Td>Docteur</Td>
+            <Td>Pharmacien</Td>
+            <Td><Button colorScheme="blue">view prescription</Button></Td>
+        </Tr>
     )
 }
 
@@ -56,7 +56,7 @@ const Prescriptions = () => (
                     <Tr>
                         <Th >Date</Th>
                         <Th >Doctor's name</Th>
-                        <Th >Pharmacist name</Th>
+                        <Th >Pharmacist's name</Th>
                         <Th > Prescrition </Th>
                     </Tr>
                 </Thead>
