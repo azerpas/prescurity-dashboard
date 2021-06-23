@@ -12,7 +12,7 @@ import {
     useColorModeValue,
     useDisclosure,
     useUpdateEffect,
-    HTMLChakraProps,
+    HTMLChakraProps, Link,
 } from "@chakra-ui/react"
 import { FaMoon, FaSun, FaYoutube } from "react-icons/fa";
 import NextLink from "next/link"
@@ -38,7 +38,7 @@ const HeaderContent = () => {
         <>
             <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
                 <Flex align="center" py="3">
-                    <NextLink href="/" passHref>
+                    <NextLink href="/" >
                         <>
                             <Logo/>
                             <Heading size="xl" fontWeight="bold" ml="2">Prescurity</Heading>
@@ -53,8 +53,7 @@ const HeaderContent = () => {
                 color="gray.400"
                 maxW="1100px"
                 >
-                    <HStack display={{base: "none", md: "flex"}}>
-                        <IconButton
+                    <HStack display={{base: "none", md: "flex"}}><IconButton
                             size="md"
                             fontSize="lg"
                             aria-label={`Switch to ${text} mode`}
@@ -64,7 +63,7 @@ const HeaderContent = () => {
                             onClick={toggleMode}
                             icon={<SwitchIcon />}
                         />
-                        <Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button>
+                        <Link href="/login"><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></Link>
                     </HStack>
                     <MobileNavButton
                         ref={mobileNavBtnRef}
