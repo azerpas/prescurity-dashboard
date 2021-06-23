@@ -11,7 +11,6 @@ import {Container} from '../components/Container'
 import Header from '../components/header'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
-import { useAsync } from "react-async"
 import FormLogin from "../components/form";
 import { useEffect } from 'react';
 import { useState } from 'react';
