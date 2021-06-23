@@ -8,7 +8,7 @@ import {
 
 import {Container} from '../components/Container'
 import Header from '../components/header'
-import Form_exp from '../components/form'
+import Form from '../components/form'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 
@@ -36,7 +36,7 @@ const Login = () => {
             <Header/>
             <Container mt="4em">
                 <Heading>Login to Prescurity</Heading>
-                <Form_exp/>
+                <Form/>
             </Container>
             <Divider mt="2em" borderColor="gray.600"/>
             <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex>

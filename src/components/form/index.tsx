@@ -1,28 +1,20 @@
 import {
-    chakra,
     Flex,
     Grid,
-    useDisclosure,
-    useUpdateEffect,
-    HTMLChakraProps,
     FormControl,
     Input,
     FormLabel,
-    Spacer,
-    Link,
-    Box, Button,
 
 } from "@chakra-ui/react"
 import React from "react"
 import {useForm} from "react-hook-form";
-import {useViewportScroll} from "framer-motion";
 import firebase from "../../utils/client";
 interface LoginProps {
     email: string
 }
 
 
-const Form_exp = (props: HTMLChakraProps<"form">) => {
+const Form = () => {
     var actionCodeSettings = {
         url: "http://localhost:3000/login",
         handleCodeInApp: true
@@ -68,4 +60,4 @@ const Form_exp = (props: HTMLChakraProps<"form">) => {
     );
 }
 
-export default Form_exp
+export default Form
