@@ -14,7 +14,11 @@ import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
 import React, {useContext, useEffect} from 'react';
 import { useState } from 'react';
-import {UserContext} from "../providers/user";
+import {UserContext} from "../context/user";
+import {User} from "../entity/user";
+
+
+
 
 function Login() {
     const router = useRouter();
