@@ -10,6 +10,8 @@ import {useContext} from "react";
 function MyApp({Component, pageProps}: AppProps) {
 
     return (
+        // TODO :
+        // erreur : JSX element type 'UserContext' does not have any construct or call signatures.
         <UserContext>
             <ChakraProvider resetCSS theme={theme}>
                 <Component {...pageProps} />
