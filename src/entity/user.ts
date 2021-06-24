@@ -1,10 +1,10 @@
 export class User{
-    private _name:String;
-    private _refreshToken:String;
-    private _email:String;
-    private _uid:String;
+    private _name:string;
+    private _refreshToken:string;
+    private _email:string;
+    private _uid:string;
 
-    constructor(name: String, refreshToken: String, email: String, uid: String) {
+    constructor(name: string, refreshToken: string, email: string, uid: string) {
         this._name = name;
         this._refreshToken = refreshToken;
         this._email = email;
@@ -12,35 +12,35 @@ export class User{
     }
 
 
-    get uid(): String {
+    get uid(): string {
         return this._uid;
     }
 
-    set uid(value: String) {
+    set uid(value: string) {
         this._uid = value;
     }
 
-    get name(): String {
+    get name(): string {
         return this._name;
     }
 
-    set name(value: String) {
+    set name(value: string) {
         this._name = value;
     }
 
-    get refreshToken(): String {
+    get refreshToken(): string {
         return this._refreshToken;
     }
 
-    set refreshToken(value: String) {
+    set refreshToken(value: string) {
         this._refreshToken = value;
     }
 
-    get email(): String {
+    get email(): string {
         return this._email;
     }
 
-    set email(value: String) {
+    set email(value: string) {
         this._email = value;
     }
 }

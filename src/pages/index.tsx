@@ -18,6 +18,7 @@ import {Span} from "next/dist/telemetry/trace";
 import {useContext} from "react";
 import {getContext, UserContext} from "../context/user";
 import {User} from "../entity/user";
+import firebase from "../utils/client";
 
 const Word = (props: { children: React.ReactNode }) => {
     return (
@@ -36,7 +37,7 @@ const BigBlock = (props: { title: String, children: React.ReactNode, button: Str
 }
 
 const Index = () => {
-    console.log(getContext())
+    const iUserContext = useContext(UserContext);
     return (
         <Container height="100vh" bg="none">
             <Header/>
