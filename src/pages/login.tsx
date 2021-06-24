@@ -12,8 +12,9 @@ import Header from '../components/header'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { useState } from 'react';
+import {UserContext} from "../providers/user";
 
 function Login() {
     const router = useRouter();
@@ -29,7 +30,6 @@ function Login() {
             }
             try {
                 const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
-                console.log(userCredential);
                 window.localStorage.removeItem('emailForSignIn');
                 setSuccess(true);
                 setChecking(false);
