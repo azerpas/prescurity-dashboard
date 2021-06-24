@@ -16,7 +16,7 @@ import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
 import {Span} from "next/dist/telemetry/trace";
 import {useContext} from "react";
-import { UserContext} from "../context/user";
+import {getContext, UserContext} from "../context/user";
 import {User} from "../entity/user";
 
 const Word = (props: { children: React.ReactNode }) => {
@@ -30,14 +30,13 @@ const BigBlock = (props: { title: String, children: React.ReactNode, button: Str
         <Flex direction={{base: "column"}} p={{base: "1rem"}} width={"70%"} margin={"auto"}>
             <Heading fontSize={{base: "lg"}} mb={{base: "1rem"}} fontWeight="bold">{props.title}</Heading>
             <Text fontSize={{base: "lg"}} mb={{base: "1rem"}}>{props.children}</Text>
-            <Button m={{base: "auto"}} ml={{base: "0"}} backgroundColor={{base: "black"}} color={{base: "white"}} fontWeight="bold">{props.button}</Button>
+           <Link href={"/doctorDashboard"}> <Button m={{base: "auto"}} ml={{base: "0"}} backgroundColor={{base: "black"}} color={{base: "white"}} fontWeight="bold">{props.button}</Button></Link>
         </Flex>
     );
 }
 
 const Index = () => {
-    const user = useContext(UserContext);
-    console.log(user);
+    console.log(getContext())
     return (
         <Container height="100vh" bg="none">
             <Header/>

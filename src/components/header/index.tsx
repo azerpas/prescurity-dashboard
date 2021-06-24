@@ -38,12 +38,12 @@ const HeaderContent = () => {
         <>
             <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
                 <Flex align="center" py="3">
-                    <NextLink href="/" >
-                        <>
+                    <Link href={"/"} style={{textDecoration:"inherit"}} >
+                        <Flex align={"center"}>
                             <Logo/>
                             <Heading size="xl" fontWeight="bold" ml="2">Prescurity</Heading>
-                        </>
-                    </NextLink>
+                        </Flex>
+                    </Link>
                 </Flex>
 
                 <Flex
