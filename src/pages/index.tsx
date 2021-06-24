@@ -36,6 +36,8 @@ const BigBlock = (props: { title: String, children: React.ReactNode, button: Str
 }
 
 const Index = () => {
+    const user = useContext(UserContext);
+    console.log(user);
     return (
         <Container height="100vh" bg="none">
             <Header/>

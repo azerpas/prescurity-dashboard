@@ -25,15 +25,18 @@ function Login() {
     const [success, setSuccess] = useState(false);
     const [checking, setChecking] = useState(false);
     let email: null | string = null;
+    const user = useContext(UserContext);
+    console.log("USER CONTEXT",user);
     useEffect(() => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignIn');
             if (!email){
-                router.push('/login');
+                await router.push('/login');
                 setChecking(false);
             }
             try {
-                const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
+                await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+                await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignIn');
                 setSuccess(true);
                 setChecking(false);
