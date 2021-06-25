@@ -6,12 +6,14 @@ import {IUserContext, UserContext} from "../context/user";
 import {useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
+import {Patient} from "../entity/Patient";
 
 function onAuthStateChange(callback: (IUserContext) => void) {
-    return firebase.auth().onAuthStateChanged(credentialUser => {
+    return firebase.auth().onAuthStateChanged(async credentialUser =>  {
         if (credentialUser) {
-            const {displayName, refreshToken, email, uid} = credentialUser;
-            callback({loggedIn: true, user: new User(displayName, refreshToken, email, uid)});
+            const accessToken = await credentialUser.getIdToken();
+            const {displayName,  refreshToken, email, uid} = credentialUser;
+            callback({loggedIn: true, user: new Patient(displayName, accessToken, refreshToken, email, uid)});
         } else {
             callback({loggedIn: false, user: null});
         }
