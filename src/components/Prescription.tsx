@@ -5,20 +5,20 @@ import { IconButton } from "@chakra-ui/button"
 export const Prescription = (props: {date: String, doctor: String, pharmacist: String}) => {
     return (
         <Tbody > 
-            <Flex alignItems="center" border="1px" borderColor="gray.700" borderRadius="4px" marginBottom="3px" padding="0.5rem" >
+            <Flex alignItems="center" border="1px" borderColor="gray.700" borderRadius="4px" margin="0.25rem">
                 
                     <Td>
-                        <Tr ><Text >Date</Text></Tr>
-                        <Tr ><Text >{props.date}</Text></Tr>
+                        <Tr><Text>Date</Text></Tr>
+                        <Tr><Text>{props.date}</Text></Tr>
                         
                     </Td>
                     <Td>
                         <Tr><Text>Doctor</Text></Tr>
-                        <Tr><Text >{props.doctor}</Text></Tr>
+                        <Tr><Text>{props.doctor}</Text></Tr>
                     </Td>
                     <Td>
-                        <Tr ><Text >Pharmacist</Text></Tr>
-                        <Tr ><Text >{props.pharmacist}</Text></Tr>
+                        <Tr><Text>Pharmacist</Text></Tr>
+                        <Tr><Text >{props.pharmacist}</Text></Tr>
                         
                     </Td>
                 

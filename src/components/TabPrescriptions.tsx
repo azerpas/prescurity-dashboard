@@ -14,6 +14,7 @@ export const TabPrescriptions = () => {
             <Table size="md" > 
                 <Tbody>
                     <Prescription date="XX/XX/XXXX" doctor="XXX" pharmacist="XXX"/>
+                    <Prescription date="XX/XX/XXXX" doctor="XXX" pharmacist="XXX"/>
                 </Tbody>
             </Table>
         </Flex>
