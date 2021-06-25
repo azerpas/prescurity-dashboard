@@ -5,7 +5,7 @@ export abstract class User {
     private _email: string;
     private _uid: string;
 
-    constructor(name: string, accessToken: string, refreshToken: string, email: string, uid: string) {
+    protected constructor(name: string, accessToken: string, refreshToken: string, email: string, uid: string) {
         this._name = name;
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
