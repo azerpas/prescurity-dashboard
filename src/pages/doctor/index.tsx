@@ -1,4 +1,5 @@
-// responsive : 
+// responsive : encore un leger decallage en mode mobile 
+// boutons a finir aussi 
 
 import {Flex, Heading} from "@chakra-ui/layout"
 import { Container } from "../../components/Container" 
