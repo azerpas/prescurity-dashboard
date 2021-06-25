@@ -12,24 +12,31 @@ import Header from '../components/header'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { useState } from 'react';
+import {UserContext} from "../context/user";
+import {User} from "../entity/user";
+
+
+
 
 function Login() {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [checking, setChecking] = useState(false);
     let email: null | string = null;
+    const user = useContext(UserContext);
+    console.log("USER CONTEXT",user);
     useEffect(() => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignIn');
             if (!email){
-                router.push('/login');
+                await router.push('/login');
                 setChecking(false);
             }
             try {
-                const userCredential = await firebase.auth().signInWithEmailLink(email, router.asPath);
-                console.log(userCredential);
+                await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+                await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignIn');
                 setSuccess(true);
                 setChecking(false);

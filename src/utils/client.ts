@@ -9,6 +9,8 @@ if (!firebase.apps.length) {
     });
 }
 
+
+
 // TODO
 // As httpOnly cookies are to be used, do not persist any state client side.
 
