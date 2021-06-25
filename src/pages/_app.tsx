@@ -4,7 +4,7 @@ import theme from '../theme'
 import {AppProps} from 'next/app'
 import {IUserContext, UserContext} from "../context/user";
 import {useEffect, useState} from "react";
-import {User} from "../entity/user";
+import {User} from "../entity/User";
 import firebase from "../utils/client";
 
 function onAuthStateChange(callback: (IUserContext) => void) {

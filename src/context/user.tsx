@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useState} from 'react';
-import {User} from "../entity/user";
+import {User} from "../entity/User";
 
 export interface IUserContext {
     user:User,
