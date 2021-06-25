@@ -16,8 +16,8 @@ import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
 import {Span} from "next/dist/telemetry/trace";
 import {useContext} from "react";
-import {UserContext} from "../context/user";
-import {User} from "../entity/user";
+import { UserContext} from "../context/user";
+import {User} from "../entity/User";
 import firebase from "../utils/client";
 
 const Word = (props: { children: React.ReactNode }) => {

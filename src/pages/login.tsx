@@ -15,7 +15,7 @@ import FormLogin from "../components/form";
 import React, {useContext, useEffect} from 'react';
 import { useState } from 'react';
 import {UserContext} from "../context/user";
-import {User} from "../entity/user";
+import {User} from "../entity/User";
 
 
 
