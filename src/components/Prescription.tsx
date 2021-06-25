@@ -4,27 +4,28 @@ import { IconButton } from "@chakra-ui/button"
 
 export const Prescription = (props: {date: String, doctor: String, pharmacist: String}) => {
     return (
-        <Tbody > 
-            <Flex alignItems="center" border="1px" borderColor="gray.700" borderRadius="4px" margin="0.25rem">
+        <Tbody>
+            <Flex alignContent={{base:"center" , md:"left"}} alignItems="center" size={{base:"sm", md:"md"}} border="1px" borderColor="gray.700" borderRadius="4px" margin="0.5rem">
                 
-                    <Td>
-                        <Tr><Text>Date</Text></Tr>
-                        <Tr><Text>{props.date}</Text></Tr>
-                        
-                    </Td>
-                    <Td>
-                        <Tr><Text>Doctor</Text></Tr>
-                        <Tr><Text>{props.doctor}</Text></Tr>
-                    </Td>
-                    <Td>
-                        <Tr><Text>Pharmacist</Text></Tr>
-                        <Tr><Text >{props.pharmacist}</Text></Tr>
-                        
-                    </Td>
-                
-                    <IconButton aria-label="go to file" />
+                <Td shrink="1">
+                    <Tr><Text>Date</Text></Tr>
+                    <Tr><Text>{props.date}</Text></Tr>
+                    
+                </Td>
+                <Td shrink="1">
+                    <Tr><Text>Doctor</Text></Tr>
+                    <Tr><Text>{props.doctor}</Text></Tr>
+                </Td>
+                <Td shrink="1">
+                    <Tr><Text>Pharmacist</Text></Tr>
+                    <Tr><Text >{props.pharmacist}</Text></Tr>
+                    
+                </Td>
+            
+                <IconButton aria-label="go to file" shrink="2"/>
             </Flex>  
         </Tbody>
+            
        
     )
 }
