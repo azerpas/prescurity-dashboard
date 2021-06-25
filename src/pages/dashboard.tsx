@@ -1,7 +1,7 @@
 import {
     Flex, 
     Heading,
-} from '@chakra-ui/react'
+} from "@chakra-ui/layout"
 
 import {Container} from '../components/Container'
 import {Footer} from '../components/Footer'
@@ -20,7 +20,6 @@ const Dashboard = () => (
             Welcome to your Prescurity pharmacist/doctor 's area</Heading>
             
             <SearchBox />
-
         </Flex>
         
         <TabPrescriptions/>

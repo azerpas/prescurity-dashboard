@@ -2,8 +2,7 @@ import { Box, Heading, Input, Text } from "@chakra-ui/react";
 import {Container} from './Container'
 
 export const SearchBox = () => {
-
-
+    
     return (
         <Container alignItems="left" bg="none" margin="2rem" >
             <Text size="md" color="gray.700" >Patient adress</Text>

@@ -19,9 +19,7 @@ export const TabPrescriptions = () => {
             <Text padding="1rem" size="md" color="gray.700">Patient adress: xxxx@xxxx.com</Text>
             <Table size="md" > 
                 <Tbody>
-                    <Prescription/>
-                    <Prescription/>
-                    <Prescription/>
+                    <Prescription date="XX/XX/XXXX" doctor="XXX" pharmacist="XXX"/>
                 </Tbody>
             </Table>
         </Flex>
