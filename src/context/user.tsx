@@ -8,13 +8,5 @@ export interface IUserContext {
 
 export const UserContext = createContext({} as IUserContext);
 
-export function getContext() : boolean | IUserContext{
-    const iUserContext = useContext(UserContext);
-    console.log(iUserContext);
-    if(!iUserContext){
-        return false;
-    }else return iUserContext;
-}
-
 
 

@@ -16,7 +16,7 @@ import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
 import {Span} from "next/dist/telemetry/trace";
 import {useContext} from "react";
-import {getContext, UserContext} from "../context/user";
+import {UserContext} from "../context/user";
 import {User} from "../entity/user";
 import firebase from "../utils/client";
 
