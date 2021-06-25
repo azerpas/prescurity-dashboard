@@ -12,13 +12,13 @@ import {
     useColorModeValue,
     useDisclosure,
     useUpdateEffect,
-    HTMLChakraProps, Link,
+    HTMLChakraProps,
 } from "@chakra-ui/react"
-import { FaMoon, FaSun, FaYoutube } from "react-icons/fa";
-import NextLink from "next/link"
-import React, { HTMLProps } from "react"
-import { MobileNavButton, MobileNavContent } from "./mobile";
-import { useViewportScroll } from "framer-motion";
+import {FaMoon, FaSun, FaYoutube} from "react-icons/fa";
+import Link from "next/link"
+import React, {HTMLProps} from "react"
+import {MobileNavButton, MobileNavContent} from "./mobile";
+import {useViewportScroll} from "framer-motion";
 import styled from '@emotion/styled';
 import Logo from "../logo";
 
@@ -26,7 +26,7 @@ const HeaderContent = () => {
     const mobileNav = useDisclosure();
     const text = useColorModeValue("dark", "light");
     const button = useColorModeValue("black", "light");
-    const { toggleColorMode: toggleMode } = useColorMode();
+    const {toggleColorMode: toggleMode} = useColorMode();
     const SwitchIcon = useColorModeValue(FaMoon, FaSun);
     const mobileNavBtnRef = React.useRef<HTMLButtonElement>();
 
@@ -34,36 +34,38 @@ const HeaderContent = () => {
         mobileNavBtnRef.current?.focus();
     }, [mobileNav.isOpen]);
 
-    return(
+    return (
         <>
             <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
                 <Flex align="center" py="3">
-                    <Link href={"/"} style={{textDecoration:"inherit"}} >
-                        <Flex align={"center"}>
-                            <Logo/>
-                            <Heading size="xl" fontWeight="bold" ml="2">Prescurity</Heading>
-                        </Flex>
+                    <Link href={"/"}>
+                        <a>
+                            <Flex align={"center"}>
+                                <Logo/>
+                                <Heading size="xl" fontWeight="bold" ml="2">Prescurity</Heading>
+                            </Flex>
+                        </a>
                     </Link>
                 </Flex>
 
                 <Flex
-                justify="flex-end"
-                w="100%"
-                align="center"
-                color="gray.400"
-                maxW="1100px"
+                    justify="flex-end"
+                    w="100%"
+                    align="center"
+                    color="gray.400"
+                    maxW="1100px"
                 >
                     <HStack display={{base: "none", md: "flex"}}><IconButton
-                            size="md"
-                            fontSize="lg"
-                            aria-label={`Switch to ${text} mode`}
-                            variant="ghost"
-                            color="current"
-                            ml={{ base: "0", md: "3" }}
-                            onClick={toggleMode}
-                            icon={<SwitchIcon />}
-                        />
-                        <Link href="/login"><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></Link>
+                        size="md"
+                        fontSize="lg"
+                        aria-label={`Switch to ${text} mode`}
+                        variant="ghost"
+                        color="current"
+                        ml={{base: "0", md: "3"}}
+                        onClick={toggleMode}
+                        icon={<SwitchIcon/>}
+                    />
+                        <Link href="/login"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></a></Link>
                     </HStack>
                     <MobileNavButton
                         ref={mobileNavBtnRef}
@@ -72,24 +74,24 @@ const HeaderContent = () => {
                     />
                 </Flex>
             </Flex>
-            <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
+            <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose}/>
         </>
     );
 }
 
 const Div = styled.div`
-    height: "4.rem";
-    margin: "0 auto";
-    max-width: "6rem";
+  height: "4.rem";
+  margin: "0 auto";
+  max-width: "6rem";
 `;
 
 const Header = (props: HTMLChakraProps<"header">) => {
     const bg = useColorModeValue("white", "gray.800")
     const ref = React.useRef<HTMLHeadingElement>()
     const [y, setY] = React.useState(0)
-    const { height = 0 } = ref.current?.getBoundingClientRect() ?? {}
+    const {height = 0} = ref.current?.getBoundingClientRect() ?? {}
 
-    const { scrollY } = useViewportScroll()
+    const {scrollY} = useViewportScroll()
     React.useEffect(() => {
         return scrollY.onChange(() => setY(scrollY.get()))
     }, [scrollY])
@@ -109,9 +111,9 @@ const Header = (props: HTMLChakraProps<"header">) => {
             {...props}
         >
             <Div>
-                <HeaderContent />
+                <HeaderContent/>
             </Div>
-        </chakra.header>  
+        </chakra.header>
     );
 }
 

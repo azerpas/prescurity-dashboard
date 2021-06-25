@@ -13,20 +13,26 @@ const Index = () => {
             <Header/>
             <Flex>
                 <Container border={"1px"} m={"auto"} p={"2rem"}>
-                    <Text textAlign={"center"} fontWeight={"bold"}>Bonjour
-                        {iUserContext.user ?
-                            iUserContext.user.name
-                            :
-                            <Skeleton height="1rem " width={"1rem"} display={"inline-block"}/>
+                    {!iUserContext.loggedIn ?
+                        <Text>Veuillez vous connecter </Text>
+                        :
+                        <>
+                            <Text textAlign={"center"} fontWeight={"bold"}>Bonjour
+                                {iUserContext.user ?
+                                    iUserContext.user.name
+                                    :
+                                    <Skeleton height="1rem " width={"1rem"} display={"inline-block"}/>
 
-                        } ! </Text>
-                    <Text textAlign={"center"}>Vous êtes connecté avec l'adresse suivante :
-                        {iUserContext.user ?
-                             " "+iUserContext.user.email
-                            :
-                            <Skeleton height="20px" mt={"1rem"}/>
+                                } ! </Text>
+                            <Text textAlign={"center"}>Vous êtes connecté avec l'adresse suivante :
+                                {iUserContext.user ?
+                                    " " + iUserContext.user.email
+                                    :
+                                    <Skeleton height="20px" mt={"1rem"}/>
 
-                        }</Text>
+                                }</Text>
+                        </>
+                    }
                 </Container>
             </Flex>
             <Footer/>

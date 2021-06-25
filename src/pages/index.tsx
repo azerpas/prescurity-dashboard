@@ -4,10 +4,10 @@ import {
     chakra,
     Flex, Grid,
     Heading,
-    Link,
     SimpleGrid,
     Text
 } from '@chakra-ui/react'
+import Link from "next/link";
 import {Container} from '../components/Container'
 import {DarkModeSwitch} from '../components/DarkModeSwitch'
 import {Footer} from '../components/Footer'
@@ -31,7 +31,7 @@ const BigBlock = (props: { title: String, children: React.ReactNode, button: Str
         <Flex direction={{base: "column"}} p={{base: "1rem"}} width={"70%"} margin={"auto"}>
             <Heading fontSize={{base: "lg"}} mb={{base: "1rem"}} fontWeight="bold">{props.title}</Heading>
             <Text fontSize={{base: "lg"}} mb={{base: "1rem"}}>{props.children}</Text>
-           <Link href={"/doctorDashboard"}> <Button m={{base: "auto"}} ml={{base: "0"}} backgroundColor={{base: "black"}} color={{base: "white"}} fontWeight="bold">{props.button}</Button></Link>
+            <Link href={"/doctorDashboard"}><a><Button m={{base: "auto"}} ml={{base: "0"}} backgroundColor={{base: "black"}} color={{base: "white"}} fontWeight="bold">{props.button}</Button></a></Link>
         </Flex>
     );
 }
