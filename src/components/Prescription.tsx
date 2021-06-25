@@ -1,5 +1,4 @@
 import { Tr, Td, Tbody} from "@chakra-ui/table"
-
 import { Text, Flex, Box } from "@chakra-ui/layout"
 import { IconButton } from "@chakra-ui/button"
 
@@ -24,11 +23,7 @@ export const Prescription = (props: {date: String, doctor: String, pharmacist: S
                     </Td>
                 
                     <IconButton aria-label="go to file" />
-            </Flex>
-
-
-            
-           
+            </Flex>  
         </Tbody>
        
     )

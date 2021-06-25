@@ -1,8 +1,4 @@
-import {
-    Flex, 
-    Heading,
-} from "@chakra-ui/layout"
-
+import {Flex, Heading} from "@chakra-ui/layout"
 import {Container} from '../components/Container'
 import {Footer} from '../components/Footer'
 import {SearchBox} from '../components/SearchBox'

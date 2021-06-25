@@ -1,10 +1,4 @@
-
-
-
-
-import { Tr, Td, Thead, Th, Tbody} from "@chakra-ui/table";
-import { Container } from "./Container";
-
+import { Tbody} from "@chakra-ui/table";
 import { Prescription } from "./Prescription";
 import { Text, Flex } from "@chakra-ui/layout";
 import { Table } from "@chakra-ui/table";
