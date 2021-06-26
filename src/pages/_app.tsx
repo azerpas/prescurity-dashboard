@@ -21,7 +21,7 @@ function onAuthStateChange(callback: (IUserContext) => void) {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
-    const [user, setUser] = useState({loggedIn: false, user: null});
+    const [user, setUser] = useState({loggedIn: null, user: null});
     useEffect(() => {
         const unsubscribe = onAuthStateChange(setUser);
         return () => {
