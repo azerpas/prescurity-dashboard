@@ -17,3 +17,13 @@ export const initWeb3 = async () => new Promise<Web3>((resolve, reject) => {
         }
     });
 });
+
+export const getSelectedAddress = (): string => {
+    if(window.ethereum.isMetaMask && window.ethereum.selectedAddress){
+        return window.ethereum.selectedAddress;
+    }else {
+        const m = "Canno't get the selected address as user is not using metamask or has not selected an address";
+        console.error(m);
+        throw new Error(m);
+    }
+}
