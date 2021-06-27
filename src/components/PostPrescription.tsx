@@ -3,12 +3,12 @@
 import { Flex, Box, Heading, Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
-import { SearchBox } from "./SearchBox";
-import { Medicine } from "./Medicine";
+
 import { Container } from "./Container";
 import { Table, Tbody } from "@chakra-ui/table";
 
 import React from 'react';
+import { CloseButton } from "@chakra-ui/react"
 
 
 export const PostPrescription = () => {
@@ -19,7 +19,7 @@ export const PostPrescription = () => {
             <Flex direction={{base:"column", md:"row"}}  justifyContent={{md:"space-between"}} margin="1rem" padding="1rem">
 
 
-                <Flex direction="column" alignContent="flex-start"  margin={{md:"1rem"}} padding={{md:"1rem"}} marginLeft={{base:"2rem"}}>
+                <Flex direction="column" alignItems="flex-start"  margin={{md:"1rem"}} padding={{md:"1rem"}} marginLeft={{base:"2rem"}}>
                     
                     <Heading fontSize={{base:"lg", md:"xl"}} marginLeft="1rem">Informations</Heading>
                     
@@ -44,25 +44,45 @@ export const PostPrescription = () => {
 
 
                 <Flex direction="column" alignItems="flex-start" margin={{md:"1rem"}} padding={{md:"1rem"}} marginLeft={{base:"2rem"}}>
-                    <Heading marginLeft="1rem" marginBottom="1rem" fontSize={{base:"lg", md:"xl"}}>Medicine</Heading>
+                    <Heading fontSize={{base:"lg", md:"xl"}} marginLeft="1rem" marginBottom="1rem" >Medicine</Heading>
                     
-                    <Flex alignContent={{base:"center" , md:"left"}}    size={{base:"sm", md:"md"}} border="1px" borderColor="gray.600" borderRadius="6px" margin="0.5rem" >
+                    <Flex alignContent={{base:"center" , md:"left"}}    size={{base:"sm", md:"md"}} border="1px" borderColor="gray.600" borderRadius="6px" margin="0.5rem" marginLeft="2rem">
                     
-                    <div>
+                    <Box padding="0.5rem" >
                     
-                        <ul ><Text >MedicineName</Text></ul>
+                        <ul ><Text fontWeight="bold" >MedicineName</Text></ul>
                         <ul ><Text >doliprane </Text></ul>
                     
-                    </div>
+                    </Box>
                     
-                    <div>
+                    <Box padding="0.5rem" >
                 
-                        <ul><Text>frequency</Text></ul>
+                        <ul><Text fontWeight="bold">frequency</Text></ul>
                         <ul><Text >2x par jour</Text></ul>
             
-                    </div>
+                    </Box >
         
-                    <Button aria-label="delete"/>
+                    <CloseButton/>
+
+                </Flex>  
+
+                <Flex alignContent={{base:"center" , md:"left"}}    size={{base:"sm", md:"md"}} border="1px" borderColor="gray.600" borderRadius="6px" margin="0.5rem" marginLeft="2rem">
+                    
+                    <Box padding="0.5rem" >
+                    
+                        <ul ><Text fontWeight="bold" >MedicineName</Text></ul>
+                        <ul ><Text >doliprane </Text></ul>
+                    
+                    </Box>
+                    
+                    <Box padding="0.5rem" >
+                
+                        <ul><Text fontWeight="bold">frequency</Text></ul>
+                        <ul><Text >2x par jour</Text></ul>
+            
+                    </Box >
+        
+                    <CloseButton/>
 
                 </Flex>  
                         
