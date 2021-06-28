@@ -22,6 +22,8 @@ Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/Iy
 ## How-to-use
 - `git pull https://github.com/azerpas/prescurity-dashboard.git`
 - `yarn install` ([Install yarn before](https://classic.yarnpkg.com/en/docs/install/#mac-stable))
+- `cp .env.example .env.local`
+- Modify the `.env.local` variables with the right ones
 - `yarn dev`
 - Navigate to `http://localhost:3000`
 
