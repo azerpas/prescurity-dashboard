@@ -36,7 +36,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         if(smartContract){
-            console.log(`Getting user type`);
             getUserType();
         }
     },[smartContract]);
@@ -50,13 +49,45 @@ const Dashboard = () => {
     // Les ifs sont organisés dans cet ordre précis pour être "rendus" en cascade
     if (!userData.user){
         return(<>No user</>);
-    }else if(web3 && userData.user && userAddress) {
-        return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
-    }else if (userData.user){
+    }else if(web3 && userData.user && userAddress && userType) {
+        // Doctor
+        if(userType === UserType.doctor){
+            return(
+                <>
+                    a{/* Doctor component */}
+                </>
+            );
+        // Patient
+        }else if(userType === UserType.patient){
+            return(
+                <>
+                    a{/* Patient component */}
+                </>
+            );
+        // Pharmacy
+        }else if(userType === UserType.pharmacy){
+            return(
+                <>
+                    a{/* Patient component */}
+                </>
+            );
+        // Owner
+        }else if(userType === UserType.owner){
+            return(
+                <>
+                    a{/* Owner component */}
+                </>
+            );
+        }else{
+            return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
+        }
+    }else if (userData.user && !web3){
         initializeBlockchain();
         return(<>None <br/>UID: {userData.user.uid}</>);
     }else if (!web3){ //TODO: `|| !selectedAddress)`
         return(<>No web3</>); // Modal qui demande de d'abord se connecter à metamask
+    }else{
+        return(<>Nothing to show rn</>)
     }
 }
 
