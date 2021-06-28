@@ -1,7 +1,8 @@
 import Web3 from 'web3';
 import SmartContract from "../../contracts/Prescurity.json";
+import { Contract } from 'web3-eth-contract';
 
-export const initWeb3 = async () => new Promise<[Web3, any?]>((resolve, reject) => {
+export const initWeb3 = async () => new Promise<[Web3, Contract?]>((resolve, reject) => {
     window.addEventListener('load', async () => {
         console.log(`Connecting to web3...`)
         if(window.ethereum){
