@@ -7,40 +7,38 @@ import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
+import {toBase64} from "next/dist/next-server/lib/to-base-64";
 
 const signUp = () => {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
-    const [checking, setChecking] = useState(false);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignUp');
-            if (!email){
+            if (!email) {
                 await router.push('/signUp');
-                setChecking(false);
             }
             try {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
                 await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignUp');
+                await firebase.database().ref('users/' +toBase64(email)+"/valid").set(true);
                 setSuccess(true);
-                setChecking(false);
             } catch (e) {
                 console.log(e);
             }
         }
         if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
-            setChecking(true);
             signedWithLink();
         }
-    },[])
+    }, [])
     return (
         <>
             <Header/>
-            <Container >
+            <Container>
                 <Heading>Sign Up to Prescurity</Heading>
-                { success ?
+                {success ?
                     <>
                         <Text>Your are sign up with {email} </Text>
                         <Link href="/"><a><Button>Return to home</Button></a></Link>

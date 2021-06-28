@@ -9,6 +9,9 @@ import {
 import React, {useState} from "react"
 import {useForm} from "react-hook-form";
 import firebase from "../../utils/client";
+import {base64} from "ethers/lib/utils";
+import {toBase64} from "next/dist/next-server/lib/to-base-64";
+import {BiMessageError} from "react-icons/all";
 
 interface LoginProps {
     email: string
@@ -84,17 +87,27 @@ const actionCodeSettingsSignUp = {
 export const FormSignUp = (props: HTMLChakraProps<"form">) => {
     // States
     const [emailSended, setEmailSended] = useState(false);
+    const [errorExist, setErrorExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
 
     const signUp = async (props: SignUpProps) => {
         try {
-            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
-            window.localStorage.setItem('emailForSignUp', props.email);
-            firebase.database().ref('users/' + props.email).set({
-                name: props.name,
-                numSecu: props.numSecu
-            });
-            setEmailSended(true);
+            const userDB =  await firebase.database().ref('users').child(toBase64(props.email)).get();
+            if(userDB.exists()){
+                console.log("ERROR EXIST")
+                setErrorExist(true);
+            }else{
+                const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
+                window.localStorage.setItem('emailForSignUp', props.email);
+                console.log(toBase64(props.email));
+                await firebase.database().ref('users/' +toBase64(props.email)).set({
+                    name: props.name,
+                    numSecu: props.numSecu,
+                    valid: false
+                });
+                setEmailSended(true);
+            }
+
         } catch (error) {
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -114,6 +127,7 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                 </>
                 :
                 <form onSubmit={handleSubmit(onSubmit)}>
+
                     <Flex flexDirection={"column"}>
                         <FormControl id="nom" isInvalid={errors.name ? true : false}>
                             <FormLabel>Name 👤</FormLabel>
@@ -142,6 +156,12 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                             </FormErrorMessage>
                         </FormControl>
                     </Flex>
+                    {
+                        errorExist ?
+                            <Text align={"center"} color={"red"} mt={"1rem"} fontWeight={"bold"} >
+                                Cette adresse mail est déjà utilisée !
+                            </Text> : ""
+                    }
                     <Flex text-align="center" mt="3">
                         <Input type="submit" color="white" value="Sign Up" bgColor="black" disabled={emailSended || isSubmitting}/>
                     </Flex>
