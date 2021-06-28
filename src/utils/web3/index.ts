@@ -6,7 +6,7 @@ export const initWeb3 = async () => new Promise<Web3>((resolve, reject) => {
         if(window.ethereum){
             resolve(new Web3(window.ethereum));
             try {
-                await window.ethereum.enable();
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
                 console.info(`Enabled`)
             } catch (error) {
                 console.error(error);

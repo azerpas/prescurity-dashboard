@@ -19,6 +19,7 @@ const Dashboard = () => {
         console.log(web);
         setWeb3(web);
         const selected = await getSelectedAddress();
+        console.log(`selected: ${selected}`)
         setUserAddress(selected);
     }
 
@@ -29,16 +30,17 @@ const Dashboard = () => {
         } 
     },[userData]);
 
+    // Les ifs sont organisés dans cet ordre précis pour être "rendus" en cascade
     if (!userData.user){
         return(<>No user</>);
-    }else if (userData.user){
-        initializeBlockchain();
-    }else if (!web3){ //TODO: `|| !selectedAddress)`
-        return(<>No web3</>); // Modal qui demande de d'abord se connecter à metamask
     }else if(web3 && userData.user && userAddress) {
         return(<>Hello</>); // page complète en fonction du rôle de l'user
+    }else if (!web3){ //TODO: `|| !selectedAddress)`
+        return(<>No web3</>); // Modal qui demande de d'abord se connecter à metamask
+    }else if (userData.user){
+        initializeBlockchain();
+        return(<>None <br/>UID: {userData.user.uid}</>);
     }
-    return(<>None <br/>{userData.user.uid} <br/>{userAddress}</>);
 }
 
 export default Dashboard;
