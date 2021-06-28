@@ -1,17 +1,14 @@
-
-
 import { Flex, Box, Heading, Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
-
-import { Container } from "./Container";
-import { Table, Tbody } from "@chakra-ui/table";
-
+import { Container } from "../Container";
 import React from 'react';
 import { CloseButton } from "@chakra-ui/react"
 
 
 export const PostPrescription = () => {
+
+    
 
     return (
         <Container height="100vh" bg="none">

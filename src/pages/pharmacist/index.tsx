@@ -1,11 +1,8 @@
-// responsive: ok
-
 import {Flex, Heading, Text, Box} from "@chakra-ui/layout"
 import { Container } from "../../components/Container" 
 import {Footer} from '../../components/Footer'
 import { Input } from "@chakra-ui/input"
 import { Button } from "@chakra-ui/button"
-
 import Header from '../../components/header'
 import React from 'react'
 
