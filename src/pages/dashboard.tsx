@@ -51,7 +51,7 @@ const Dashboard = () => {
     if (!userData.user){
         return(<>No user</>);
     }else if(web3 && userData.user && userAddress) {
-        return(<>Hello</>); // page complète en fonction du rôle de l'user
+        return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
     }else if (userData.user){
         initializeBlockchain();
         return(<>None <br/>UID: {userData.user.uid}</>);
