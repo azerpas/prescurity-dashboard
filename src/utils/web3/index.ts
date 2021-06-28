@@ -1,19 +1,30 @@
 import Web3 from 'web3';
+import SmartContract from "../../contracts/Prescurity.json";
 
-export const initWeb3 = async () => new Promise<Web3>((resolve, reject) => {
+export const initWeb3 = async () => new Promise<[Web3, any?]>((resolve, reject) => {
     window.addEventListener('load', async () => {
         console.log(`Connecting to web3...`)
         if(window.ethereum){
-            resolve(new Web3(window.ethereum));
             try {
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
                 console.info(`Enabled`)
+                try {
+                    const web3 = new Web3(window.ethereum);
+                    const networkId = await web3.eth.net.getId();
+                    const network = SmartContract.networks[networkId];
+                    //@ts-ignore
+                    const contract = new web3.eth.Contract(SmartContract.abi, network.address);
+                    resolve([web3,contract]);
+                } catch (error) {
+                    
+                }
+                
             } catch (error) {
                 console.error(error);
                 reject(error);
             }
         } else{
-            resolve(new Web3(Web3.givenProvider || "http://localhost:7545"));
+            resolve([new Web3(Web3.givenProvider || "http://localhost:7545")]);
         }
     });
 });
