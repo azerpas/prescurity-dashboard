@@ -1,6 +1,6 @@
 // NextJS React
 import { useRouter } from "next/router";
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 // Web3
 import Web3 from "web3";
@@ -11,6 +11,9 @@ import { getSelectedAddress, initWeb3 } from "../utils/web3";
 import { UserContext } from "../context/user";
 import * as ROUTES from '../constants/routes';
 import { UserType } from "../types/user";
+
+// Components
+import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
     const userData = useContext(UserContext);
@@ -45,10 +48,10 @@ const Dashboard = () => {
             router.push(ROUTES.LOGIN);
         } 
     },[userData]);
-
+    
     // Les ifs sont organisés dans cet ordre précis pour être "rendus" en cascade
     if (!userData.user){
-        return(<>No user</>);
+        return(<UserLoading/>);
     }else if(web3 && userData.user && userAddress && userType) {
         // Doctor
         if(userType === UserType.doctor){
@@ -81,11 +84,9 @@ const Dashboard = () => {
         }else{
             return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
         }
-    }else if (userData.user && !web3){
+    }else if (userData.user && (!web3 || !smartContract || !userAddress)){
         initializeBlockchain();
-        return(<>None <br/>UID: {userData.user.uid}</>);
-    }else if (!web3){ //TODO: `|| !selectedAddress)`
-        return(<>No web3</>); // Modal qui demande de d'abord se connecter à metamask
+        return(<><InitBlockchainLoading step={web3 ? 1 : (smartContract ? 2 : (userAddress ? 3 : (userType ? 4 : 0)))}/></>);
     }else{
         return(<>Nothing to show rn</>)
     }
