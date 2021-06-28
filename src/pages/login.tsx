@@ -2,11 +2,10 @@ import {
     Heading,
     Divider,
     Flex,
-    Link,
     Spacer,
-    Text, Button, Spinner
+    Text, Button, Spinner,
 } from '@chakra-ui/react'
-
+import Link from "next/link";
 import {Container} from '../components/Container'
 import Header from '../components/header'
 import firebase from "firebase";
@@ -68,7 +67,7 @@ function Login() {
                 { success ? 
                     <>
                         <Text>Your are sign in with {email} </Text>
-                        <Link href="/"><Button>Return to home</Button></Link>
+                        <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
                     <FormLogin/>
@@ -78,7 +77,7 @@ function Login() {
             { !success &&
                 <>
                     <Divider mt="2em" borderColor="gray.600"/>
-                    <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex> 
+                    <Flex mt="1em">Don't have an account : <Spacer/><Link href={"/signUp"} ><a> Register Here</a></Link></Flex>
                 </>
             }
         </Container>
