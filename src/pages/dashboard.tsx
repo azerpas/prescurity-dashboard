@@ -1,19 +1,24 @@
+// NextJS React
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
+
+// Web3
+import Web3 from "web3";
+import {Contract} from "web3-eth-contract";
+import { getSelectedAddress, initWeb3 } from "../utils/web3";
+
+// Misc
 import { UserContext } from "../context/user";
 import * as ROUTES from '../constants/routes';
-import { getSelectedAddress, initWeb3 } from "../utils/web3";
-import { useState } from "react";
-import Web3 from "web3";
-import { useEffect } from "react";
+import { UserType } from "../types/user";
 
 const Dashboard = () => {
     const userData = useContext(UserContext);
     const router = useRouter();
     const [web3, setWeb3] = useState<undefined|Web3>();
-    const [smartContract, setContract] = useState<undefined|any>();
+    const [smartContract, setContract] = useState<undefined|Contract>();
     const [userAddress, setUserAddress] = useState<undefined|string>(); // TODO: to set inside the UserContext directly
-    const [userType, setUserType] = useState<undefined|string>(); // TODO: to set inside the UserContext directly
+    const [userType, setUserType] = useState<undefined|UserType>(); // TODO: to set inside the UserContext directly
 
     const initializeBlockchain = async () => { // TODO: import from another file
         const [web, contract] = await initWeb3();
