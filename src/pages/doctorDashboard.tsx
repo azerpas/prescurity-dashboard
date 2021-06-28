@@ -1,8 +1,7 @@
-import {Button, Flex, Grid, Skeleton, Text} from "@chakra-ui/react";
-import firebase from "../utils/client";
+import {Flex, Skeleton, Text} from "@chakra-ui/react";
 import Header from "../components/header";
 import {Footer} from "../components/Footer";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {UserContext} from "../context/user";
 import {Container} from "../components/Container";
 
