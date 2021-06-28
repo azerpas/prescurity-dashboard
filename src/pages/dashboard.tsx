@@ -13,6 +13,7 @@ import * as ROUTES from '../constants/routes';
 import { UserType } from "../types/user";
 
 // Components
+import Pharmacist from "../components/pharmacist";
 import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
@@ -70,9 +71,7 @@ const Dashboard = () => {
         // Pharmacy
         }else if(userType === UserType.pharmacy){
             return(
-                <>
-                    a{/* Patient component */}
-                </>
+                <Pharmacist/>
             );
         // Owner
         }else if(userType === UserType.owner){
