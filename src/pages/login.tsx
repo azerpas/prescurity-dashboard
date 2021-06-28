@@ -35,7 +35,8 @@ function Login() {
             }
             try {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-                await firebase.auth().signInWithEmailLink(email, router.asPath);
+                const credentialUser = await firebase.auth().signInWithEmailLink(email, router.asPath);
+                console.log(credentialUser,user);
                 window.localStorage.removeItem('emailForSignIn');
                 setSuccess(true);
                 setChecking(false);

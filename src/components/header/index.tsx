@@ -16,11 +16,12 @@ import {
 } from "@chakra-ui/react"
 import {FaMoon, FaSun, FaYoutube} from "react-icons/fa";
 import Link from "next/link"
-import React, {HTMLProps} from "react"
+import React, {HTMLProps, useContext} from "react"
 import {MobileNavButton, MobileNavContent} from "./mobile";
 import {useViewportScroll} from "framer-motion";
 import styled from '@emotion/styled';
 import Logo from "../logo";
+import {UserContext} from "../../context/user";
 
 const HeaderContent = () => {
     const mobileNav = useDisclosure();
@@ -34,6 +35,7 @@ const HeaderContent = () => {
         mobileNavBtnRef.current?.focus();
     }, [mobileNav.isOpen]);
 
+    const userLoggedIn = useContext(UserContext).loggedIn;
     return (
         <>
             <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
@@ -65,7 +67,13 @@ const HeaderContent = () => {
                         onClick={toggleMode}
                         icon={<SwitchIcon/>}
                     />
-                        <Link href="/login"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></a></Link>
+                        {
+                            userLoggedIn ?
+                                <Link href="/signOut"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">SignOut</Button></a></Link>
+                            :
+                                <Link href="/login"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></a></Link>
+                        }
+
                     </HStack>
                     <MobileNavButton
                         ref={mobileNavBtnRef}

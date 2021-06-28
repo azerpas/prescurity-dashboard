@@ -76,6 +76,10 @@ interface SignUpProps {
     numSecu:number
 }
 
+const actionCodeSettingsSignUp = {
+    url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/signUp`,
+    handleCodeInApp: true
+};
 
 export const FormSignUp = (props: HTMLChakraProps<"form">) => {
     // States
@@ -84,8 +88,12 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
 
     const signUp = async (props: SignUpProps) => {
         try {
-            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
+            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
             window.localStorage.setItem('emailForSignUp', props.email);
+            firebase.database().ref('users/' + props.email).set({
+                name: props.name,
+                numSecu: props.numSecu
+            });
             setEmailSended(true);
         } catch (error) {
             var errorCode = error.code;
@@ -126,11 +134,11 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                         </FormControl>
                         <FormControl id="numSecu" isInvalid={errors.numSecu ? true : false}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
-                            <Input type={"number"} {...register("numSecu", { required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im })}/>
+                            <Input type={"number"} {...register("numSecu", { required: true, pattern: /[0-9]{15}/im })}/>
                             <FormErrorMessage>
-                                {errors.numSecu?.type === "pattern" && "Format de l'email invalide"}
+                                {errors.numSecu?.type === "pattern" && "Format du numero de securité sociale invalide"}
                                 {errors.numSecu?.type === "required" && "Entrez votre numéro de sécurité social"}
-                                {!["pattern", "required"].includes(errors.email?.type) && errors.email?.message}
+                                {!["pattern", "required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
                             </FormErrorMessage>
                         </FormControl>
                     </Flex>
