@@ -6,11 +6,9 @@ import {
     FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage
 
 } from "@chakra-ui/react"
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import {useForm} from "react-hook-form";
 import firebase from "../../utils/client";
-import useSWR from "swr";
-import {stringify} from "querystring";
 
 
 interface LoginProps {
@@ -84,11 +82,9 @@ const actionCodeSettingsSignUp = {
 };
 
 export const FormSignUp = (props: HTMLChakraProps<"form">) => {
-    // States
     const [emailSended, setEmailSended] = useState(false);
     const [errorExist, setErrorExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
-    const [userExist, setUserExist] = useState(false);
     const signUp = async (props: SignUpProps) => {
         try {
             const dataApi = await (await fetch("http://localhost:3000/api/user?email=" + encodeURI(props.email))).json();

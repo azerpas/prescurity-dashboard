@@ -1,4 +1,4 @@
-import FormLogin, {FormSignUp} from "../components/form";
+import {FormSignUp} from "../components/form";
 import {Button, Flex, Heading, Text} from "@chakra-ui/react";
 import {Footer} from "../components/Footer";
 import Header from "../components/header";
@@ -7,7 +7,6 @@ import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
-import {toBase64} from "next/dist/next-server/lib/to-base-64";
 
 const signUp = () => {
     const router = useRouter();

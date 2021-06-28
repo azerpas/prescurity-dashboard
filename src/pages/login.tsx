@@ -11,13 +11,8 @@ import Header from '../components/header'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { useState } from 'react';
-import {UserContext} from "../context/user";
-import {User} from "../entity/User";
-
-
-
 
 function Login() {
     const router = useRouter();

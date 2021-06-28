@@ -1,7 +1,5 @@
 import admin from "../../utils/admin";
 import {NextApiRequest, NextApiResponse} from "next";
-import {useEffect} from "react";
-import {stringify} from "querystring";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
