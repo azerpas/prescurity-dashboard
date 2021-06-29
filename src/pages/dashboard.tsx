@@ -13,6 +13,7 @@ import * as ROUTES from '../constants/routes';
 import { UserType } from "../types/user";
 
 // Components
+import Owner from "../components/owner";
 import Pharmacist from "../components/pharmacist";
 import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
@@ -77,9 +78,7 @@ const Dashboard = () => {
         // Owner
         }else if(userType === UserType.owner){
             return(
-                <>
-                    a{/* Owner component */}
-                </>
+                <Owner web={web3} contrat={smartContract}/>
             );
         }else{
             return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
