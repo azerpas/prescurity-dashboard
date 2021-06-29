@@ -2,7 +2,7 @@ import admin from "../../utils/admin";
 import {NextApiRequest, NextApiResponse} from "next";
 
 export default async function User(req: NextApiRequest, res: NextApiResponse) {
-    if(req.method == "GET"){
+    if(req.method === "GET"){
         if (!req.query.email) {
             res.status(401).json({
                 message: "No email sent",
@@ -10,24 +10,22 @@ export default async function User(req: NextApiRequest, res: NextApiResponse) {
             })
         } else {
             try {
-                const user = await admin.auth().getUserByEmail(""+req.query.email);
+                await admin.auth().getUserByEmail(req.query.email.toString());
                 res.json({userExist: true});
             } catch (e) {
                 console.error(e);
                 res.json({userExist: false});
             }
         }
-    }else if(req.method == "POST"){
+    }else if(req.method === "POST"){
         if (!req.body.email) {
-            res.status(401).json({
-                message: "No email sent",
-                name: "error"
-            })
-        } else {
+            res.status(401).json({ message: "No email sent", name: "error" })
+        } else if (!req.body.address) res.status(401).json({ message: "No address sent", name: "error" })
+        else {
             try {
-                const newUser = await admin.auth().createUser({
-                    email: "" + req.body.email,
-                    displayName: "" + req.body.address
+                await admin.auth().createUser({
+                    email: req.body.email,
+                    displayName: req.body.address
                 });
                 res.json({userExist: false});
             } catch (e) {
