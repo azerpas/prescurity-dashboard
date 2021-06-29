@@ -9,11 +9,11 @@ import firebase from "../utils/client";
 import {Patient} from "../entity/Patient";
 
 function onAuthStateChange(callback: (IUserContext) => void) {
-    return firebase.auth().onAuthStateChanged(async credentialUser =>  {
+    return firebase.auth().onAuthStateChanged(async credentialUser => {
         if (credentialUser) {
             const accessToken = await credentialUser.getIdToken();
-            const {displayName,  refreshToken, email, uid} = credentialUser;
-            callback({loggedIn: true, user: new Patient(displayName, accessToken, refreshToken, email, uid)});
+            const {displayName, refreshToken, email, uid} = credentialUser;
+            callback({loggedIn: true, user: new Patient(email, accessToken, refreshToken, email, uid, displayName)});
         } else {
             callback({loggedIn: false, user: null});
         }

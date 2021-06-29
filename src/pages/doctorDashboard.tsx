@@ -4,6 +4,7 @@ import {Footer} from "../components/Footer";
 import {useContext, useEffect} from "react";
 import {UserContext} from "../context/user";
 import {Container} from "../components/Container";
+import {initWeb3} from "../utils/web3";
 
 const Index = () => {
     const iUserContext = useContext(UserContext);

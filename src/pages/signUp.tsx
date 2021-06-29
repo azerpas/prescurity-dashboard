@@ -1,5 +1,5 @@
 import {FormSignUp} from "../components/form";
-import {Button, Flex, Heading, Text} from "@chakra-ui/react";
+import {Button, Heading, Text} from "@chakra-ui/react";
 import {Footer} from "../components/Footer";
 import Header from "../components/header";
 import React, {useEffect, useState} from "react";
@@ -7,13 +7,12 @@ import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
-import {getSelectedAddress, initWeb3} from "../utils/web3";
+import {getSelectedAddress} from "../utils/web3";
 
-const  signUp =  () => {
-
+const signUp = () => {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
-    const [address, setAddress] = useState<undefined|number|string>(null);
+    const [address, setAddress] = useState<undefined | number | string>(null);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
@@ -25,6 +24,9 @@ const  signUp =  () => {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
                 await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignUp');
+                firebase.auth().currentUser.updateProfile({
+                    displayName:getSelectedAddress()
+                });
                 setSuccess(true);
             } catch (e) {
                 console.log(e);
@@ -34,15 +36,10 @@ const  signUp =  () => {
             signedWithLink();
         }
 
-
         const getAddress = async () => {
-            const web3 = await initWeb3();
             setAddress(await getSelectedAddress());
         }
         getAddress();
-
-
-
     }, []);
 
     return (
