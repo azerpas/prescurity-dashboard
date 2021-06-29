@@ -16,14 +16,7 @@ interface LoginProps {
 }
 
 
-const fetchRequest = {
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: ""
-};
+
 
 const actionCodeSettings = {
     url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/login`,
@@ -38,8 +31,9 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
 
     const login = async (props: LoginProps) => {
         try {
-            fetchRequest.body = JSON.stringify(props);
-            const response =await fetch("http://localhost:3000/api/user", fetchRequest);
+            const response =await fetch("http://localhost:3000/api/user?email="+props.email, {
+                method:"GET"
+            });
             if (!response.ok) {
                 console.error(response);
             }else {
@@ -117,8 +111,14 @@ export const FormSignUp = (props) => {
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
     const signUp = async (props: SignUpProps) => {
         try {
-            fetchRequest.body = JSON.stringify(props);
-            const response = await fetch("http://localhost:3000/api/newUser", fetchRequest);
+            const response = await fetch("http://localhost:3000/api/user",{
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify(props)
+            });
             if (!response.ok) {
                 console.error(response);
             } else {
