@@ -7,10 +7,13 @@ import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
+import {getSelectedAddress, initWeb3} from "../utils/web3";
 
-const signUp = () => {
+const  signUp =  () => {
+
     const router = useRouter();
     const [success, setSuccess] = useState(false);
+    const [address, setAddress] = useState<undefined|number|string>(null);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
@@ -30,7 +33,18 @@ const signUp = () => {
         if (firebase.auth().isSignInWithEmailLink(router.asPath)) {
             signedWithLink();
         }
-    }, [])
+
+
+        const getAddress = async () => {
+            const web3 = await initWeb3();
+            setAddress(await getSelectedAddress());
+        }
+        getAddress();
+
+
+
+    }, []);
+
     return (
         <>
             <Header/>
@@ -42,7 +56,7 @@ const signUp = () => {
                         <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
-                    <FormSignUp/>
+                    <FormSignUp address={address}/>
                 }
 
             </Container>

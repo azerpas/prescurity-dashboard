@@ -29,11 +29,11 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
     const login = async (props: LoginProps) => {
         try {
             const dataApi = await (await fetch("http://localhost:3000/api/user?email=" + encodeURI(props.email))).json();
-            if(dataApi.userExist){
+            if (dataApi.userExist) {
                 const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
                 window.localStorage.setItem('emailForSignIn', props.email);
                 setEmailSended(true);
-            }else{
+            } else {
                 setErrorUserExist(true);
             }
 
@@ -94,7 +94,7 @@ const actionCodeSettingsSignUp = {
     handleCodeInApp: true
 };
 
-export const FormSignUp = (props: HTMLChakraProps<"form">) => {
+export const FormSignUp = (props) => {
     const [emailSended, setEmailSended] = useState(false);
     const [errorExist, setErrorExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
@@ -130,7 +130,7 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
 
                     <Flex flexDirection={"column"}>
-                        <FormControl id="nom" isInvalid={errors.name ? true : false}>
+                        <FormControl id="nom" isInvalid={errors.name ? true : false} mb={"1rem"}>
                             <FormLabel>Name 👤</FormLabel>
                             <Input  {...register("name", {required: true})}/>
                             <FormErrorMessage>
@@ -138,7 +138,7 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                                 {!["required"].includes(errors.name?.type) && errors.name?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="email" isInvalid={errors.email ? true : false}>
+                        <FormControl id="email" isInvalid={errors.email ? true : false} mb={"1rem"}>
                             <FormLabel>Email address 📧</FormLabel>
                             <Input  {...register("email", {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im})}/>
                             <FormErrorMessage>
@@ -147,7 +147,7 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                                 {!["pattern", "required"].includes(errors.email?.type) && errors.email?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="numSecu" isInvalid={errors.numSecu ? true : false}>
+                        <FormControl id="numSecu" isInvalid={errors.numSecu ? true : false} mb={"1rem"}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
                             <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im})}/>
                             <FormErrorMessage>
@@ -155,6 +155,10 @@ export const FormSignUp = (props: HTMLChakraProps<"form">) => {
                                 {errors.numSecu?.type === "required" && "Entrez votre numéro de sécurité social"}
                                 {!["pattern", "required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
                             </FormErrorMessage>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>ETH address 💳</FormLabel>
+                            <Input disabled value={props.address}/>
                         </FormControl>
                     </Flex>
                     {
