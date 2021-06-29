@@ -7,7 +7,7 @@ import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
-import {getSelectedAddress} from "../utils/web3";
+import {getSelectedAddress, initWeb3} from "../utils/web3";
 
 const signUp = () => {
     const router = useRouter();
@@ -24,9 +24,6 @@ const signUp = () => {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
                 await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignUp');
-                await firebase.auth().currentUser.updateProfile({
-                    displayName: getSelectedAddress()
-                });
                 setSuccess(true);
             } catch (e) {
                 console.log(e);

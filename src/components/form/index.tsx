@@ -15,6 +15,16 @@ interface LoginProps {
     email: string
 }
 
+
+const fetchRequest = {
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: ""
+};
+
 const actionCodeSettings = {
     url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/login`,
     handleCodeInApp: true
@@ -28,7 +38,8 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
 
     const login = async (props: LoginProps) => {
         try {
-            const dataApi = await (await fetch("http://localhost:3000/api/user?email=" + encodeURI(props.email))).json();
+            fetchRequest.body = JSON.stringify(props);
+            const dataApi = await (await fetch("http://localhost:3000/api/user",fetchRequest)).json();
             if (dataApi.userExist) {
                 const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
                 window.localStorage.setItem('emailForSignIn', props.email);
@@ -86,7 +97,8 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
 interface SignUpProps {
     email: string,
     name: string,
-    numSecu: number
+    numSecu: number,
+    address: string
 }
 
 const actionCodeSettingsSignUp = {
@@ -100,7 +112,8 @@ export const FormSignUp = (props) => {
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
     const signUp = async (props: SignUpProps) => {
         try {
-            const dataApi = await (await fetch("http://localhost:3000/api/user?email=" + encodeURI(props.email))).json();
+            fetchRequest.body = JSON.stringify(props);
+            const dataApi = await (await fetch("http://localhost:3000/api/user",fetchRequest)).json();
             if (dataApi.userExist) {
                 console.log("ERROR EXIST");
                 setErrorExist(true);
@@ -116,7 +129,7 @@ export const FormSignUp = (props) => {
         }
     }
 
-    const onSubmit = async (data) => await signUp({email: data.email, name: data.name, numSecu: data.numSecu});
+    const onSubmit = async (data) => await signUp({email: data.email, name: data.name, numSecu: data.numSecu, address: props.address});
 
     return (
         <Grid p="0.5em" w="25em" border='1px' flex-direction='column' mt="2em">
