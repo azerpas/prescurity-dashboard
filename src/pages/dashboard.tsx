@@ -14,6 +14,7 @@ import { UserType } from "../types/user";
 
 // Components
 import Pharmacist from "../components/pharmacist";
+import Doctor from "../components/doctor/index"
 import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
@@ -57,9 +58,7 @@ const Dashboard = () => {
         // Doctor
         if(userType === UserType.doctor){
             return(
-                <>
-                    a{/* Doctor component */}
-                </>
+                <Doctor/>
             );
         // Patient
         }else if(userType === UserType.patient){
