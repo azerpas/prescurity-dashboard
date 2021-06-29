@@ -24,8 +24,8 @@ const signUp = () => {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
                 await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignUp');
-                firebase.auth().currentUser.updateProfile({
-                    displayName:getSelectedAddress()
+                await firebase.auth().currentUser.updateProfile({
+                    displayName: getSelectedAddress()
                 });
                 setSuccess(true);
             } catch (e) {
