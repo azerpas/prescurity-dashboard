@@ -23,13 +23,20 @@ const actionCodeSettings = {
 const FormLogin = (props: HTMLChakraProps<"form">) => {
     // States
     const [emailSended, setEmailSended] = useState(false);
+    const [errorUserExist, setErrorUserExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<LoginProps>();
 
     const login = async (props: LoginProps) => {
         try {
-            const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
-            window.localStorage.setItem('emailForSignIn', props.email);
-            setEmailSended(true);
+            const dataApi = await (await fetch("http://localhost:3000/api/user?email=" + encodeURI(props.email))).json();
+            if(dataApi.userExist){
+                const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
+                window.localStorage.setItem('emailForSignIn', props.email);
+                setEmailSended(true);
+            }else{
+                setErrorUserExist(true);
+            }
+
         } catch (error) {
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -60,6 +67,12 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
                             </FormErrorMessage>
                         </FormControl>
                     </Flex>
+                    {
+                        errorUserExist ?
+                            <Text align={"center"} color={"red"} mt={"1rem"} fontWeight={"bold"}>
+                                Cette adresse mail ne correpond à aucun compte !
+                            </Text> : ""
+                    }
                     <Flex text-align="center" mt="3">
                         <Input type="submit" color="white" value="Sign In" bgColor="black" disabled={emailSended || isSubmitting}/>
                     </Flex>
