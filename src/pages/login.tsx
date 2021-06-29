@@ -2,31 +2,23 @@ import {
     Heading,
     Divider,
     Flex,
-    Link,
     Spacer,
-    Text, Button, Spinner
+    Text, Button, Spinner,
 } from '@chakra-ui/react'
-
+import Link from "next/link";
 import {Container} from '../components/Container'
 import Header from '../components/header'
 import firebase from "firebase";
 import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { useState } from 'react';
-import {UserContext} from "../context/user";
-import {User} from "../entity/User";
-
-
-
 
 function Login() {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [checking, setChecking] = useState(false);
     let email: null | string = null;
-    const user = useContext(UserContext);
-    console.log("USER CONTEXT",user);
     useEffect(() => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignIn');
@@ -36,7 +28,7 @@ function Login() {
             }
             try {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-                await firebase.auth().signInWithEmailLink(email, router.asPath);
+                const credentialUser = await firebase.auth().signInWithEmailLink(email, router.asPath);
                 window.localStorage.removeItem('emailForSignIn');
                 setSuccess(true);
                 setChecking(false);
@@ -68,7 +60,7 @@ function Login() {
                 { success ? 
                     <>
                         <Text>Your are sign in with {email} </Text>
-                        <Link href="/"><Button>Return to home</Button></Link>
+                        <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
                     <FormLogin/>
@@ -78,7 +70,7 @@ function Login() {
             { !success &&
                 <>
                     <Divider mt="2em" borderColor="gray.600"/>
-                    <Flex mt="1em">Don't have an account : <Spacer/> <Link ml="0.5em">Register Here</Link></Flex> 
+                    <Flex mt="1em">Don't have an account : <Spacer/><Link href={"/signUp"} ><a> Register Here</a></Link></Flex>
                 </>
             }
         </Container>

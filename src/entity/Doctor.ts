@@ -5,8 +5,8 @@ export class Doctor extends User {
     private _speciality: string;
 
 
-    constructor(name: string, accessToken: string, refreshToken: string, email: string, uid: string, speciality: string) {
-        super(name, accessToken, refreshToken, email, uid);
+    constructor(name: string, accessToken: string, refreshToken: string, email: string, uid: string, speciality: string, address: string) {
+        super(name, accessToken, refreshToken, email, uid, address);
         this._speciality = speciality;
     }
 
