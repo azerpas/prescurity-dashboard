@@ -39,13 +39,18 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
     const login = async (props: LoginProps) => {
         try {
             fetchRequest.body = JSON.stringify(props);
-            const dataApi = await (await fetch("http://localhost:3000/api/user",fetchRequest)).json();
-            if (dataApi.userExist) {
-                const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
-                window.localStorage.setItem('emailForSignIn', props.email);
-                setEmailSended(true);
-            } else {
-                setErrorUserExist(true);
+            const response =await fetch("http://localhost:3000/api/user", fetchRequest);
+            if (!response.ok) {
+                console.error(response);
+            }else {
+                const dataApi =  await response.json();
+                if (dataApi.userExist) {
+                    const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
+                    window.localStorage.setItem('emailForSignIn', props.email);
+                    setEmailSended(true);
+                } else {
+                    setErrorUserExist(true);
+                }
             }
 
         } catch (error) {
@@ -113,14 +118,19 @@ export const FormSignUp = (props) => {
     const signUp = async (props: SignUpProps) => {
         try {
             fetchRequest.body = JSON.stringify(props);
-            const dataApi = await (await fetch("http://localhost:3000/api/user",fetchRequest)).json();
-            if (dataApi.userExist) {
-                console.log("ERROR EXIST");
-                setErrorExist(true);
+            const response = await fetch("http://localhost:3000/api/newUser", fetchRequest);
+            if (!response.ok) {
+                console.error(response);
             } else {
-                const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
-                window.localStorage.setItem('emailForSignUp', props.email);
-                setEmailSended(true);
+                const dataApi = await response.json()
+                if (dataApi.userExist) {
+                    console.log("ERROR EXIST");
+                    setErrorExist(true);
+                } else {
+                    const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
+                    window.localStorage.setItem('emailForSignUp', props.email);
+                    setEmailSended(true);
+                }
             }
         } catch (error) {
             var errorCode = error.code;
