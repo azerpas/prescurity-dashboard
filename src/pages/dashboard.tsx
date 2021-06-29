@@ -33,8 +33,9 @@ const Dashboard = () => {
     }
 
     const getUserType = async () => {
+        console.log(`Getting user type of: ${userAddress}`);
         const type = await smartContract.methods.getUserType().call({from: userAddress});
-        console.log(`type of user: ${type}`);
+        console.log(`${userAddress} type of user: ${type}`);
         setUserType(type);
     }
 
