@@ -1,0 +1,1 @@
+export enum UserType { none = "none", doctor = "doctor", patient = "patient", pharmacy = "pharmacy", owner = "owner" }
