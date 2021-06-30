@@ -4,6 +4,7 @@ import { Button } from "@chakra-ui/button";
 import { Container } from "../Container";
 import React from 'react';
 import { CloseButton } from "@chakra-ui/react"
+import  AddMedicine  from "./AddMedicine"
 
 
 export const PostPrescription = () => {
@@ -43,25 +44,10 @@ export const PostPrescription = () => {
                 <Flex direction="column" alignItems="flex-start" margin={{md:"1rem"}} padding={{md:"1rem"}} marginLeft={{base:"2rem"}}>
                     <Heading fontSize={{base:"lg", md:"xl"}} marginLeft="1rem" marginBottom="1rem" >Medicine</Heading>
                     
+                    <AddMedicine />
                      
 
-                <Flex alignContent={{base:"center" , md:"left"}}    size={{base:"sm", md:"md"}} border="1px" borderColor="gray.600" borderRadius="6px" margin="0.5rem" marginLeft="2rem">
-                    
-                    <Box padding="0.5rem" >
-                    
-                        <ul ><Text fontWeight="bold" >MedicineName</Text></ul>
-                        <ul ><Text >doliprane </Text></ul>
-                    
-                    </Box>
-                    
-                    <Box padding="0.5rem" >
                 
-                        <ul><Text fontWeight="bold">frequency</Text></ul>
-                        <ul><Text >2x par jour</Text></ul>
-            
-                    </Box >
-        
-                    <CloseButton/>
 
                 </Flex>  
                         
