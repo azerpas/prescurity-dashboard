@@ -13,11 +13,11 @@ import * as ROUTES from '../constants/routes';
 import { UserType } from "../types/user";
 
 // Components
+import Owner from "../components/owner";
 import Pharmacist from "../components/pharmacist";
-import { InitBlockchainLoading, UserLoading } from "../components/loading";
-
-// Components Patient
+import Doctor from "../components/doctor";
 import Patient from "../components/patient";
+import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
     const userData = useContext(UserContext);
@@ -36,8 +36,9 @@ const Dashboard = () => {
     }
 
     const getUserType = async () => {
+        console.log(`Getting user type of: ${userAddress}`);
         const type = await smartContract.methods.getUserType().call({from: userAddress});
-        console.log(`type of user: ${type}`);
+        console.log(`${userAddress} type of user: ${type}`);
         setUserType(type);
     }
 
@@ -57,29 +58,25 @@ const Dashboard = () => {
     if (!userData.user){
         return(<UserLoading/>);
     }else if(web3 && userData.user && userAddress && userType) {
-        // Doctor
+        // Doctor @hugo
         if(userType === UserType.doctor){
             return(
-                <>
-                    a{/* Doctor component */}
-                </>
+                <Doctor web={web3} contrat={smartContract}/>
             );
-        // Patient
+        // Patient @amel
         }else if(userType === UserType.patient){
             return(
-                <Patient/>
+                <Patient web={web3} contrat={smartContract}/>
             );
-        // Pharmacy
+        // Pharmacy @yann
         }else if(userType === UserType.pharmacy){
             return(
-                <Pharmacist/>
+                <Pharmacist web={web3} contrat={smartContract}/>
             );
-        // Owner
+        // Owner @mael
         }else if(userType === UserType.owner){
             return(
-                <>
-                    a{/* Owner component */}
-                </>
+                <Owner web={web3} contrat={smartContract}/>
             );
         }else{
             return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user

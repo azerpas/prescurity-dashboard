@@ -5,9 +5,11 @@ import { Input } from "@chakra-ui/input"
 import { Button } from "@chakra-ui/button"
 import Header from '../../components/header'
 import React from 'react'
+import Web3 from "web3";
+import { Contract } from "web3-eth-contract";
 
 
-const Index = () => {
+const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
     return(
         <Container height="100vh" bg="none" alignItems="left">
             <Header/>
