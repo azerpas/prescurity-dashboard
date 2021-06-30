@@ -3,7 +3,7 @@ import {
     Grid,
     FormControl,
     Input,
-    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage
+    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert
 
 } from "@chakra-ui/react"
 import React, {useState} from "react"
@@ -151,7 +151,15 @@ export const FormSignUp = (props) => {
                 </>
                 :
                 <form onSubmit={handleSubmit(onSubmit)}>
-
+                    {
+                        props.error ?
+                            <Alert status="error" mb={"1rem"} >
+                                <AlertIcon/>
+                                <AlertTitle mr={2}>Veuillez vous connecter à MetaMask !</AlertTitle>
+                                <CloseButton position="absolute" right="8px" top="8px"/>
+                            </Alert>
+                            : ""
+                    }
                     <Flex flexDirection={"column"}>
                         <FormControl id="nom" isInvalid={errors.name ? true : false} mb={"1rem"}>
                             <FormLabel>Name 👤</FormLabel>
@@ -191,7 +199,7 @@ export const FormSignUp = (props) => {
                             </Text> : ""
                     }
                     <Flex text-align="center" mt="3">
-                        <Input type="submit" color="white" value="Sign Up" bgColor="black" disabled={emailSended || isSubmitting}/>
+                        <Input type="submit" color="white" value="Sign Up" bgColor="black" disabled={emailSended || isSubmitting || props.error}/>
                     </Flex>
                 </form>
             }

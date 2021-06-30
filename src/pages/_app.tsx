@@ -3,39 +3,14 @@ import {ChakraProvider} from '@chakra-ui/react'
 import theme from '../theme'
 import {AppProps} from 'next/app'
 import {IUserContext, UserContext} from "../context/user";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
 import {Patient} from "../entity/Patient";
-
-function onAuthStateChange(callback: (IUserContext) => void) {
-    return firebase.auth().onAuthStateChanged(async credentialUser => {
-        if (credentialUser) {
-            const accessToken = await credentialUser.getIdToken();
-            const {displayName, refreshToken, email, uid} = credentialUser;
-            // FIXME: not necessarily "Patient" v
-            callback({loggedIn: true, user: new Patient(email, accessToken, refreshToken, email, uid, displayName)});
-        } else {
-            callback({loggedIn: false, user: null});
-        }
-    });
-}
-
-const onAddressChange = ({user}: {user: User}) => {
-    window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
-        if(accounts.length === 0 && !user){
-            console.info('Address changed but no user defined');
-            return;
-        }else if(accounts.length === 0 && user){
-            throw new Error("Please reconnect to your account");
-        }else if(accounts.length !== 0 && user){
-            if(accounts[0] !== user.name){
-                // TODO: disconnect user
-                throw new Error("Please reconnect to your account");
-            } 
-        }
-    });
-}
+import {initWeb3} from "../utils/web3";
+import {Pharmacy} from "../entity/Pharmacy";
+import {Doctor} from "../entity/Doctor";
+import {Owner} from "../entity/Owner";
 
 const onChainChange = () => {
     window.ethereum.on('chainChanged', (_chainId: string) => {
@@ -45,9 +20,47 @@ const onChainChange = () => {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
-    const [user, setUser] = useState({loggedIn: null, user: null});
+    const [user, setUser] = useState({loggedIn: null, user: null, selectedAddress: null});
     useEffect(() => {
-        const unsubscribe = onAuthStateChange(setUser);
+
+        window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
+            if (accounts.length === 0 && !user.user) {
+                console.info('Address changed but no user defined');
+                return;
+            } else if (accounts.length === 0 && user.user) {
+                throw new Error("Please reconnect to your account");
+            } else if (accounts.length !== 0 && user.user) {
+                setUser({...user, selectedAddress: accounts[0]});
+                if (accounts[0] !== user.user.name) {
+                    // TODO: disconnect user
+                    throw new Error("Please reconnect to your account");
+                }
+            }
+        });
+
+
+        const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
+            if (credentialUser) {
+                const accessToken = await credentialUser.getIdToken();
+                const {displayName, refreshToken, email, uid} = credentialUser;
+                let currentUser: User = null;
+                const [web,contract] = await initWeb3();
+                const userType = await contract.methods.getUserType().call({from:user.selectedAddress});
+                console.log(userType);
+                if(userType==="patient"){
+                    currentUser = new Patient(email, accessToken, refreshToken, email, uid, displayName)
+                }else if(userType==="pharmacy"){
+                    currentUser = new Pharmacy(email, accessToken, refreshToken, email, uid, displayName)
+                }else if (userType === "doctor"){
+                    currentUser = new Doctor(email, accessToken, refreshToken, email, uid, "speciality",displayName)
+                }else if (userType === "owner"){
+                    currentUser = new Owner(email, accessToken, refreshToken, email, uid,displayName)
+                }
+                setUser({loggedIn: true, user: currentUser, ...user});
+            } else {
+                setUser({loggedIn: false, user: null, ...user});
+            }
+        });
         onChainChange();
         return () => {
             unsubscribe();
