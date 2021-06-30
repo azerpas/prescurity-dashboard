@@ -7,6 +7,7 @@ import { getSelectedAddress } from "../../utils/web3";
 import Header from "../header";
 
 const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
+    // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=428%3A9206
     const [docAddress, setDocAddress] = useState<string|undefined>();
     const [patientAddress, setPatientAddress] = useState<string|undefined>();
     const [pharmacyAddress, setPharmacyAddress] = useState<string|undefined>();
