@@ -9,6 +9,7 @@ export class Prescription {
     private _pharmacy : Pharmacy;
     private _medicine : string;
     private _disease : string;
+    private _frequency : string;
     // TODO : string ou Date ou Timestamp ?
     private _start_timestamp : string;
     private _end_timestamp : string;
@@ -16,13 +17,14 @@ export class Prescription {
     private _claimed : boolean;
     private _paid : boolean;
 
-    constructor(id: number, patient: Patient, doctor: Doctor, medicine: string, disease: string, start_timestamp: string, end_timestamp: string, claimed: boolean, paid: boolean, pharmacy?: Pharmacy) {
+    constructor(id: number, patient: Patient, doctor: Doctor, disease: string, medicine: string, frequency: string, start_timestamp: string, end_timestamp: string, claimed: boolean, paid: boolean, pharmacy?: Pharmacy) {
         this._id = id;
         this._patient = patient;
         this._doctor = doctor;
         this._pharmacy = pharmacy;
         this._medicine = medicine;
         this._disease = disease;
+        this._frequency = frequency;
         this._start_timestamp = start_timestamp;
         this._end_timestamp = end_timestamp;
         this._claimed = claimed;
@@ -67,6 +69,14 @@ export class Prescription {
 
     set medicine(value: string) {
         this._medicine = value;
+    }
+
+    get frequency(): string {
+        return this._frequency;
+    }
+
+    set frequency(value: string) {
+        this._frequency = value;
     }
 
     get disease(): string {
