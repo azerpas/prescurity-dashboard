@@ -38,8 +38,7 @@ function Patient() {
                 <Center  h="14em" >
                   <Text  h= "12em" font-ize="lg"alignText="center">Welcome, </Text>
                 </Center>
-                  <Select icon={<ChevronRightIcon />} placeholder="Prescriptions" textAlign={[  'center' ]} bottom="130" />
-                    <Button onClick={onOpen} w="17em" bottom="130"> QR Code </Button>      
+                  <Select icon={<ChevronRightIcon />} placeholder="Prescriptions" textAlign={[  'center' ]} bottom="130" />   
              </Box>
           </Center>        
       </Container>
