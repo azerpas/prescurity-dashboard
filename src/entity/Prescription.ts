@@ -9,22 +9,26 @@ export class Prescription {
     private _pharmacy : Pharmacy;
     private _medicine : string;
     private _disease : string;
+    private _frequency : string;
     // TODO : string ou Date ou Timestamp ?
     private _start_timestamp : string;
     private _end_timestamp : string;
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    private _isValue : boolean;
+    private _claimed : boolean;
+    private _paid : boolean;
 
-    constructor(id: number, patient: Patient, doctor: Doctor, pharmacy: Pharmacy, medicine: string, disease: string, start_timestamp: string, end_timestamp: string, isValue: boolean) {
+    constructor(id: number, patient: Patient, doctor: Doctor, disease: string, medicine: string, frequency: string, start_timestamp: string, end_timestamp: string, claimed: boolean, paid: boolean, pharmacy?: Pharmacy) {
         this._id = id;
         this._patient = patient;
         this._doctor = doctor;
         this._pharmacy = pharmacy;
         this._medicine = medicine;
         this._disease = disease;
+        this._frequency = frequency;
         this._start_timestamp = start_timestamp;
         this._end_timestamp = end_timestamp;
-        this._isValue = isValue;
+        this._claimed = claimed;
+        this._paid = paid;
     }
 
     get id(): number {
@@ -67,6 +71,14 @@ export class Prescription {
         this._medicine = value;
     }
 
+    get frequency(): string {
+        return this._frequency;
+    }
+
+    set frequency(value: string) {
+        this._frequency = value;
+    }
+
     get disease(): string {
         return this._disease;
     }
@@ -91,11 +103,19 @@ export class Prescription {
         this._end_timestamp = value;
     }
 
-    get isValue(): boolean {
-        return this._isValue;
+    get claimed(): boolean {
+        return this._claimed;
     }
 
-    set isValue(value: boolean) {
-        this._isValue = value;
+    set claimed(value: boolean) {
+        this._claimed = value;
+    }
+
+    get paid(): boolean {
+        return this._paid;
+    }
+
+    set paid(value: boolean) {
+        this._paid = value;
     }
 }
