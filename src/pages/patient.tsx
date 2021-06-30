@@ -38,15 +38,7 @@ function Patient() {
                   <Text  h= "12em" font-ize="lg"alignText="center">Welcome, </Text>
                 </Center>
                       <Select icon={<ChevronRightIcon />} placeholder="Prescriptions" textAlign={[  'center' ]} bottom="130" />
-                        <Button onClick={onOpen} w="17em" bottom="130"> QR Code </Button>
-                          <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom"  >
-                          <ModalContent>
-                            <ModalHeader>This is your QR Code </ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                            </ModalBody>
-                          </ModalContent>
-                          </Modal>
+              <Button onClick={onOpen} w="17em" bottom="130"> QR Code </Button>  
             </Box>
           </Center>        
     </Container>
