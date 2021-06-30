@@ -30,7 +30,7 @@ function MyApp({Component, pageProps}: AppProps) {
             } else if (accounts.length === 0 && user.user) {
                 throw new Error("Please reconnect to your account");
             } else if (accounts.length !== 0 && user.user) {
-                setUser({loggedIn: true, user: user.user, selectedAddress: accounts[0]});
+                setUser({...user, selectedAddress: accounts[0]});
                 if (accounts[0] !== user.user.name) {
                     // TODO: disconnect user
                     throw new Error("Please reconnect to your account");
@@ -56,9 +56,9 @@ function MyApp({Component, pageProps}: AppProps) {
                 }else if (userType === "owner"){
                     currentUser = new Owner(email, accessToken, refreshToken, email, uid,displayName)
                 }
-                setUser({loggedIn: true, user: currentUser,selectedAddress:user.selectedAddress});
+                setUser({loggedIn: true, user: currentUser, ...user});
             } else {
-                setUser({loggedIn: false, user: null,selectedAddress:user.selectedAddress});
+                setUser({loggedIn: false, user: null, ...user});
             }
         });
         onChainChange();
