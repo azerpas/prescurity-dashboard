@@ -73,7 +73,7 @@ const Dashboard = () => {
         // Pharmacy
         }else if(userType === UserType.pharmacy){
             return(
-                <Pharmacist/>
+                <Pharmacist web={web3} contrat={smartContract}/>
             );
         // Owner
         }else if(userType === UserType.owner){
