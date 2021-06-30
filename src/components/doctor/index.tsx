@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { useState } from "react";
 import { Container, Button, Input, Text } from "@chakra-ui/react";
@@ -22,3 +23,4 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
 }
 
 export default Index;
+
