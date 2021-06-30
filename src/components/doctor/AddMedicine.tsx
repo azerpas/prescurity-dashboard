@@ -2,7 +2,7 @@ import { Box, Text, Flex} from "@chakra-ui/layout" ;
 import { CloseButton } from "@chakra-ui/close-button";
 import { useState } from "react" ;
 
-const Index = () => {
+const AddMedicine = () => {
 
     const [medicine, setMedname] = useState<string|undefined>();
     const [frequency, setFrequency] = useState<string|undefined>();
@@ -38,4 +38,4 @@ const Index = () => {
 
 }
 
-export default Index
+export default AddMedicine

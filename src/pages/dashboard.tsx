@@ -15,7 +15,10 @@ import { UserType } from "../types/user";
 // Components
 import Owner from "../components/owner";
 import Pharmacist from "../components/pharmacist";
-import Doctor from "../components/doctor/index"
+import Patient from "../components/patient";
+import Doctor from "../components/doctor";
+
+
 import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
@@ -57,24 +60,23 @@ const Dashboard = () => {
     if (!userData.user){
         return(<UserLoading/>);
     }else if(web3 && userData.user && userAddress && userType) {
-        // Doctor
+        // Doctor @hugo
         if(userType === UserType.doctor){
             return(
-                <Doctor/>
+                <Doctor web={web3} contrat={smartContract}/>
+
             );
-        // Patient
+        // Patient @amel
         }else if(userType === UserType.patient){
             return(
-                <>
-                    a{/* Patient component */}
-                </>
+                <Patient web={web3} contrat={smartContract}/>
             );
-        // Pharmacy
+        // Pharmacy @yann
         }else if(userType === UserType.pharmacy){
             return(
                 <Pharmacist web={web3} contrat={smartContract}/>
             );
-        // Owner
+        // Owner @mael
         }else if(userType === UserType.owner){
             return(
                 <Owner web={web3} contrat={smartContract}/>
