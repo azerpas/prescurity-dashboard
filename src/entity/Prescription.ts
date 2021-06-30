@@ -13,9 +13,10 @@ export class Prescription {
     private _start_timestamp : string;
     private _end_timestamp : string;
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    private _isValue : boolean;
+    private _claimed : boolean;
+    private _paid : boolean;
 
-    constructor(id: number, patient: Patient, doctor: Doctor, pharmacy: Pharmacy, medicine: string, disease: string, start_timestamp: string, end_timestamp: string, isValue: boolean) {
+    constructor(id: number, patient: Patient, doctor: Doctor, medicine: string, disease: string, start_timestamp: string, end_timestamp: string, claimed: boolean, paid: boolean, pharmacy?: Pharmacy) {
         this._id = id;
         this._patient = patient;
         this._doctor = doctor;
@@ -24,7 +25,8 @@ export class Prescription {
         this._disease = disease;
         this._start_timestamp = start_timestamp;
         this._end_timestamp = end_timestamp;
-        this._isValue = isValue;
+        this._claimed = claimed;
+        this._paid = paid;
     }
 
     get id(): number {
@@ -91,11 +93,19 @@ export class Prescription {
         this._end_timestamp = value;
     }
 
-    get isValue(): boolean {
-        return this._isValue;
+    get claimed(): boolean {
+        return this._claimed;
     }
 
-    set isValue(value: boolean) {
-        this._isValue = value;
+    set claimed(value: boolean) {
+        this._claimed = value;
+    }
+
+    get paid(): boolean {
+        return this._paid;
+    }
+
+    set paid(value: boolean) {
+        this._paid = value;
     }
 }
