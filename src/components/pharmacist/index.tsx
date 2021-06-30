@@ -14,7 +14,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const [address, setAddress] = useState<string>("");
 
 
-   /* const searchPrescriptions = async (address) => {
+   /* const getPrescription = async (address) => {
         const [web,contract] = await initWeb3();
         contract.methods.get
     }*/
