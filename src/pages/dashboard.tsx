@@ -58,22 +58,22 @@ const Dashboard = () => {
     if (!userData.user){
         return(<UserLoading/>);
     }else if(web3 && userData.user && userAddress && userType) {
-        // Doctor
+        // Doctor @hugo
         if(userType === UserType.doctor){
             return(
                 <Doctor web={web3} contrat={smartContract}/>
             );
-        // Patient
+        // Patient @amel
         }else if(userType === UserType.patient){
             return(
                 <Patient web={web3} contrat={smartContract}/>
             );
-        // Pharmacy
+        // Pharmacy @yann
         }else if(userType === UserType.pharmacy){
             return(
                 <Pharmacist web={web3} contrat={smartContract}/>
             );
-        // Owner
+        // Owner @mael
         }else if(userType === UserType.owner){
             return(
                 <Owner web={web3} contrat={smartContract}/>
