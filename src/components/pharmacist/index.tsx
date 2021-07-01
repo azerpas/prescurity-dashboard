@@ -22,43 +22,42 @@ function randomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
 }
 
-interface PharmacistProps  {
+interface PharmacistProps {
     num: number
 }
+
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const [prescritions, setPrescriptions] = useState<Prescription[]>([]);
     const {register, formState: {errors}, handleSubmit, getValues} = useForm<PharmacistProps>();
     const context = useContext(UserContext);
     const getPrescriptions = async () => {
-        const [web, contract] = await initWeb3();
-        try {
-            const response = await contract.methods.showPrescriptionPatient(getValues("num")).call({from: getValues("num")});
-            console.log(response);
-        }catch (e){
-            console.error('%c ' + e ,  'background: #222; color: #ff0000');
-        }
 
-        const doctor = new Doctor('doctor',"accessToken","refreshToken","doctor@doctor.com","1234","généraliste","0x24687346");
+        try {
+            console.log(contrat.methods);
+            const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
+            console.log(response);
+            setPrescriptions([]);
+        } catch (e) {
+            console.log(e);
+        }
+        /*const doctor = new Doctor('doctor',"accessToken","refreshToken","doctor@doctor.com","1234","généraliste","0x24687346");
         const patient = new Patient('patient',"accessToken","refreshToken","patient@patient.com","4321","0x6873468");
         const prescriptions: Prescription[] = [];
         for (var i = 0 ; i  < 10 ; i++){
             prescriptions.push(new Prescription(i,patient,doctor,"covid-"+i,"medic1;medic2,medic3",i+"/J",randomDate(new Date(2012, 0, 1), new Date()),randomDate(new Date(2012, 0, 1), new Date()),!!Math.floor(Math.random() * 2),!!Math.floor(Math.random() * 2)))
 
-        }
-        setPrescriptions(prescriptions);
+        }*/
     }
     return (
         <Container height="100vh" bg="none" alignItems="left">
             <Header/>
             <Flex direction="column" margin="1rem" align="center">
                 <Heading textAlign="center"> Welcome to your Prescurity pharmacist's area</Heading>
-                <form onSubmit={handleSubmit(getPrescriptions)} >
+                <form onSubmit={handleSubmit(getPrescriptions)}>
                     <FormControl mt={"2rem"} bg={"none"} isInvalid={errors.num ? true : false}>
                         <Flex flexDirection={"column"} experimental_spaceY={"3"}>
                             <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700"> Patient number 🏥</FormLabel>
-                            <Input size="md" borderRadius="6px" borderColor="gray.200" width="20rem"
-                                   {...register("num", {required: true, pattern: /[0-9]{15}/im})}
-                            />
+                            <Input size="md" borderRadius="6px" borderColor="gray.200" width="20rem" {...register("num", {required: true, pattern: /[0-9]{15}/im})}/>
                             <FormErrorMessage>
                                 {errors.num?.type === "pattern" && "Format du numero invalide"}
                                 {errors.num?.type === "required" && "Entrez votre numero"}
@@ -69,8 +68,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                     </FormControl>
                 </form>
             </Flex>
-            <Flex direction="column"  alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
-                <Container m={"auto"} bg={"none"}>
+            <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
+                <Container m={{base: "0", md: "0"}} bg={"none"}>
                     {
                         prescritions.map((prescription: Prescription) => {
                             return <CardPrescription prescription={prescription}/>
