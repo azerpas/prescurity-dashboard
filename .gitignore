@@ -40,4 +40,4 @@ yarn-error.log*
 # test
 test.*
 
-src/contracts/*
+/src/contracts/

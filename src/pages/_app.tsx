@@ -7,7 +7,7 @@ import {useContext, useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
 import {Patient} from "../entity/Patient";
-import {initWeb3} from "../utils/web3";
+import {getSelectedAddress, initWeb3} from "../utils/web3";
 import {Pharmacy} from "../entity/Pharmacy";
 import {Doctor} from "../entity/Doctor";
 import {Owner} from "../entity/Owner";
@@ -20,45 +20,47 @@ const onChainChange = () => {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
-    const [user, setUser] = useState({loggedIn: null, user: null, selectedAddress: null});
+    const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     useEffect(() => {
-
         window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
-            if (accounts.length === 0 && !user.user) {
+            if (accounts.length === 0 && !userState.user) {
                 console.info('Address changed but no user defined');
                 return;
-            } else if (accounts.length === 0 && user.user) {
+            } else if (accounts.length === 0 && userState.user) {
                 throw new Error("Please reconnect to your account");
-            } else if (accounts.length !== 0 && user.user) {
-                setUser({...user, selectedAddress: accounts[0]});
-                if (accounts[0] !== user.user.name) {
+            } else if (accounts.length !== 0 && userState.user) {
+                console.log("accountsChanged address : ", accounts[0]);
+                setUserState({user: userState.user, loggedIn: userState.loggedIn, selectedAddress: accounts[0]});
+                if (accounts[0] !== userState.user.name) {
                     // TODO: disconnect user
                     throw new Error("Please reconnect to your account");
                 }
             }
+            console.groupEnd();
         });
 
 
         const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
+
+            const selectedAddress = getSelectedAddress();
             if (credentialUser) {
                 const accessToken = await credentialUser.getIdToken();
                 const {displayName, refreshToken, email, uid} = credentialUser;
                 let currentUser: User = null;
-                const [web,contract] = await initWeb3();
-                const userType = await contract.methods.getUserType().call({from:user.selectedAddress});
-                console.log(userType);
-                if(userType==="patient"){
+                const [web, contract] = await initWeb3();
+                const userType = await contract.methods.getUserType().call({from: selectedAddress});
+                if (userType === "patient") {
                     currentUser = new Patient(email, accessToken, refreshToken, email, uid, displayName)
-                }else if(userType==="pharmacy"){
+                } else if (userType === "pharmacy") {
                     currentUser = new Pharmacy(email, accessToken, refreshToken, email, uid, displayName)
-                }else if (userType === "doctor"){
-                    currentUser = new Doctor(email, accessToken, refreshToken, email, uid, "speciality",displayName)
-                }else if (userType === "owner"){
-                    currentUser = new Owner(email, accessToken, refreshToken, email, uid,displayName)
+                } else if (userType === "doctor") {
+                    currentUser = new Doctor(email, accessToken, refreshToken, email, uid, "speciality", displayName)
+                } else if (userType === "owner") {
+                    currentUser = new Owner(email, accessToken, refreshToken, email, uid, displayName)
                 }
-                setUser({loggedIn: true, user: currentUser, ...user});
+                setUserState({selectedAddress: selectedAddress, loggedIn: true, user: currentUser});
             } else {
-                setUser({loggedIn: false, user: null, ...user});
+                setUserState({selectedAddress: selectedAddress, loggedIn: false, user: null});
             }
         });
         onChainChange();
@@ -68,7 +70,7 @@ function MyApp({Component, pageProps}: AppProps) {
     }, []);
 
     return (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider value={userState}>
             <ChakraProvider resetCSS theme={theme}>
                 <Component {...pageProps} />
             </ChakraProvider>
