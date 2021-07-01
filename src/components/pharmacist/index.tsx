@@ -13,7 +13,14 @@ import CardPrescription from "../card/prescription";
 import {FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
 import {UserContext} from "../../context/user";
 import {useForm} from "react-hook-form";
+import {Doctor} from "../../entity/Doctor";
+import {Patient} from "../../entity/Patient";
+import {randomInt} from "crypto";
 
+
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
+}
 
 interface PharmacistProps  {
     num: number
@@ -31,7 +38,14 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             console.error('%c ' + e ,  'background: #222; color: #ff0000');
         }
 
-        setPrescriptions([]);
+        const doctor = new Doctor('doctor',"accessToken","refreshToken","doctor@doctor.com","1234","généraliste","0x24687346");
+        const patient = new Patient('patient',"accessToken","refreshToken","patient@patient.com","4321","0x6873468");
+        const prescriptions: Prescription[] = [];
+        for (var i = 0 ; i  < 10 ; i++){
+            prescriptions.push(new Prescription(i,patient,doctor,"covid-"+i,"medic1;medic2,medic3",i+"/J",randomDate(new Date(2012, 0, 1), new Date()),randomDate(new Date(2012, 0, 1), new Date()),!!Math.floor(Math.random() * 2),!!Math.floor(Math.random() * 2)))
+
+        }
+        setPrescriptions(prescriptions);
     }
     return (
         <Container height="100vh" bg="none" alignItems="left">
@@ -55,8 +69,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                     </FormControl>
                 </form>
             </Flex>
-            <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
-                <Container m={"auto"}>
+            <Flex direction="column"  alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
+                <Container m={"auto"} bg={"none"}>
                     {
                         prescritions.map((prescription: Prescription) => {
                             return <CardPrescription prescription={prescription}/>
