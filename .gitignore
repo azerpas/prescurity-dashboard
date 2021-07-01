@@ -39,5 +39,3 @@ yarn-error.log*
 
 # test
 test.*
-
-src/contracts/*
