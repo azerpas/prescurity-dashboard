@@ -6,29 +6,29 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const Index = ({prescription}: {prescription: Prescription}) => {
     return(
-        <Box border="1px solid rgba(0, 0, 0, 0.08)" p={3}>
+        <Box border="1px solid rgba(0, 0, 0, 0.08)" p={3} mt={"1rem"}>
             <Accordion allowToggle>
                 <AccordionItem>
                     <AccordionButton textAlign="left">
-                        <SimpleGrid columns={{base: 1, sm: 4}}>
+                        <SimpleGrid columns={{base: 1, sm: 4}} spacingX={"5"}>
                             <Box>
-                                <Heading fontSize="sm">Date</Heading>
+                                <Heading fontSize="sm" mb={"0.7rem"}>Date</Heading>
                                 <Text fontSize="sm">{new Date(parseInt(prescription.start_timestamp)).toDateString()}</Text>
                             </Box>
                             <Box>
-                                <Heading fontSize="sm">Docteur’s name</Heading>
+                                <Heading fontSize="sm" mb={"0.7rem"}>Docteur’s name</Heading>
                                 <Text fontSize="sm">{prescription.doctor.name}</Text>
                             </Box>
                             <Box>
-                                <Heading fontSize="sm">Pharmacy name</Heading>
+                                <Heading fontSize="sm" mb={"0.7rem"}>Pharmacy's name</Heading>
                                 <Text fontSize="sm">{prescription.pharmacy ? prescription.pharmacy.name : ""}</Text>
                             </Box>
-                            <Box textAlign={{base: "left", sm: "center"}}>
+                            <Box textAlign={{base: "left", sm: "center"}} d={"flex"}>
                                 {
                                     prescription.paid ? 
-                                        (prescription.claimed ? <Badge colorScheme="green">Claimed</Badge> : <Badge colorScheme="red">Not claimed</Badge>) 
-                                    : 
-                                        <Badge>Not paid</Badge>
+                                        (prescription.claimed ? <Badge m={"auto"} colorScheme="green">Claimed</Badge> : <Badge m={"auto"} colorScheme="red">Not claimed</Badge>)
+                                    :
+                                        <Badge m={"auto"}>Not paid</Badge>
                                 }
                             </Box>
                         </SimpleGrid>
@@ -36,7 +36,7 @@ const Index = ({prescription}: {prescription: Prescription}) => {
                     <AccordionPanel>
                         <Heading textAlign="center">...</Heading>
                         <Heading size="sm" mb="1">Details</Heading>
-                        <SimpleGrid columns={{base: 1, sm: 3}}>
+                        <SimpleGrid columns={{base: 1, sm: 3}} spacingX={"5"}>
                             <Box>
                                 <Heading fontSize="sm">Disease</Heading>
                                 <Text fontSize="sm">{prescription.disease}</Text>
