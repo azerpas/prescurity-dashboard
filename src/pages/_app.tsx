@@ -23,6 +23,7 @@ function MyApp({Component, pageProps}: AppProps) {
     const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     useEffect(() => {
         window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
+            console.log(`Accounts changed triggered`)
             if (accounts.length === 0 && !userState.user) {
                 console.info('Address changed but no user defined');
                 return;
@@ -48,7 +49,9 @@ function MyApp({Component, pageProps}: AppProps) {
                 const {displayName, refreshToken, email, uid} = credentialUser;
                 let currentUser: User = null;
                 const [web, contract] = await initWeb3();
+                console.log(`Getting type from selected address: ${selectedAddress}`);
                 const userType = await contract.methods.getUserType().call({from: selectedAddress});
+                console.log(`User type found: ${userType}`);
                 if (userType === "patient") {
                     currentUser = new Patient(email, accessToken, refreshToken, email, uid, displayName)
                 } else if (userType === "pharmacy") {
@@ -57,9 +60,13 @@ function MyApp({Component, pageProps}: AppProps) {
                     currentUser = new Doctor(email, accessToken, refreshToken, email, uid, "speciality", displayName)
                 } else if (userType === "owner") {
                     currentUser = new Owner(email, accessToken, refreshToken, email, uid, displayName)
+                }else {
+                    console.error(`No user type found, please make sure the address are set`);
+                    throw new Error('No user type found, please make sure the address are set');
                 }
                 setUserState({selectedAddress: selectedAddress, loggedIn: true, user: currentUser});
             } else {
+                console.log(`No credential found`);
                 setUserState({selectedAddress: selectedAddress, loggedIn: false, user: null});
             }
         });
