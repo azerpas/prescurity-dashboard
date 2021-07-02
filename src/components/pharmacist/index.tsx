@@ -35,7 +35,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
             var res : Prescription[] = [];
             response.map(async (presc)=>{
-                //var response = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
+                // FIXME : Internal JSON-RPC error ==> VM Exception while processing transaction: revert
+                var response = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
                 console.log(response);
                 var temp = {...presc,doctor: response}
                 res.push(Prescription.makePrescriptionWithArray(temp));
