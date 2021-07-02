@@ -4,7 +4,7 @@ import React , { useState } from "react";
 // chakra
 import { Container, Text, Flex, Heading } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
-import Button from "@chakra-ui/button";
+import { Button } from "@chakra-ui/button";
 
 
 
@@ -34,6 +34,11 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
     // change la valeure entrée pour le pharmacien
     const handlePharmacistAddr = (e: string) => {
         setPharmacistAddress(e)
+    }
+
+    // pop une fenètre pour ajouter un médicament 
+    const handleAddMedicine = () => {
+        //
     }
 
     // TODO: Enregistrement de la prescription vers la blockchain
@@ -101,7 +106,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         
                         <Medicine/>
                     </Flex>  
-                    <Button marginTop="1rem" alignSelf={{base:"center", md:"left"}} fontSize={{base:"xs", md:"sm"}}>Add new medicine</Button>
+                    <Button marginTop="1rem" alignSelf={{base:"center", md:"left"}} fontSize={{base:"xs", md:"sm"} onClick={handleAddMedicine}}>Add new medicine</Button>
                 </Flex>
                 <Button colorScheme="blackAlpha" margin="2rem" onClick={handlePrescription}>Transfer</Button>
 
