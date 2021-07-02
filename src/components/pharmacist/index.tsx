@@ -77,7 +77,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 <Container m={{base: "0", md: "0"}} bg={"none"}>
                     {
                         prescritions.map((prescription: Prescription) => {
-                            return <CardPrescription prescription={prescription}/>
+                            return <CardPrescription prescription={prescription} contrat={contrat}/>
                         })
                     }
                 </Container>
