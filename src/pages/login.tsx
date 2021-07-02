@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import FormLogin from "../components/form";
 import React, {useEffect} from 'react';
 import { useState } from 'react';
+import { PresLink } from '../components/link';
 
 function Login() {
     const router = useRouter();
@@ -54,7 +55,7 @@ function Login() {
     return (
         <Container height="100vh">
             <Header/>
-            <Container mt="4em">
+            <Container my="4rem" minH={{base: "55vh", sm: "60vh", md: "60vh"}}>
                 <Heading>Login to Prescurity</Heading>
 
                 { success ? 
@@ -63,16 +64,18 @@ function Login() {
                         <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
-                    <FormLogin/>
+                    <>
+                        <FormLogin/>
+                        { !success &&
+                            <>
+                                <Divider mt="2em" borderColor="gray.600"/>
+                                <Flex mt="1em">Don't have an account:&nbsq;<PresLink href={"/signUp"}><a>Register Here</a></PresLink></Flex>
+                            </>
+                        }
+                    </>
                 }
                 
             </Container>
-            { !success &&
-                <>
-                    <Divider mt="2em" borderColor="gray.600"/>
-                    <Flex mt="1em">Don't have an account : <Spacer/><Link href={"/signUp"} ><a> Register Here</a></Link></Flex>
-                </>
-            }
         </Container>
     );
 }
