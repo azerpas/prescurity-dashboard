@@ -118,4 +118,9 @@ export class Prescription {
     set paid(value: boolean) {
         this._paid = value;
     }
+
+
+    static makePrescriptionWithArray(array){
+        return new Prescription(array.id,null,new Doctor(array.doctor?.name,"","","","",array.doctor?.speciality,""),array.disease,array.medicine,array.frequency,array.startTimestamp,array.endTimestamp,array.paid,array.claimed);
+    }
 }

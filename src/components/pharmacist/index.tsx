@@ -31,12 +31,16 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const {register, formState: {errors}, handleSubmit, getValues} = useForm<PharmacistProps>();
     const context = useContext(UserContext);
     const getPrescriptions = async () => {
-
         try {
-            console.log(contrat.methods);
             const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
-            console.log(response);
-            setPrescriptions([]);
+            var res : Prescription[] = [];
+            response.map(async (presc)=>{
+                //var response = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
+                console.log(response);
+                var temp = {...presc,doctor: response}
+                res.push(Prescription.makePrescriptionWithArray(temp));
+            });
+            setPrescriptions(res);
         } catch (e) {
             console.log(e);
         }
