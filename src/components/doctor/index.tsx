@@ -38,7 +38,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
 
     // pop une fenètre pour ajouter un médicament 
     const handleAddMedicine = () => {
-        //
+        // 
     }
 
     // TODO: Enregistrement de la prescription vers la blockchain
@@ -105,9 +105,18 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                         <Heading fontSize={{base:"lg", md:"xl"}} marginLeft="1rem" marginBottom="1rem" >Medicine</Heading>
         
                         <Medicine/>
+
                     </Flex>  
-                    <Button marginTop="1rem" alignSelf={{base:"center", md:"left"}} fontSize={{base:"xs", md:"sm"} onClick={handleAddMedicine}}>Add new medicine</Button>
+                    <Button 
+                        marginTop="1rem" 
+                        alignSelf={{base:"center", md:"left"}} 
+                        fontSize={{base:"xs", md:"sm"} 
+                        onClick={handleAddMedicine}}>
+                            Add new medicine
+                            </Button>
+
                 </Flex>
+
                 <Button colorScheme="blackAlpha" margin="2rem" onClick={handlePrescription}>Transfer</Button>
 
             </Container>
