@@ -13,6 +13,7 @@ const signUp = () => {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [address, setAddress] = useState<undefined | number | string>(null);
+    const [errorMetaMask, setErrorMetaMask] = useState<boolean>(false);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
@@ -34,7 +35,13 @@ const signUp = () => {
         }
 
         const getAddress = async () => {
-            setAddress(await getSelectedAddress());
+            try {
+                setAddress(await getSelectedAddress());
+            } catch (e) {
+                setErrorMetaMask(true);
+                console.error(e);
+            }
+
         }
         getAddress();
     }, []);
@@ -50,7 +57,7 @@ const signUp = () => {
                         <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
-                    <FormSignUp address={address}/>
+                    <FormSignUp address={address} error={errorMetaMask}/>
                 }
 
             </Container>
