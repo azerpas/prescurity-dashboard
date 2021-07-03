@@ -3,19 +3,19 @@ import {Doctor} from "./Doctor";
 import {Pharmacy} from "./Pharmacy";
 
 export class Prescription {
-    private _id : number;
-    private _patient : Patient;
-    private _doctor : Doctor;
-    private _pharmacy : Pharmacy;
-    private _medicine : string;
-    private _disease : string;
-    private _frequency : string;
+    private _id: number;
+    private _patient: Patient;
+    private _doctor: Doctor;
+    private _pharmacy: Pharmacy;
+    private _medicine: string;
+    private _disease: string;
+    private _frequency: string;
     // TODO : string ou Date ou Timestamp ?
-    private _start_timestamp : string;
-    private _end_timestamp : string;
+    private _start_timestamp: string;
+    private _end_timestamp: string;
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    private _claimed : boolean;
-    private _paid : boolean;
+    private _claimed: boolean;
+    private _paid: boolean;
 
     constructor(id: number, patient: Patient, doctor: Doctor, disease: string, medicine: string, frequency: string, start_timestamp: string, end_timestamp: string, claimed: boolean, paid: boolean, pharmacy?: Pharmacy) {
         this._id = id;
@@ -120,7 +120,10 @@ export class Prescription {
     }
 
 
-    static makePrescriptionWithArray(array){
-        return new Prescription(array.id,null,new Doctor(array.doctor?.name,"","","","",array.doctor?.speciality,""),array.disease,array.medicine,array.frequency,array.startTimestamp,array.endTimestamp,array.paid,array.claimed);
+    static makePrescriptionWithArray(array) {
+        return new Prescription(array.id,
+            new Patient(array.patient?.name, "", "", "", array.patient?.numero_secu, array.patient?.patientAddress),
+            new Doctor(array.doctor?.name, "", "", "", array.doctor?.uid, array.doctor?.speciality, array.doctor?.doctorAddress),
+            array.disease, array.medicine, array.frequency, array.startTimestamp, array.endTimestamp, array.paid, array.claimed);
     }
 }

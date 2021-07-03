@@ -36,10 +36,17 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             var res : Prescription[] = [];
             response.map(async (presc)=>{
                 // FIXME : Internal JSON-RPC error ==> VM Exception while processing transaction: revert
-                var response = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
-                console.log(response);
-                var temp = {...presc,doctor: response}
-                res.push(Prescription.makePrescriptionWithArray(temp));
+                //var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
+                //console.log(response);
+
+
+                // TODO : getPatient in Prescurity.sol
+                //var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                //console.log(response);
+                //var temp = {...presc,doctor: doctor,patient:presc.patientId}
+
+
+                res.push(Prescription.makePrescriptionWithArray(presc));
             });
             setPrescriptions(res);
         } catch (e) {

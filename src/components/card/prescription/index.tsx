@@ -10,8 +10,17 @@ import {UserContext} from "../../../context/user";
 const Index = ({prescription , contrat}: { prescription: Prescription , contrat:Contract }) => {
     const userData = useContext(UserContext);
     const claimPrescription = async () => {
-        const response = await contrat.methods.claimPrescription().call({from:userData.selectedAddress});
+        const response = await contrat.methods.claimPrescription(prescription.id).call({from:userData.selectedAddress});
+        console.log(response);
+    }
 
+    const payPrescription = async () => {
+        // TODO : remove " address =  ... ? ... : ... "
+        const address = prescription.patient.address ? prescription.patient.address : '0xeB43E640831a6e99d6fb08A1F315280723eAc0CB';
+
+        // FIXME : response = Result {}
+        const response = await contrat.methods.payPrescription(prescription.id).call({from:address});
+        console.log(response);
     }
 
     return (
@@ -58,11 +67,17 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
                                 <Heading fontSize="sm">Frequency</Heading>
                                 <Text fontSize="sm">{prescription.frequency}</Text>
                             </Box>
+
                             {
-                                prescription.claimed ? " " :
-                                    <Box>
+                                prescription.paid ?
+                                    (prescription.claimed ? "" : <Box>
                                         <Button fontSize="sm" onClick={claimPrescription}>Claim</Button>
-                                    </Box>}
+                                    </Box>)
+                                    :
+                                    <Box>
+                                        <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
+                                    </Box>
+                            }
                         </SimpleGrid>
                     </AccordionPanel>
                 </AccordionItem>
