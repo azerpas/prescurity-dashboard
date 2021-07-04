@@ -60,7 +60,7 @@ function Login() {
 
                 { success ? 
                     <>
-                        <Text>Your are sign in with {email} </Text>
+                        <Text>Your are signing in with {email} </Text>
                         <Link href="/"><a><Button>Return to home</Button></a></Link>
                     </>
                     :
@@ -69,7 +69,7 @@ function Login() {
                         { !success &&
                             <>
                                 <Divider mt="2em" borderColor="gray.600"/>
-                                <Flex mt="1em">Don't have an account:&nbsq;<PresLink href={"/signUp"}><a>Register Here</a></PresLink></Flex>
+                                <Flex mt="1em"><PresLink href={"/join"}><a>Don't have an account:&nbsp;Register Here</a></PresLink></Flex>
                             </>
                         }
                     </>

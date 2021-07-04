@@ -101,7 +101,7 @@ interface SignUpProps {
 }
 
 const actionCodeSettingsSignUp = {
-    url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/signUp`,
+    url: `${process.env.DOMAIN_URL || "http://localhost:3000"}/join`,
     handleCodeInApp: true
 };
 
