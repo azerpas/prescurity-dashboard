@@ -27,17 +27,18 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
 
     useEffect(() => {
         const getPrescriptions = async () => {
-            //const response = await contrat.methods.showPrescriptionPatient(context.user.uid).call({from: context.selectedAddress});
-            //setPrescriptions(response);
-
-            const doctor = new Doctor('doctor', "accessToken", "refreshToken", "doctor@doctor.com", "1234", "généraliste", "0x24687346");
-            const patient = new Patient('patient', "accessToken", "refreshToken", "patient@patient.com", "4321", "0x6873468");
-            const prescriptionTab: Prescription[] = [];
-            for (var i = 0; i < 10; i++) {
-                prescriptionTab.push(new Prescription(i, patient, doctor, "covid-" + i, "medic1;medic2,medic3", i + "/J", randomDate(new Date(2012, 0, 1), new Date()), randomDate(new Date(2012, 0, 1), new Date()), !!Math.floor(Math.random() * 2), !!Math.floor(Math.random() * 2)))
-
+            const response = await contrat.methods.showPrescriptionPatient(context.user.uid).call({from: context.selectedAddress});
+            var res: Prescription[] = [];
+            for (var i = 0; i < response.length; i++) {
+                const presc = response[i];
+                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
+                // TODO : getPatient in Prescurity.sol
+                var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                console.log(patient);
+                var temp = {...presc, doctor: doctor , patient : patient}
+                res.push(Prescription.makePrescriptionWithArray(temp));
             }
-            setPrescriptions(prescriptionTab);
+            setPrescriptions(res);
         }
 
         getPrescriptions()
