@@ -10,7 +10,7 @@ import { IAlertContext } from "../../context/alert";
 
 export const MajorAlert = (props: IAlertContext) => {
     return(
-        <Alert status="error">
+        <Alert status={props.status ? props.status : "error"}>
             <AlertIcon />
             <AlertTitle mr={2}>{props.title}</AlertTitle>
             <AlertDescription>{props.description}</AlertDescription>
