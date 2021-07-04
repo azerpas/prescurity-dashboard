@@ -2,18 +2,21 @@ import {FormSignUp} from "../components/form";
 import {Button, Heading, Text} from "@chakra-ui/react";
 import {Footer} from "../components/Footer";
 import Header from "../components/header";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {getSelectedAddress, initWeb3} from "../utils/web3";
+import { MajorAlert } from "../components/alert";
+import { AlertContext } from "../context/alert";
 
 const signUp = () => {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [address, setAddress] = useState<undefined | number | string>(null);
     const [errorMetaMask, setErrorMetaMask] = useState<boolean>(false);
+    const alertContext = useContext(AlertContext);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
@@ -49,6 +52,9 @@ const signUp = () => {
     return (
         <>
             <Header/>
+            {alertContext.title ? 
+                <MajorAlert {...alertContext}/>
+            : <></>}
             <Container>
                 <Heading>Sign Up to Prescurity</Heading>
                 {success ?
