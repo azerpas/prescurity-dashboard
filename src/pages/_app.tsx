@@ -53,7 +53,8 @@ function MyApp({Component, pageProps}: AppProps) {
                 const userType = await contract.methods.getUserType().call({from: selectedAddress});
                 console.log(`User type found: ${userType}`);
                 if (userType === "patient") {
-                    currentUser = new Patient(email, accessToken, refreshToken, email, uid, displayName)
+                    const patient = await contract.methods.getPatientAddress(selectedAddress).call({from:selectedAddress});
+                    currentUser = new Patient(email, accessToken, refreshToken, email,patient.numero_secu, displayName)
                 } else if (userType === "pharmacy") {
                     currentUser = new Pharmacy(email, accessToken, refreshToken, email, uid, displayName)
                 } else if (userType === "doctor") {
