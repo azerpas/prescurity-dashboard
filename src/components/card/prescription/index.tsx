@@ -15,12 +15,14 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
     }
 
     const payPrescription = async () => {
-        // TODO : remove " address =  ... ? ... : ... "
-        const address = prescription.patient.address ? prescription.patient.address : '0xeB43E640831a6e99d6fb08A1F315280723eAc0CB';
+        try{
+            // FIXME : RPC Error: Invalid parameters: must provide an Ethereum address
+            const response = await contrat.methods.payPrescription(prescription.id).send({from:prescription.patient.address});
+            console.log(response);
+        }catch (e){
+            console.log(e);
+        }
 
-        // FIXME : response = Result {}
-        const response = await contrat.methods.payPrescription(prescription.id).call({from:address});
-        console.log(response);
     }
 
     return (

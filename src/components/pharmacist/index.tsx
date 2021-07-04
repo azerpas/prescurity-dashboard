@@ -33,17 +33,16 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const getPrescriptions = async () => {
         try {
             const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
-            var res : Prescription[] = [];
-            await response.map(async (presc)=>{
-                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from:context.selectedAddress});
-
+            var res: Prescription[] = [];
+            for (var i = 0; i < response.length; i++) {
+                const presc = response[i];
+                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
                 // TODO : getPatient in Prescurity.sol
-               // var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
-                //console.log(response);
-                var temp = {...presc,doctor: doctor}
+                 var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                console.log(patient);
+                var temp = {...presc, doctor: doctor , patient : patient}
                 res.push(Prescription.makePrescriptionWithArray(temp));
-            });
-            // TODO : await/async ==> prescriptions n'est pas maj
+            }
             setPrescriptions(res);
         } catch (e) {
             console.log(e);
