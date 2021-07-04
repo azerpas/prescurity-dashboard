@@ -31,12 +31,19 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const {register, formState: {errors}, handleSubmit, getValues} = useForm<PharmacistProps>();
     const context = useContext(UserContext);
     const getPrescriptions = async () => {
-
         try {
-            console.log(contrat.methods);
             const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
-            console.log(response);
-            setPrescriptions([]);
+            var res: Prescription[] = [];
+            for (var i = 0; i < response.length; i++) {
+                const presc = response[i];
+                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
+                // TODO : getPatient in Prescurity.sol
+                 var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                console.log(patient);
+                var temp = {...presc, doctor: doctor , patient : patient}
+                res.push(Prescription.makePrescriptionWithArray(temp));
+            }
+            setPrescriptions(res);
         } catch (e) {
             console.log(e);
         }
@@ -72,7 +79,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 <Container m={{base: "0", md: "0"}} bg={"none"}>
                     {
                         prescritions.map((prescription: Prescription) => {
-                            return <CardPrescription prescription={prescription}/>
+                            return <CardPrescription prescription={prescription} contrat={contrat}/>
                         })
                     }
                 </Container>

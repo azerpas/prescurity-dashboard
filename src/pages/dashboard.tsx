@@ -53,7 +53,7 @@ const Dashboard = () => {
             router.push(ROUTES.LOGIN);
         } 
     },[userData]);
-    
+
     // Les ifs sont organisés dans cet ordre précis pour être "rendus" en cascade
     if (!userData.user){
         return(<UserLoading/>);
