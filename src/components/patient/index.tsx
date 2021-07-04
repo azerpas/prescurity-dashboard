@@ -35,10 +35,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             for (var i = 0; i < response.length; i++) {
                 const presc = response[i];
                 var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
-                // TODO : getPatient in Prescurity.sol
-                var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
-                console.log(patient);
-                var temp = {...presc, doctor: doctor , patient : patient}
+                var temp = {...presc, doctor: doctor , patient : context.user}
                 res.push(Prescription.makePrescriptionWithArray(temp));
             }
             setPrescriptions(res);
@@ -49,11 +46,11 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     return (
         <>
             <Header/>
-            <Heading mb={"2rem"} textAlign={"center"} color="gray.500" fontSize={{ base: "25px", md: "32px", lg: "48px" }}>Welcome to your Prescurity patient area </Heading>
+            <Heading mb={"2rem"} textAlign={"center"} color="gray.500" fontSize={{ base: "25px", md: "32px", lg: "48px" }} >Welcome to your Prescurity patient area </Heading>
             <Flex flexWrap="wrap">
-                <Flex mx={"auto"} bg="gray.100" p={"2rem"} w={[250, 350, 500]} alignSelf={"flex-start"} flexDirection="column">
+                <Flex mx={"auto"} bg="gray.100" p={"2rem"} w={[250, 350, 500]} alignSelf={"flex-start"} flexDirection="column" mt="6.5rem">
                     <Avatar size='xl' src="https://bit.ly/broken-link" m={"auto"}/>
-                    <Text fontSize={"lg"} textAlign="center" mb={"2rem"}>Welcome {} </Text>
+                    <Text fontSize={"lg"} textAlign="center" mb={"2rem"}>Welcome {context.user.name} </Text>
                     <Button mb={"2rem"} border={"1px grey solid"} isActive={prescriptionSelected} onClick={() => {
                         setPrescriptionSelected(true)
                     }}>
@@ -69,13 +66,15 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 prescriptionSelected ?
                 <>
                 <Container h={"100%"} if prescriptionSelected ={true}>
-                    <Heading fontSize={"xl"} alignText="center" mb={"2rem"}> Prescriptions</Heading>
-                    <Flex>
+                    <Heading fontSize={"xl"} alignText="center" mb={"2rem"} mt={"2rem"}> Prescriptions</Heading>
+                    <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
+                        <Container>
                         {
                             prescriptions.map((prescription: Prescription) => {
                                 return <CardPrescription contrat={contrat} prescription={prescription}/>
                             })
                         }
+                        </Container>
                     </Flex>
                 </ Container>
                 </>

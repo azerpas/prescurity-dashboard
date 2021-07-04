@@ -12672,10 +12672,9 @@
                                 "referencedDeclaration": 907,
                                 "src": "9635:1:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_rational_1_by_1",
-                                  "typeString": "int_const 1"
-                                },
-                                "value": "1"
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
                               },
                               "src": "9626:10:0",
                               "typeDescriptions": {
@@ -31409,12 +31408,12 @@
         }
       },
       "links": {},
-      "address": "0xcE1b0E74Dd18BcAfabd0C91Be19871Ac0fBa8534",
-      "transactionHash": "0xdd5423a280af488b55b5666a0e5a580a2c57844a096ed3bedd40a64944268e3a"
+      "address": "0x145942a9A777df6e8D2007bf7C8397826c0BF5c5",
+      "transactionHash": "0xac013d19080d0fc604f791bbe18fbbfbb417af7e29b229cec681e7bb4dccca4a"
     }
   },
   "schemaVersion": "3.3.3",
-  "updatedAt": "2021-07-04T14:34:56.467Z",
+  "updatedAt": "2021-07-04T17:05:45.030Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {

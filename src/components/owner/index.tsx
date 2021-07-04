@@ -19,6 +19,18 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         console.log(response3);
         const response4 = await contrat.methods.addPharmacy(pharmacyAddress, "Pharmacie de la gare").send({from: selectedAddr});
         console.log(response4);
+
+    }
+    const setPrescription = async () => {
+        const selectedAddr = await getSelectedAddress();
+        const response2 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response3 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response4 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response5 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
     }
     const canSubmit = () => !docAddress || !patientAddress || !pharmacyAddress;
     return (
@@ -29,6 +41,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
             <Input value={pharmacyAddress} onChange={(event) => setPharmacyAddress(event.target.value)} placeholder="Pharmacy address"/>
             <Button onClick={setDocPatient} disabled={canSubmit()}>Set doc & patient</Button>
             {canSubmit() ? <Text>Fill all the inputs before clicking</Text> : <></>}
+            <Button onClick={setPrescription} disabled={canSubmit()}>Set Prescription</Button>
         </Container>
     );
 }
