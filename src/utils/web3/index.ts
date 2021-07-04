@@ -29,6 +29,7 @@ export const initWeb3 = async () => new Promise<[Web3, Contract?]>(async (resolv
 
 export const getSelectedAddress = (): string => {
     if(window.ethereum.isMetaMask && window.ethereum.selectedAddress){
+        console.log("%c GET_SELECTED_ADDRESS : "  , 'background: #222; color: #bada55' ,window.ethereum.selectedAddress);
         return window.ethereum.selectedAddress;
     }else {
         const m = "Canno't get the selected address as user is not using metamask or has not selected an address";

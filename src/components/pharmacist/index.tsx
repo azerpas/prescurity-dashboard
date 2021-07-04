@@ -1,98 +1,94 @@
 import {Flex, Heading, Text, Box} from "@chakra-ui/layout"
-import { Container } from "../../components/Container" 
-import {Footer} from '../../components/Footer'
-import { Input } from "@chakra-ui/input"
-import { Button } from "@chakra-ui/button"
+import {Container} from "../Container"
+import {Footer} from '../Footer'
+import {Input} from "@chakra-ui/input"
+import {Button} from "@chakra-ui/button"
 import Header from '../../components/header'
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import Web3 from "web3";
-import { Contract } from "web3-eth-contract";
+import {Contract} from "web3-eth-contract";
+import {initWeb3} from "../../utils/web3";
+import {Prescription} from "../../entity/Prescription";
+import CardPrescription from "../card/prescription";
+import {FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
+import {UserContext} from "../../context/user";
+import {useForm} from "react-hook-form";
+import {Doctor} from "../../entity/Doctor";
+import {Patient} from "../../entity/Patient";
+import {randomInt} from "crypto";
 
 
-const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
-    return(
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
+}
+
+interface PharmacistProps {
+    num: number
+}
+
+const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
+    const [prescritions, setPrescriptions] = useState<Prescription[]>([]);
+    const {register, formState: {errors}, handleSubmit, getValues} = useForm<PharmacistProps>();
+    const context = useContext(UserContext);
+    const getPrescriptions = async () => {
+        try {
+            const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
+            var res: Prescription[] = [];
+            for (var i = 0; i < response.length; i++) {
+                const presc = response[i];
+                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
+                // TODO : getPatient in Prescurity.sol
+                 var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                console.log(patient);
+                var temp = {...presc, doctor: doctor , patient : patient}
+                res.push(Prescription.makePrescriptionWithArray(temp));
+            }
+            setPrescriptions(res);
+        } catch (e) {
+            console.log(e);
+        }
+        /*const doctor = new Doctor('doctor',"accessToken","refreshToken","doctor@doctor.com","1234","généraliste","0x24687346");
+        const patient = new Patient('patient',"accessToken","refreshToken","patient@patient.com","4321","0x6873468");
+        const prescriptions: Prescription[] = [];
+        for (var i = 0 ; i  < 10 ; i++){
+            prescriptions.push(new Prescription(i,patient,doctor,"covid-"+i,"medic1;medic2,medic3",i+"/J",randomDate(new Date(2012, 0, 1), new Date()),randomDate(new Date(2012, 0, 1), new Date()),!!Math.floor(Math.random() * 2),!!Math.floor(Math.random() * 2)))
+
+        }*/
+    }
+    return (
         <Container height="100vh" bg="none" alignItems="left">
             <Header/>
-
-            <Flex direction="column"  margin="1rem" align="center">
-                <Heading fontSize={{base:"20px" , md:"28px", lg:"40px" }} as="h2" color="#718096" fontFamily="Inter" textAlign="center">
-                Welcome to your Prescurity pharmacist's area</Heading>
-
-                <Container alignItems="left" bg="none" margin="2rem" >
-
-                    <Text fontSize={{base:"sm", md:"md"}} color="gray.700" > Patient address</Text>
-                    <Input size="md" borderRadius="6px" borderColor="gray.200"  width="20rem"/>
-                    <Text fontSize={{base:"xs", md:"sm"}} as="u"  color="gray.500">OR scan the QR code</Text> 
-
+            <Flex direction="column" margin="1rem" align="center">
+                <Heading textAlign="center"> Welcome to your Prescurity pharmacist's area</Heading>
+                <form onSubmit={handleSubmit(getPrescriptions)}>
+                    <FormControl mt={"2rem"} bg={"none"} isInvalid={errors.num ? true : false}>
+                        <Flex flexDirection={"column"} experimental_spaceY={"3"}>
+                            <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700"> Patient number 🏥</FormLabel>
+                            <Input size="md" borderRadius="6px" borderColor="gray.200" width="20rem" {...register("num", {required: true, pattern: /[0-9]{15}/im})}/>
+                            <FormErrorMessage>
+                                {errors.num?.type === "pattern" && "Format du numero invalide"}
+                                {errors.num?.type === "required" && "Entrez votre numero"}
+                                {!["pattern", "required"].includes(errors.num?.type) && errors.num?.message}
+                            </FormErrorMessage>
+                            <Button mt={"1rem"} type={"submit"}>Show prescriptions</Button>
+                        </Flex>
+                    </FormControl>
+                </form>
+            </Flex>
+            <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
+                <Container m={{base: "0", md: "0"}} bg={"none"}>
+                    {
+                        prescritions.map((prescription: Prescription) => {
+                            return <CardPrescription prescription={prescription} contrat={contrat}/>
+                        })
+                    }
                 </Container>
-
             </Flex>
 
-            <Container height="100vh" bg="none" alignItems="left">
-            
-            <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base:"auto", md:"1rem"}}>
+            <Footer/>
 
-                <Text padding="1rem" fontSize={{base:"md" , md:"lg"}} color="gray.700">Patient adress: xxxx@xxxx.com</Text>
-                
-
-
-                <Flex alignContent={{base:"center" , md:"left"}} maxW="450px" alignItems="center" size={{base:"sm", md:"md"}} border="1px" borderColor="gray.700" borderRadius="4px" margin="0.2rem">
-                    
-                    <Box padding="0.5rem">
-                        <ul><Text fontWeight="bold">Date</Text></ul>
-                        <ul><Text>XX/XX/XXXX</Text></ul>
-                    </Box>
-                    
-                    <Box padding="0.5rem">
-                        <ul><Text fontWeight="bold">Doctor</Text></ul>
-                        <ul><Text>Doctor's name</Text></ul>
-                        
-                    </Box>  
-                    
-                    <Box padding="0.5rem">
-
-                        <ul><Text fontWeight="bold">Pharmacist</Text></ul>
-                        <ul><Text >Pharmacist's name</Text></ul>
-                    </Box>
-                        
-                    <Button aria-label="go to file" />
-
-                </Flex>  
-
-                <Flex alignContent={{base:"center" , md:"left"}} maxW="450px" alignItems="center" size={{base:"sm", md:"md"}} border="1px" borderColor="gray.700" borderRadius="4px" margin="0.2rem">
-                    
-                    <Box padding="0.5rem">
-                        <ul><Text fontWeight="bold">Date</Text></ul>
-                        <ul><Text>XX/XX/XXXX</Text></ul>
-                    </Box>
-                    
-                    <Box padding="0.5rem">
-                        <ul><Text fontWeight="bold">Doctor</Text></ul>
-                        <ul><Text>Doctor's name</Text></ul>
-                        
-                    </Box>  
-                    
-                    <Box padding="0.5rem">
-
-                        <ul><Text fontWeight="bold">Pharmacist</Text></ul>
-                        <ul><Text >Pharmacist's name</Text></ul>
-                    </Box>
-                        
-                    <Button aria-label="go to file" />
-
-                </Flex>  
-
-
-            </Flex>
-            
-            
-            
-        </Container>
-        
-        <Footer></Footer>
-            
         </Container>
     );
 }
-    
+
 export default Index

@@ -3,39 +3,14 @@ import {ChakraProvider} from '@chakra-ui/react'
 import theme from '../theme'
 import {AppProps} from 'next/app'
 import {IUserContext, UserContext} from "../context/user";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
 import {Patient} from "../entity/Patient";
-
-function onAuthStateChange(callback: (IUserContext) => void) {
-    return firebase.auth().onAuthStateChanged(async credentialUser => {
-        if (credentialUser) {
-            const accessToken = await credentialUser.getIdToken();
-            const {displayName, refreshToken, email, uid} = credentialUser;
-            // FIXME: not necessarily "Patient" v
-            callback({loggedIn: true, user: new Patient(email, accessToken, refreshToken, email, uid, displayName)});
-        } else {
-            callback({loggedIn: false, user: null});
-        }
-    });
-}
-
-const onAddressChange = ({user}: {user: User}) => {
-    window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
-        if(accounts.length === 0 && !user){
-            console.info('Address changed but no user defined');
-            return;
-        }else if(accounts.length === 0 && user){
-            throw new Error("Please reconnect to your account");
-        }else if(accounts.length !== 0 && user){
-            if(accounts[0] !== user.name){
-                // TODO: disconnect user
-                throw new Error("Please reconnect to your account");
-            } 
-        }
-    });
-}
+import {getSelectedAddress, initWeb3} from "../utils/web3";
+import {Pharmacy} from "../entity/Pharmacy";
+import {Doctor} from "../entity/Doctor";
+import {Owner} from "../entity/Owner";
 
 const onChainChange = () => {
     window.ethereum.on('chainChanged', (_chainId: string) => {
@@ -45,9 +20,56 @@ const onChainChange = () => {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
-    const [user, setUser] = useState({loggedIn: null, user: null});
+    const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     useEffect(() => {
-        const unsubscribe = onAuthStateChange(setUser);
+        window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
+            console.log(`Accounts changed triggered`)
+            if (accounts.length === 0 && !userState.user) {
+                console.info('Address changed but no user defined');
+                return;
+            } else if (accounts.length === 0 && userState.user) {
+                throw new Error("Please reconnect to your account");
+            } else if (accounts.length !== 0 && userState.user) {
+                console.log("accountsChanged address : ", accounts[0]);
+                setUserState({user: userState.user, loggedIn: userState.loggedIn, selectedAddress: accounts[0]});
+                if (accounts[0] !== userState.user.name) {
+                    // TODO: disconnect user
+                    throw new Error("Please reconnect to your account");
+                }
+            }
+            console.groupEnd();
+        });
+
+
+        const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
+
+            const selectedAddress = getSelectedAddress();
+            if (credentialUser) {
+                const accessToken = await credentialUser.getIdToken();
+                const {displayName, refreshToken, email, uid} = credentialUser;
+                let currentUser: User = null;
+                const [web, contract] = await initWeb3();
+                console.log(`Getting type from selected address: ${selectedAddress}`);
+                const userType = await contract.methods.getUserType().call({from: selectedAddress});
+                console.log(`User type found: ${userType}`);
+                if (userType === "patient") {
+                    currentUser = new Patient(email, accessToken, refreshToken, email, uid, displayName)
+                } else if (userType === "pharmacy") {
+                    currentUser = new Pharmacy(email, accessToken, refreshToken, email, uid, displayName)
+                } else if (userType === "doctor") {
+                    currentUser = new Doctor(email, accessToken, refreshToken, email, uid, "speciality", displayName)
+                } else if (userType === "owner") {
+                    currentUser = new Owner(email, accessToken, refreshToken, email, uid, displayName)
+                }else {
+                    console.error(`No user type found, please make sure the address are set`);
+                    throw new Error('No user type found, please make sure the address are set');
+                }
+                setUserState({selectedAddress: selectedAddress, loggedIn: true, user: currentUser});
+            } else {
+                console.log(`No credential found`);
+                setUserState({selectedAddress: selectedAddress, loggedIn: false, user: null});
+            }
+        });
         onChainChange();
         return () => {
             unsubscribe();
@@ -55,7 +77,7 @@ function MyApp({Component, pageProps}: AppProps) {
     }, []);
 
     return (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider value={userState}>
             <ChakraProvider resetCSS theme={theme}>
                 <Component {...pageProps} />
             </ChakraProvider>
