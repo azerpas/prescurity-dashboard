@@ -27,8 +27,18 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
 
     useEffect( ()=>{
         const getPrescriptions = async () => {
-            //const response = await contrat.methods.showPrescriptionPatient(context.user.uid).call({from: context.selectedAddress});
-            //setPrescriptions(response);
+            const response = await contrat.methods.showPrescriptionPatient(context.user.uid).call({from: context.selectedAddress});
+            var res: Prescription[] = [];
+            for (var i = 0; i < response.length; i++) {
+                const presc = response[i];
+                var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
+                // TODO : getPatient in Prescurity.sol
+                var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                console.log(patient);
+                var temp = {...presc, doctor: doctor , patient : patient}
+                res.push(Prescription.makePrescriptionWithArray(temp));
+            }
+            setPrescriptions(res);
         }
 
         getPrescriptions()
