@@ -37,7 +37,12 @@ export const getSelectedAddress = (): string => {
             console.error(m);
             throw new Error(m);
         }
-        const m = "Canno't get the selected address as user is not using metamask or has not selected an address";
+        if(!window.ethereum.isMetaMask){
+            const m = "Please install MetaMask to use Prescurity.";
+            console.error(m);
+            throw new Error(m);
+        }
+        const m = "Canno't get the selected address, unknown error";
         console.error(m);
         throw new Error(m);
     }

@@ -24,6 +24,10 @@ function MyApp({Component, pageProps}: AppProps) {
     const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     const [alertState, setAlertState] = useState<IAlertContext>({title: null, description: null});
     useEffect(() => {
+        if(!window.ethereum){
+            setAlertState({title: "Browser not compatible", description: "Your browser is outdated. Please use Firefox, Brave Browser or Chrome. Prescurity will not work with your browser."});
+            return;
+        }
         window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
             console.log(`Accounts changed triggered`)
             if (accounts.length === 0 && !userState.user) {
