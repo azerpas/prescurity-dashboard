@@ -12497,9 +12497,10 @@
                                 "referencedDeclaration": 902,
                                 "src": "9597:1:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_uint256",
-                                  "typeString": "uint256"
-                                }
+                                  "typeIdentifier": "t_rational_1_by_1",
+                                  "typeString": "int_const 1"
+                                },
+                                "value": "1"
                               },
                               "src": "9588:10:0",
                               "typeDescriptions": {
