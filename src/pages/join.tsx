@@ -19,7 +19,7 @@ const signUp = () => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignUp');
             if (!email) {
-                await router.push('/signUp');
+                await router.push('/join');
             }
             try {
                 await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
