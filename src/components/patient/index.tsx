@@ -21,38 +21,51 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     // TODO: Fonctions pour communiquer avec la blockchain
     // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=114%3A3
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const[prescriptionSelected,setPrescriptionSelected] = useState(true)
-    const[prescriptions,setPrescriptions] = useState<Prescription[]>([]);
+    const [prescriptionSelected, setPrescriptionSelected] = useState(true)
+    const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
     const context = useContext(UserContext);
 
-    useEffect( ()=>{
+    useEffect(() => {
         const getPrescriptions = async () => {
             //const response = await contrat.methods.showPrescriptionPatient(context.user.uid).call({from: context.selectedAddress});
             //setPrescriptions(response);
+
+            const doctor = new Doctor('doctor', "accessToken", "refreshToken", "doctor@doctor.com", "1234", "généraliste", "0x24687346");
+            const patient = new Patient('patient', "accessToken", "refreshToken", "patient@patient.com", "4321", "0x6873468");
+            const prescriptionTab: Prescription[] = [];
+            for (var i = 0; i < 10; i++) {
+                prescriptionTab.push(new Prescription(i, patient, doctor, "covid-" + i, "medic1;medic2,medic3", i + "/J", randomDate(new Date(2012, 0, 1), new Date()), randomDate(new Date(2012, 0, 1), new Date()), !!Math.floor(Math.random() * 2), !!Math.floor(Math.random() * 2)))
+
+            }
+            setPrescriptions(prescriptionTab);
         }
 
         getPrescriptions()
-    },[])
+    }, [])
     return (
         <>
             <Header/>
             <Heading mb={"2rem"} textAlign={"center"} color="gray.500">Welcome to your Prescurity patient area </Heading>
             <Flex>
                 <Grid mx={"auto"} bg="gray.100" p={"2rem"} w={"20rem"} alignSelf={"flex-start"}>
-                    <Avatar  size='xl'  src="https://bit.ly/broken-link" m={"auto"}/>
-                    <Text  fontSize={"lg"} textAlign="center" mb={"2rem"}>Welcome {} </Text>
-                    <Button mb={"2rem"} border={"1px grey solid"}  isActive={prescriptionSelected} onClick={()=>{setPrescriptionSelected(true)}}>
-                        <Text m={'auto'} >Prescriptions</Text> <ChevronRightIcon />
+                    <Avatar size='xl' src="https://bit.ly/broken-link" m={"auto"}/>
+                    <Text fontSize={"lg"} textAlign="center" mb={"2rem"}>Welcome {} </Text>
+                    <Button mb={"2rem"} border={"1px grey solid"} isActive={prescriptionSelected} onClick={() => {
+                        setPrescriptionSelected(true)
+                    }}>
+                        <Text m={'auto'}>Prescriptions</Text> <ChevronRightIcon/>
                     </Button>
-                    <Button mb={"2rem"} border={"1px grey solid"}   isActive={!prescriptionSelected} onClick={()=>{setPrescriptionSelected(false)}}>
-                        <Text m={'auto'} >QR code</Text> <ChevronRightIcon />
+                    <Button mb={"2rem"} border={"1px grey solid"} isActive={!prescriptionSelected} onClick={() => {
+                        setPrescriptionSelected(false)
+                    }}>
+                        <Text m={'auto'}>QR code</Text> <ChevronRightIcon/>
                     </Button>
                 </Grid>
                 <Container h={"100%"}>
-                    <Heading  fontSize={"xl"} alignText="center" mb={"2rem"}> Prescriptions</Heading>
+                    <Heading fontSize={"xl"} alignText="center" mb={"2rem"}> Prescriptions</Heading>
                     <Grid>
                         {
-                            prescriptions.map((prescription : Prescription)=>{
+                            prescriptions.map((prescription: Prescription) => {
                                 return <CardPrescription contrat={contrat} prescription={prescription}/>
                             })
                         }
