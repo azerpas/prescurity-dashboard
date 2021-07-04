@@ -32,6 +32,11 @@ export const getSelectedAddress = (): string => {
         console.log("%c GET_SELECTED_ADDRESS : "  , 'background: #222; color: #bada55' ,window.ethereum.selectedAddress);
         return window.ethereum.selectedAddress;
     }else {
+        if(window.ethereum.isMetaMask){
+            const m = "Canno't get the selected address as user has not selected an address in MetaMask";
+            console.error(m);
+            throw new Error(m);
+        }
         const m = "Canno't get the selected address as user is not using metamask or has not selected an address";
         console.error(m);
         throw new Error(m);
