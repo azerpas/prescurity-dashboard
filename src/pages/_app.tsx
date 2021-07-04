@@ -40,7 +40,6 @@ function MyApp({Component, pageProps}: AppProps) {
             console.groupEnd();
         });
 
-
         const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
 
             const selectedAddress = getSelectedAddress();
