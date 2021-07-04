@@ -11,17 +11,20 @@ import {UserContext} from "../../context/user";
 import CardPrescription from "../card/prescription";
 import {Patient} from "../../entity/Patient";
 import {Doctor} from "../../entity/Doctor";
+import { truncate } from "fs/promises";
 
 function randomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
 }
 
 
+
+
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     // TODO: Fonctions pour communiquer avec la blockchain
     // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=114%3A3
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const [prescriptionSelected, setPrescriptionSelected] = useState(true)
+    const [prescriptionSelected, setPrescriptionSelected] = useState(false)
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
     const context = useContext(UserContext);
 
@@ -46,9 +49,9 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     return (
         <>
             <Header/>
-            <Heading mb={"2rem"} textAlign={"center"} color="gray.500">Welcome to your Prescurity patient area </Heading>
-            <Flex>
-                <Grid mx={"auto"} bg="gray.100" p={"2rem"} w={"20rem"} alignSelf={"flex-start"}>
+            <Heading mb={"2rem"} textAlign={"center"} color="gray.500" fontSize={{ base: "25px", md: "32px", lg: "48px" }}>Welcome to your Prescurity patient area </Heading>
+            <Flex flexWrap="wrap">
+                <Flex mx={"auto"} bg="gray.100" p={"2rem"} w={[250, 350, 500]} alignSelf={"flex-start"} flexDirection="column">
                     <Avatar size='xl' src="https://bit.ly/broken-link" m={"auto"}/>
                     <Text fontSize={"lg"} textAlign="center" mb={"2rem"}>Welcome {} </Text>
                     <Button mb={"2rem"} border={"1px grey solid"} isActive={prescriptionSelected} onClick={() => {
@@ -61,17 +64,25 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                     }}>
                         <Text m={'auto'}>QR code</Text> <ChevronRightIcon/>
                     </Button>
-                </Grid>
-                <Container h={"100%"}>
+                </Flex>
+            {
+                prescriptionSelected ?
+                <>
+                <Container h={"100%"} if prescriptionSelected ={true}>
                     <Heading fontSize={"xl"} alignText="center" mb={"2rem"}> Prescriptions</Heading>
-                    <Grid>
+                    <Flex>
                         {
                             prescriptions.map((prescription: Prescription) => {
                                 return <CardPrescription contrat={contrat} prescription={prescription}/>
                             })
                         }
-                    </Grid>
+                    </Flex>
                 </ Container>
+                </>
+                :
+                <>
+                </>
+            }
             </Flex>
         </>
     )
