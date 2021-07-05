@@ -14,11 +14,15 @@ import FormLogin from "../components/form";
 import React, {useEffect} from 'react';
 import { useState } from 'react';
 import { PresLink } from '../components/link';
+import { useContext } from 'react';
+import { AlertContext } from '../context/alert';
+import { MajorAlert } from '../components/alert';
 
 function Login() {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [checking, setChecking] = useState(false);
+    const alertContext = useContext(AlertContext);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
@@ -55,6 +59,9 @@ function Login() {
     return (
         <Container height="100vh">
             <Header/>
+            {alertContext.title ? 
+                <MajorAlert {...alertContext}/>
+            : <></>}
             <Container my="4rem" minH={{base: "55vh", sm: "60vh", md: "60vh"}}>
                 <Heading>Login to Prescurity</Heading>
 
