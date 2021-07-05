@@ -1,5 +1,5 @@
 // react
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 
 // chakra
 import {Container, Text, Flex, Heading, Box} from "@chakra-ui/layout";
@@ -18,13 +18,17 @@ import {Prescription} from "../../entity/Prescription";
 import {Patient} from "../../entity/Patient";
 import Header from "../header";
 import {useForm} from "react-hook-form";
+import {UserContext} from "../../context/user";
+import CardPrescription from "../card/prescription"
+import CardPatient from "../card/patient"
 
 
 interface PrescriptionProps {
-    patientAddress: string
-    medicine: string
-    frequency: string
-    amount: number
+    numSecu: string,
+    medicine: string,
+    frequency: string,
+    amount: number,
+    disease: string
 }
 
 
@@ -35,8 +39,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
     const [patients, setPatients] = useState<Patient[]>([]);
     const [newPrescription, setNewPrescription] = useState<boolean>(false);
-    const {register, formState: {errors}, handleSubmit, getValues} = useForm<PrescriptionProps>();
-
+    const {register, formState: {errors}, handleSubmit, getValues, setValue} = useForm<PrescriptionProps>();
+    const userData = useContext(UserContext);
     const setContent = async (index) => {
         if (index == 0) {
             await getPrescriptions();
@@ -45,41 +49,46 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         }
     }
 
-    // TODO: Fonctions pour communiquer avec la blockchain
 
-    // pop une fenètre pour ajouter un médicament 
     const getPatients = async () => {
-        // 
+        // TODO :
+        //
+        // const response = contrat.methods.getPatients(...).call({from:...})
+        // for(...response) { créer tableau de patient}
+        // setPatients(patients)
     }
 
-    // TODO: Enregistrement de la prescription vers la blockchain
     const getPrescriptions = async () => {
-        // si enregistré avec succès : message de validation
-        // sinon : messages d'erreur
+        // TODO :
+        //
+        // const response = contrat.methods.getPrescriptions(...).call({from:...})
+        // for(...response) { créer tableau de prescription}
+        // setPrescriptions(prescriptions)
 
     }
 
-    const createPrescription = () => {
-
-        // add medicine to the posting prescription
-
+    const createPrescription = async () => {
+        const amount = getValues("amount");
+        const frequency = getValues("frequency");
+        const medicine = getValues("medicine");
+        const numSecu = getValues("numSecu");
+        const disease = getValues("disease");
+        const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress})
     }
 
-
-    // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=170%3A9169
+    const closeModal = () => {
+        setValue("amount", null);
+        setValue("frequency", "");
+        setValue("medicine", "");
+        setValue("numSecu", "");
+        setValue("disease", "");
+        onClose();
+    }
 
     return (
         <>
             <Header/>
-            <ul>
-                {/** TODO: Éléments graphiques à ajouter */}
-                <li>Consulter les X dernières prescriptions</li>
-                <li>Consulter les X dernières patients</li>
-                <li>Bouton pour générer une prescription</li>
-            </ul>
-
-            <Container height="100vh" bg="none">
-
+            <Container bg="none">
                 <>
                     <Button onClick={onOpen}>New prescription</Button>
                     <Tabs onChange={setContent}>
@@ -92,7 +101,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                                 <Grid>
                                     {
                                         prescriptions.map((prescription: Prescription) => {
-
+                                            <CardPrescription prescription={prescription} contrat={contrat}/>
                                         })
                                     }
                                     {
@@ -111,7 +120,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                                 <Grid>
                                     {
                                         patients.map((patient: Patient) => {
-
+                                            <CardPatient patient={patient} contrat={contrat}/>
                                         })
                                     }
                                     {
@@ -133,60 +142,40 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 </>
 
             </Container>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={closeModal}>
                 <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>New Prescription</ModalHeader>
                     <ModalCloseButton/>
-                    <Container p={"2rem"}>
-                        <form onSubmit={handleSubmit(createPrescription)}>
-                            <FormControl isInvalid={!!errors.patientAddress}>
+
+                    <form onSubmit={handleSubmit(createPrescription)}>
+                        <Container p={"2rem"} experimental_spaceY={"1rem"}>
+                            <FormControl isInvalid={!!errors.numSecu}>
                                 <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient</FormLabel>
-                                <Input
-                                    size="md"
-                                    borderRadius="6px"
-                                    borderColor="gray.200"
-                                    width="20rem"
-                                    {...register("patientAddress", {required: true})}
-                                />
+                                <Input {...register("numSecu", {required: true})} />
                             </FormControl>
                             <FormControl isInvalid={!!errors.medicine}>
                                 <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
-                                <Input
-                                    size="md"
-                                    borderRadius="6px"
-                                    borderColor="gray.200"
-                                    width="20rem"
-                                    {...register("medicine", {required: true})}
-                                />
+                                <Input {...register("medicine", {required: true})} />
                             </FormControl>
                             <FormControl isInvalid={!!errors.frequency}>
                                 <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
-                                <Input
-                                    size="md"
-                                    borderRadius="6px"
-                                    borderColor="gray.200"
-                                    width="20rem"
-                                    {...register("frequency", {required: true})}
-                                />
+                                <Input {...register("frequency", {required: true})} />
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.frequency}>
+                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease</FormLabel>
+                                <Input {...register("disease", {required: true})} />
                             </FormControl>
                             <FormControl isInvalid={!!errors.amount}>
                                 <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
-                                <Input
-                                    size="md"
-                                    borderRadius="6px"
-                                    borderColor="gray.200"
-                                    width="20rem"
-                                    type={"number"}
-                                    {...register("amount", {required: true})}
-                                />
+                                <Input {...register("amount", {required: true})} />
                             </FormControl>
                             <Flex mt={"2rem"}>
                                 <Button m={"auto"} type={"submit"}>Create</Button>
-                                <Button m={"auto"} colorScheme={"red"} onClick={onClose}>Cancel</Button>
+                                <Button m={"auto"} colorScheme={"red"} onClick={closeModal}>Cancel</Button>
                             </Flex>
-                        </form>
-                    </Container>
+                        </Container>
+                    </form>
                 </ModalContent>
             </Modal>
         </>
