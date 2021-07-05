@@ -1,15 +1,36 @@
+
+// chakra
+import {
+    Button,
+    Text,
+    useDisclosure,
+    Avatar,
+    Container,
+    useClipboard,
+    Center
+} from "@chakra-ui/react";
+import {Flex, Heading} from "@chakra-ui/layout";
+import { ArrowForwardIcon } from "@chakra-ui/icons"
+
+// react
 import React, {useContext, useEffect} from "react";
 import {useState} from "react";
-import {Button, Text, useDisclosure, Avatar, Container,useClipboard,Center} from "@chakra-ui/react";
+
+// blockchain
 import Web3 from "web3";
 import {Contract} from "web3-eth-contract";
+
+// components
 import Header from "../header";
-import {ChevronRightIcon} from "@chakra-ui/icons";
-import {Flex, Heading} from "@chakra-ui/layout";
-import {Prescription} from "../../entity/Prescription";
-import {UserContext} from "../../context/user";
 import CardPrescription from "../card/prescription";
-import { ArrowForwardIcon } from "@chakra-ui/icons"
+
+// entity
+import {Prescription} from "../../entity/Prescription";
+
+// context
+import {UserContext} from "../../context/user";
+
+
 import {Patient} from "../../entity/Patient";
 import {Doctor} from "../../entity/Doctor";
 import { truncate } from "fs/promises";

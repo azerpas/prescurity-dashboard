@@ -1,11 +1,35 @@
-import { Container, Button, Input, Text, Heading, Select, FormLabel, FormControl, useToast, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import React from "react";
-import { useState } from "react";
+
+// chakra
+import { 
+    Container,
+    Button,
+    Input,
+    Text,
+    Heading,
+    Select,
+    FormLabel,
+    FormControl,
+    useToast,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel
+} from "@chakra-ui/react";
+
+// react
+import React, { useState } from "react";
 import { DeepMap, FieldError, useForm, UseFormRegister } from "react-hook-form";
+
+// blockchain
 import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
-import { UserType } from "../../types/user";
 import { getSelectedAddress } from "../../utils/web3";
+
+// types
+import { UserType } from "../../types/user";
+
+//components
 import Header from "../header";
 
 interface DoctorProps {

@@ -1,14 +1,28 @@
+
+// chakra
 import {
     Flex,
     Grid,
     FormControl,
     Input,
-    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert
+    FormLabel,
+    HTMLChakraProps,
+    Text,
+    FormErrorMessage,
+    AlertIcon,
+    AlertTitle,
+    CloseButton,
+    Alert
+} from "@chakra-ui/react";
 
-} from "@chakra-ui/react"
+// react
 import React, {useContext, useState} from "react"
 import {useForm} from "react-hook-form";
+
+// context
 import {AlertContext} from "../../context/alert";
+
+// utils
 import firebase from "../../utils/client";
 import {initWeb3} from "../../utils/web3";
 

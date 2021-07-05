@@ -1,17 +1,41 @@
-import {Box, Flex, Heading} from "@chakra-ui/layout"
-import {Container} from "../Container"
-import {Footer} from '../Footer'
-import {Input} from "@chakra-ui/input"
-import {Button} from "@chakra-ui/button"
-import Header from '../../components/header'
-import React, {useContext, useState} from 'react'
+
+// chakra
+import {
+    Box, 
+    Flex, 
+    Heading
+} from "@chakra-ui/layout";
+import {Input} from "@chakra-ui/input";
+import {Button} from "@chakra-ui/button";
+import {
+    Alert,
+    AlertIcon,
+    FormControl,
+    FormErrorMessage,
+    FormLabel
+} from "@chakra-ui/react";
+
+
+// react
+import React, {useContext, useState} from 'react';
+import {useForm} from "react-hook-form";
+
+// components
+import {Container} from '../Container';
+import {Footer} from '../Footer';
+import Header from '../header';
+import CardPrescription from "../card/prescription";
+
+// blockchain
 import Web3 from "web3";
 import {Contract} from "web3-eth-contract";
+
+// entity
 import {Prescription} from "../../entity/Prescription";
-import CardPrescription from "../card/prescription";
-import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
+
+// context
 import {UserContext} from "../../context/user";
-import {useForm} from "react-hook-form";
+
 
 interface PharmacistProps {
     num: number

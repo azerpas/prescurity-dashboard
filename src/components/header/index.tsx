@@ -1,3 +1,5 @@
+
+// chakra
 import {
     chakra,
     Button,
@@ -14,13 +16,23 @@ import {
     useUpdateEffect,
     HTMLChakraProps,
 } from "@chakra-ui/react"
-import {FaMoon, FaSun, FaYoutube} from "react-icons/fa";
-import Link from "next/link"
-import React, {HTMLProps, useContext} from "react"
+
+// react
+import {FaMoon, FaSun} from "react-icons/fa";
+import React, { useContext } from "react"
+
+// node 
 import {MobileNavButton, MobileNavContent} from "./mobile";
 import {useViewportScroll} from "framer-motion";
 import styled from '@emotion/styled';
+
+// next 
+import Link from "next/link"
+
+// component
 import Logo from "../logo";
+
+// context
 import {UserContext} from "../../context/user";
 
 const HeaderContent = () => {

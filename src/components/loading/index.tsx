@@ -1,5 +1,16 @@
+
+// chakra
+import { 
+    Flex,
+    Heading,
+    Spinner,
+    Box,
+    Text
+} from "@chakra-ui/react";
+
+// react
 import React from "react";
-import { Flex, Heading, Spinner, Box, Text } from "@chakra-ui/react";
+
 
 
 export const InitBlockchainLoading = ({step}: {step: 0|1|2|3|4}) => {

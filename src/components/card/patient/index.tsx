@@ -1,12 +1,25 @@
-import React, {useContext} from "react";
-import {Prescription} from "../../../entity/Prescription";
+// chakra
 import {Box} from "@chakra-ui/layout";
-import {SimpleGrid, Heading, Text, Badge, IconButton, Accordion, AccordionButton, AccordionItem, AccordionPanel, Divider} from "@chakra-ui/react";
-import {ChevronDownIcon} from "@chakra-ui/icons";
-import {Button} from "@chakra-ui/button";
+import {SimpleGrid,
+    Heading,
+    Text,
+} from "@chakra-ui/react";
+
+
+// react
+import React, {useContext} from "react";
+
+import {Prescription} from "../../../entity/Prescription";
+
+// etherum
 import {Contract} from "web3-eth-contract";
+
+// context
 import {UserContext} from "../../../context/user";
+
+// entity
 import {Patient} from "../../../entity/Patient";
+
 
 const Index = ({patient , contrat}: { patient: Patient , contrat:Contract }) => {
     const userData = useContext(UserContext);
