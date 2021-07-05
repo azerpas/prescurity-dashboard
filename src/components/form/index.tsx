@@ -111,6 +111,8 @@ export const FormSignUp = (props) => {
     const [emailSended, setEmailSended] = useState(false);
     const [errorExist, setErrorExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
+    const alertContext = useContext(AlertContext);
+
     const signUp = async (props: SignUpProps) => {
         try {
             const response = await fetch("http://localhost:3000/api/user",{
@@ -201,7 +203,7 @@ export const FormSignUp = (props) => {
                             </Text> : ""
                     }
                     <Flex text-align="center" mt="3">
-                        <Input type="submit" color="white" value="Sign Up" bgColor="black" disabled={emailSended || isSubmitting || props.error}/>
+                        <Input type="submit" color="white" value={alertContext.title ? alertContext.title : "Join Prescurity"} bgColor={alertContext.title ? "red" : "black"} disabled={emailSended || isSubmitting || props.error || alertContext.title === "Browser not compatible" || alertContext.title === "Ethereum address not found"}/>
                     </Flex>
                 </form>
             }
