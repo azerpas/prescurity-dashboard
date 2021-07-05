@@ -32,7 +32,7 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
 
     const login = async (props: LoginProps) => {
         try {
-            const response = await fetch("http://localhost:3000/api/user?email=" + props.email, {
+            const response = await fetch("/api/user?email=" + props.email, {
                 method: "GET"
             });
             if (!response.ok) {
@@ -116,7 +116,7 @@ export const FormSignUp = (props) => {
 
     const signUp = async (props: SignUpProps) => {
         try {
-            const response = await fetch("http://localhost:3000/api/user", {
+            const response = await fetch("/api/user", {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
