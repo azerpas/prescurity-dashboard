@@ -70,6 +70,17 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         // for(...response) { créer tableau de prescription}
         // setPrescriptions(prescriptions)
 
+        const response = contrat.methods.getLastDoctorPrescriptions(5).call({from:userData.selectedAddress});
+        var res : Prescription[] = [];
+        for (var i = 0; i < response.length; i++) {
+            const presc = response[i];
+            var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: userData.selectedAddress});
+            // TODO : getPatient in Prescurity.sol
+            var temp = {...presc, doctor: doctor}
+            res.push(Prescription.makePrescriptionWithArray(temp));
+        }
+        setPrescriptions(res);
+
     }
 
     const createPrescription = async () => {
