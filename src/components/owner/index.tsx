@@ -53,9 +53,10 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     isClosable: true,
                 });
             } catch (error) {
+                const r = error.message.match(/reason":"(.*)"},"stack/gm);
                 toast({
                     title: "Doctor error.",
-                    description: error.message,
+                    description: r ? r : error.message,
                     status: "error",
                     duration: 9000,
                     isClosable: true,
@@ -74,9 +75,10 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     isClosable: true,
                 });
             } catch (error) {
+                const r = error.message.match(/reason":"(.*)"},"stack/gm);
                 toast({
                     title: "Pharmacy error.",
-                    description: error.message,
+                    description: r ? r : error.message,
                     status: "error",
                     duration: 9000,
                     isClosable: true,
