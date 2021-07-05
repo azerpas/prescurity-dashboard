@@ -6,16 +6,16 @@ import {
     FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert
 
 } from "@chakra-ui/react"
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import {useForm} from "react-hook-form";
+import {AlertContext} from "../../context/alert";
 import firebase from "../../utils/client";
+import {initWeb3} from "../../utils/web3";
 
 
 interface LoginProps {
     email: string
 }
-
-
 
 
 const actionCodeSettings = {
@@ -28,16 +28,17 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
     const [emailSended, setEmailSended] = useState(false);
     const [errorUserExist, setErrorUserExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<LoginProps>();
+    const alertContext = useContext(AlertContext);
 
     const login = async (props: LoginProps) => {
         try {
-            const response =await fetch("http://localhost:3000/api/user?email="+props.email, {
-                method:"GET"
+            const response = await fetch("/api/user?email=" + props.email, {
+                method: "GET"
             });
             if (!response.ok) {
                 console.error(response);
-            }else {
-                const dataApi =  await response.json();
+            } else {
+                const dataApi = await response.json();
                 if (dataApi.userExist) {
                     const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettings);
                     window.localStorage.setItem('emailForSignIn', props.email);
@@ -84,7 +85,8 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
                             </Text> : ""
                     }
                     <Flex text-align="center" mt="3">
-                        <Input type="submit" color="white" value="Sign In" bgColor="black" disabled={emailSended || isSubmitting}/>
+                        <Input type="submit" color="white" value={alertContext.title ? alertContext.title : "Sign in"} bgColor={alertContext.title ? "red" : "black"}
+                               disabled={emailSended || isSubmitting || alertContext.title === "Browser not compatible" || alertContext.title === "Ethereum address not found"}/>
                     </Flex>
                 </form>
             }
@@ -108,10 +110,13 @@ const actionCodeSettingsSignUp = {
 export const FormSignUp = (props) => {
     const [emailSended, setEmailSended] = useState(false);
     const [errorExist, setErrorExist] = useState(false);
+    const [errorExistBC, setErrorExistBC] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
+    const alertContext = useContext(AlertContext);
+
     const signUp = async (props: SignUpProps) => {
         try {
-            const response = await fetch("http://localhost:3000/api/user",{
+            const response = await fetch("/api/user", {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -127,9 +132,18 @@ export const FormSignUp = (props) => {
                     console.log("ERROR EXIST");
                     setErrorExist(true);
                 } else {
-                    const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
-                    window.localStorage.setItem('emailForSignUp', props.email);
-                    setEmailSended(true);
+                    try {
+                        const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
+                        const [web, contract] = await initWeb3();
+                        const response = await contract.methods.addPatient(props.numSecu, props.address).send({from: props.address});
+                        setErrorExistBC(false);
+                        window.localStorage.setItem('emailForSignUp', props.email);
+                        setEmailSended(true);
+                    } catch (e) {
+                        console.log(e);
+                        setErrorExistBC(true);
+                    }
+
                 }
             }
         } catch (error) {
@@ -153,7 +167,7 @@ export const FormSignUp = (props) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     {
                         props.error ?
-                            <Alert status="error" mb={"1rem"} >
+                            <Alert status="error" mb={"1rem"}>
                                 <AlertIcon/>
                                 <AlertTitle mr={2}>Veuillez vous connecter à MetaMask !</AlertTitle>
                                 <CloseButton position="absolute" right="8px" top="8px"/>
@@ -161,7 +175,7 @@ export const FormSignUp = (props) => {
                             : ""
                     }
                     <Flex flexDirection={"column"}>
-                        <FormControl id="nom" isInvalid={errors.name ? true : false} mb={"1rem"}>
+                        <FormControl id="nom" isInvalid={!!errors.name} mb={"1rem"}>
                             <FormLabel>Name 👤</FormLabel>
                             <Input  {...register("name", {required: true})}/>
                             <FormErrorMessage>
@@ -169,7 +183,7 @@ export const FormSignUp = (props) => {
                                 {!["required"].includes(errors.name?.type) && errors.name?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="email" isInvalid={errors.email ? true : false} mb={"1rem"}>
+                        <FormControl id="email" isInvalid={!!errors.email} mb={"1rem"}>
                             <FormLabel>Email address 📧</FormLabel>
                             <Input  {...register("email", {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im})}/>
                             <FormErrorMessage>
@@ -178,7 +192,7 @@ export const FormSignUp = (props) => {
                                 {!["pattern", "required"].includes(errors.email?.type) && errors.email?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="numSecu" isInvalid={errors.numSecu ? true : false} mb={"1rem"}>
+                        <FormControl id="numSecu" isInvalid={!!errors.numSecu} mb={"1rem"}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
                             <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im})}/>
                             <FormErrorMessage>
@@ -194,12 +208,19 @@ export const FormSignUp = (props) => {
                     </Flex>
                     {
                         errorExist ?
-                            <Text align={"center"} color={"red"} mt={"1rem"} fontWeight={"bold"}>
-                                Cette adresse mail est déjà utilisée !
-                            </Text> : ""
+                            <Alert status={"error"} mt={"1rem"}>
+                                <AlertIcon/>Cette adresse mail est déjà utilisée !
+                            </Alert> : ""
+                    }
+                    {
+                        errorExistBC ?
+                            <Alert status={"error"} mt={"1rem"}>
+                                <AlertIcon/>Ce numero de securité social est déjà utilisée !
+                            </Alert> : ""
                     }
                     <Flex text-align="center" mt="3">
-                        <Input type="submit" color="white" value="Sign Up" bgColor="black" disabled={emailSended || isSubmitting || props.error}/>
+                        <Input type="submit" color="white" value={alertContext.title ? alertContext.title : "Join Prescurity"} bgColor={alertContext.title ? "red" : "black"}
+                               disabled={emailSended || isSubmitting || props.error || alertContext.title === "Browser not compatible" || alertContext.title === "Ethereum address not found"}/>
                     </Flex>
                 </form>
             }

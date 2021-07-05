@@ -14,17 +14,22 @@ import FormLogin from "../components/form";
 import React, {useEffect} from 'react';
 import { useState } from 'react';
 import { PresLink } from '../components/link';
+import { useContext } from 'react';
+import { AlertContext } from '../context/alert';
+import { MajorAlert } from '../components/alert';
+import * as ROUTES from '../constants/routes';
 
 function Login() {
     const router = useRouter();
     const [success, setSuccess] = useState(false);
     const [checking, setChecking] = useState(false);
+    const alertContext = useContext(AlertContext);
     let email: null | string = null;
     useEffect(() => {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignIn');
             if (!email){
-                await router.push('/login');
+                await router.push(ROUTES.LOGIN);
                 setChecking(false);
             }
             try {
@@ -52,16 +57,24 @@ function Login() {
         );
     }
 
+    if(success){
+        router.push(ROUTES.DASHBOARD);
+        return <></>;
+    }
+
     return (
         <Container height="100vh">
             <Header/>
+            {alertContext.title ? 
+                <MajorAlert {...alertContext}/>
+            : <></>}
             <Container my="4rem" minH={{base: "55vh", sm: "60vh", md: "60vh"}}>
                 <Heading>Login to Prescurity</Heading>
 
                 { success ? 
                     <>
                         <Text>Your are signing in with {email} </Text>
-                        <Link href="/"><a><Button>Return to home</Button></a></Link>
+                        <Link href={ROUTES.DASHBOARD}><a><Button>Go to the dashboard</Button></a></Link>
                     </>
                     :
                     <>

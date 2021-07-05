@@ -3,6 +3,7 @@ import {ChakraProvider} from '@chakra-ui/react'
 import theme from '../theme'
 import {AppProps} from 'next/app'
 import {IUserContext, UserContext} from "../context/user";
+import {AlertContext, IAlertContext} from "../context/alert";
 import {useContext, useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
@@ -11,6 +12,8 @@ import {getSelectedAddress, initWeb3} from "../utils/web3";
 import {Pharmacy} from "../entity/Pharmacy";
 import {Doctor} from "../entity/Doctor";
 import {Owner} from "../entity/Owner";
+import { useRouter } from 'next/router';
+import * as ROUTES from '../constants/routes';
 
 const onChainChange = () => {
     window.ethereum.on('chainChanged', (_chainId: string) => {
@@ -21,7 +24,14 @@ const onChainChange = () => {
 
 function MyApp({Component, pageProps}: AppProps) {
     const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
+    const [alertState, setAlertState] = useState<IAlertContext>({title: null, description: null});
+    const router = useRouter();
+
     useEffect(() => {
+        if(!window.ethereum){
+            setAlertState({title: "Browser not compatible", description: "Your browser is outdated. Please use Firefox, Brave Browser or Chrome. Prescurity will not work with your browser."});
+            return;
+        }
         window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
             console.log(`Accounts changed triggered`)
             if (accounts.length === 0 && !userState.user) {
@@ -38,12 +48,21 @@ function MyApp({Component, pageProps}: AppProps) {
                 }
             }
             console.groupEnd();
+            setAlertState({title: null, description: null});
         });
 
-
         const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
-
-            const selectedAddress = getSelectedAddress();
+            let selectedAddress: string | null = null;
+            try {
+                selectedAddress = getSelectedAddress();
+            } catch (error) {
+                console.error("");
+                setAlertState({title: "Ethereum address not found", description: error.message});
+                if(router.pathname !== ROUTES.LOGIN && router.pathname !== ROUTES.SIGNUP){
+                    router.push(ROUTES.LOGIN)
+                }
+                return;
+            }
             if (credentialUser) {
                 const accessToken = await credentialUser.getIdToken();
                 const {displayName, refreshToken, email, uid} = credentialUser;
@@ -80,7 +99,9 @@ function MyApp({Component, pageProps}: AppProps) {
     return (
         <UserContext.Provider value={userState}>
             <ChakraProvider resetCSS theme={theme}>
-                <Component {...pageProps} />
+                <AlertContext.Provider value={alertState}>
+                    <Component {...pageProps} />
+                </AlertContext.Provider>
             </ChakraProvider>
         </UserContext.Provider>
     );

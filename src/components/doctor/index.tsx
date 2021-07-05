@@ -1,8 +1,8 @@
 // react
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 // chakra
-import {Container, Text, Flex, Heading} from "@chakra-ui/layout";
+import {Container, Text, Flex, Heading, Box} from "@chakra-ui/layout";
 import {Input} from "@chakra-ui/input";
 import {Button} from "@chakra-ui/button";
 
@@ -13,105 +13,171 @@ import {Contract} from "web3-eth-contract";
 import {getSelectedAddress} from "../../utils/web3";
 
 // components
+import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
+import {Prescription} from "../../entity/Prescription";
+import {Patient} from "../../entity/Patient";
+import Header from "../header";
+import {useForm} from "react-hook-form";
+import {UserContext} from "../../context/user";
+import CardPrescription from "../card/prescription"
+import CardPatient from "../card/patient"
 
-import Medicine from "./Medicine"
+
+interface PrescriptionProps {
+    numSecu: string,
+    medicine: string,
+    frequency: string,
+    amount: number,
+    disease: string
+}
+
 
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
+    const {isOpen, onOpen, onClose} = useDisclosure()
+    const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+    const [error, setError] = useState(false);
+    const {register, formState: {errors}, handleSubmit, getValues, setValue} = useForm<PrescriptionProps>();
+    const userData = useContext(UserContext);
 
-    const [patientAddress, setPatientAddress] = useState("")
-    const [pharmacistAddress, setPharmacistAddress] = useState("")
+    useEffect(() => {
+        getPrescriptions();
+    }, [])
 
-
-    // TODO: Fonctions pour communiquer avec la blockchain
-
-    // pop une fenètre pour ajouter un médicament 
-    const handleAddMedicine = () => {
-        // 
+    const getPrescriptions = async () => {
+        const response = await contrat.methods.getLastDoctorPrescriptions(5).call({from: userData.selectedAddress});
+        var res: Prescription[] = [];
+        for (var i = 0; i < response.length; i++) {
+            const presc = response[i];
+            var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: userData.selectedAddress});
+            var temp = {...presc, doctor: doctor}
+            res.push(Prescription.makePrescriptionWithArray(temp));
+        }
+        setPrescriptions(res);
+    }
+    const createPrescription = async () => {
+        const amount = getValues("amount");
+        const frequency = getValues("frequency");
+        const medicine = getValues("medicine");
+        const numSecu = getValues("numSecu");
+        const disease = getValues("disease");
+        try {
+            const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress});
+            setError(false);
+            await getPrescriptions();
+            closeModal();
+        } catch (e) {
+            console.log(e);
+            setError(true);
+        }
     }
 
-    // TODO: Enregistrement de la prescription vers la blockchain
-    const handlePrescription = () => {
-        // si enregistré avec succès : message de validation
-        // sinon : messages d'erreur
-
+    const closeModal = () => {
+        setValue("amount", null);
+        setValue("frequency", "");
+        setValue("medicine", "");
+        setValue("numSecu", "");
+        setValue("disease", "");
+        onClose();
     }
-
-
-    // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=170%3A9169
 
     return (
         <>
-            <ul>
-                {/** TODO: Éléments graphiques à ajouter */}
-                <li>Consulter les X dernières prescriptions</li>
-                <li>Consulter les X dernières patients</li>
-                <li>Bouton pour générer une prescription</li>
-            </ul>
+            <Header/>
+            <Container bg="none">
+                <>
+                    <Heading mb={"1rem"}>Last Prescriptions</Heading>
+                    <Box w={"100%"} textAlign={"right"} mb={"1rem"}>
+                        <Button onClick={onOpen}>New prescription</Button>
+                    </Box>
+                    <Grid>
+                        {
 
-            <Container height="100vh" bg="none">
+                            prescriptions.map((prescription: Prescription) => {
+                                return <CardPrescription prescription={prescription} contrat={contrat}/>
+                            })
+                        }
+                        {
+                            prescriptions.length == 0 ?
+                                <Box>
+                                    <Alert status="warning">
+                                        <AlertIcon/>
+                                        No prescription found !
+                                    </Alert>
+                                </Box> : ""
+                        }
+                    </Grid>
 
-                <Flex direction={{base: "column", md: "row"}} justifyContent={{md: "space-between"}} margin="1rem" padding="1rem">
-
-
-                    <Flex direction="column" alignItems="flex-start" margin={{md: "1rem"}} padding={{md: "1rem"}} marginLeft={{base: "2rem"}}>
-
-                        <Heading fontSize={{base: "lg", md: "xl"}} marginLeft="1rem">Informations</Heading>
-
-                        <Container alignItems="left" bg="none" margin="2rem">
-
-                            <Text fontSize={{base: "sm", md: "md"}} color="gray.700"> Patient address </Text>
-                            <Input
-                                size="md"
-                                borderRadius="6px"
-                                borderColor="gray.200"
-                                width="20rem"
-                                onChange={(e) => setPatientAddress(e.target.value)}
-                            />
-                            <Text fontSize={{base: "xs", md: "sm"}} as="u" color="gray.500">OR scan the QR code</Text>
-
-                        </Container>
-
-                        <Container alignItems="left" bg="none" margin="2rem">
-
-                            <Text fontSize={{base: "sm", md: "md"}} color="gray.700"> Pharmacist address</Text>
-                            <Input
-                                size="md"
-                                borderRadius="6px"
-                                borderColor="gray.200"
-                                width="20rem"
-                                onChange={(e) => setPatientAddress(e.target.value)}
-                            />
-                            <Text fontSize={{base: "xs", md: "sm"}} as="u" color="gray.500">OR scan the QR code</Text>
-
-                        </Container>
-
-
-                    </Flex>
-
-
-                    <Flex direction="column" alignItems="flex-start" margin={{md: "1rem"}} padding={{md: "1rem"}} marginLeft={{base: "2rem"}}>
-                        <Heading fontSize={{base: "lg", md: "xl"}} marginLeft="1rem" marginBottom="1rem">Medicine</Heading>
-
-                        <Medicine/>
-
-                    </Flex>
-                    <Button
-                        marginTop="1rem"
-                        alignSelf={{base: "center", md: "left"}}
-                        fontSize={{base: "xs", md: "sm"}}
-                        onClick={handleAddMedicine}>
-                        Add new medicine
-                    </Button>
-
-                </Flex>
-
-                <Button colorScheme="blackAlpha" margin="2rem" onClick={handlePrescription}>Transfer</Button>
+                </>
 
             </Container>
+            <Modal isOpen={isOpen} onClose={closeModal}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>New Prescription</ModalHeader>
+                    <ModalCloseButton/>
+                    <form onSubmit={handleSubmit(createPrescription)}>
+                        <ModalBody>
+                            <Container p={"2rem"} experimental_spaceY={"1rem"}>
+                                <FormControl isInvalid={!!errors.numSecu}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient Security Number</FormLabel>
+                                    <Input {...register("numSecu", {required: true})} type={"number"}/>
+                                    <FormErrorMessage>
+                                        {errors.numSecu?.type === "required" && "Entrez un numero de securité social"}
+                                        {!["required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.medicine}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
+                                    <Input {...register("medicine", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.medicine?.type === "required" && "Entrez un medicament"}
+                                        {!["required"].includes(errors.medicine?.type) && errors.medicine?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.frequency}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
+                                    <Input {...register("frequency", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.frequency?.type === "required" && "Entrez une frequence"}
+                                        {!["required"].includes(errors.frequency?.type) && errors.frequency?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.frequency}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease </FormLabel>
+                                    <Input {...register("disease", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.disease?.type === "required" && "Entrez une maladie"}
+                                        {!["required"].includes(errors.disease?.type) && errors.disease?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.amount}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
+                                    <Input {...register("amount", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.amount?.type === "required" && "Entrez un montant"}
+                                        {!["required"].includes(errors.amount?.type) && errors.amount?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                {
+                                    error ?
+                                        <Box>
+                                            <Alert status={"error"}>
+                                                <AlertIcon/> Une erreur est survenue, veuillez réessayer plus tard
+                                            </Alert>
+                                        </Box> : ""
+                                }
+                            </Container>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button m={"auto"} colorScheme={"green"} type={"submit"}>Create prescription</Button>
+                            <Button m={"auto"} colorScheme={"red"} onClick={closeModal}>Cancel</Button>
+                        </ModalFooter>
+                    </form>
+                </ModalContent>
+            </Modal>
         </>
 
     )
 }
-
 export default Index;
 
