@@ -124,6 +124,6 @@ export class Prescription {
         return new Prescription(array.id,
             new Patient(array.patient?.name, "", "", "", array.patient?.numero_secu, array.patient?.patientAddress),
             new Doctor(array.doctor?.name, "", "", "", array.doctor?.uid, array.doctor?.speciality, array.doctor?.doctorAddress),
-            array.disease, array.medicine, array.frequency, array.startTimestamp, array.endTimestamp, array.paid, array.claimed);
+            array.disease, array.medicine, array.frequency, array.startTimestamp, array.endTimestamp,  array.claimed, array.paid);
     }
 }

@@ -38,6 +38,18 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         console.log(response3);
         const response4 = await contrat.methods.addPharmacy(pharmacyAddress, "Pharmacie de la gare").send({from: selectedAddr});
         console.log(response4);
+
+    }
+    const setPrescription = async () => {
+        const selectedAddr = await getSelectedAddress();
+        const response2 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response3 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response4 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
+        const response5 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
+
     }
     const canSubmit = () => !docAddress || !patientAddress || !pharmacyAddress;
     const onSubmit = async (data) => await addUser(data);
