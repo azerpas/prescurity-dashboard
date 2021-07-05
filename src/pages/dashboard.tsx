@@ -15,8 +15,10 @@ import { UserType } from "../types/user";
 // Components
 import Owner from "../components/owner";
 import Pharmacist from "../components/pharmacist";
-import Doctor from "../components/doctor";
 import Patient from "../components/patient";
+import Doctor from "../components/doctor";
+
+
 import { InitBlockchainLoading, UserLoading } from "../components/loading";
 
 const Dashboard = () => {
@@ -62,6 +64,7 @@ const Dashboard = () => {
         if(userType === UserType.doctor){
             return(
                 <Doctor web={web3} contrat={smartContract}/>
+
             );
         // Patient @amel
         }else if(userType === UserType.patient){
