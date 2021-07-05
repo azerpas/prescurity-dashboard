@@ -8,8 +8,9 @@ import firebase from "firebase";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {getSelectedAddress, initWeb3} from "../utils/web3";
-import { MajorAlert } from "../components/alert";
-import { AlertContext } from "../context/alert";
+import {MajorAlert} from "../components/alert";
+import {AlertContext} from "../context/alert";
+import * as ROUTES from "../constants/routes";
 
 const signUp = () => {
     const router = useRouter();
@@ -49,22 +50,20 @@ const signUp = () => {
         getAddress();
     }, []);
 
+    if (success) {
+        router.push(ROUTES.DASHBOARD);
+        return <></>;
+    }
+
     return (
         <>
             <Header/>
-            {alertContext.title ? 
+            {alertContext.title ?
                 <MajorAlert {...alertContext}/>
-            : <></>}
+                : <></>}
             <Container>
                 <Heading>Sign Up to Prescurity</Heading>
-                {success ?
-                    <>
-                        <Text>Your are sign up with {email} </Text>
-                        <Link href="/"><a><Button>Return to home</Button></a></Link>
-                    </>
-                    :
-                    <FormSignUp address={address} error={errorMetaMask}/>
-                }
+                <FormSignUp address={address} error={errorMetaMask}/>
 
             </Container>
             <Footer/>

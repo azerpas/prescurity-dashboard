@@ -57,8 +57,6 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         const selectedAddr = await getSelectedAddress();
         if(typeToAdd === UserType.doctor){
             try {
-                //@ts-ignore
-                const response = await contrat.methods.addDoctor(props.address,props.name,props.speciality).send({from: selectedAddr});
                 const res = await fetch("/api/user", {
                     headers: {
                         'Accept': 'application/json',
@@ -68,8 +66,15 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     body: JSON.stringify(props)
                 });
                 if (!res.ok) {
+                    throw new Error((await res.json()).message);
+                }
+
+                //@ts-ignore
+                const response = await contrat.methods.addDoctor(props.address,props.name,props.speciality).send({from: selectedAddr});
+                if (!response.ok) {
                     throw new Error(response);
                 }
+
                 toast({
                     title: "Doctor created.",
                     description: "We've linked the Ethereum address to a doctor.",

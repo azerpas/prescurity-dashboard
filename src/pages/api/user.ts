@@ -25,7 +25,7 @@ export default async function User(req: NextApiRequest, res: NextApiResponse) {
                 res.json({userExist: false});
             } catch (e) {
                 console.error(e);
-                res.json({userExist: true});
+                res.status(409).json({userExist: true,message:"user already exist"});
             }
         }
     }else res.status(400).json({ message: "Method unhautorized", name: "error" });
