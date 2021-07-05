@@ -1,5 +1,5 @@
 // react
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 // chakra
 import {Container, Text, Flex, Heading, Box} from "@chakra-ui/layout";
@@ -41,6 +41,11 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const [newPrescription, setNewPrescription] = useState<boolean>(false);
     const {register, formState: {errors}, handleSubmit, getValues, setValue} = useForm<PrescriptionProps>();
     const userData = useContext(UserContext);
+
+    useEffect(()=>{
+        setContent(0);
+    })
+
     const setContent = async (index) => {
         if (index == 0) {
             await getPrescriptions();
@@ -73,7 +78,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         const medicine = getValues("medicine");
         const numSecu = getValues("numSecu");
         const disease = getValues("disease");
-        const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress})
+        const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress});
+        console.log(res);
     }
 
     const closeModal = () => {
