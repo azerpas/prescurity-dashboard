@@ -4,10 +4,10 @@
 // chakra
 import { Text } from "@chakra-ui/layout" ;
 import { Input }  from "@chakra-ui/input" ;
-import Button from "@chakra-ui/button" ;
 
 // react
 import { useState } from "react" ;
+import {Button} from "@chakra-ui/button";
 
 const AddMedicine = () => {
 
