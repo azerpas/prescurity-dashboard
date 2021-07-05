@@ -45,6 +45,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 res.push(Prescription.makePrescriptionWithArray(temp));
             }
             setPrescriptions(res);
+            console.log(res);
         }
         getPrescriptions()
     }, [])
