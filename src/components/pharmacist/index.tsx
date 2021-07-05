@@ -1,4 +1,4 @@
-import {Flex, Heading, Box} from "@chakra-ui/layout"
+import {Box, Flex, Heading} from "@chakra-ui/layout"
 import {Container} from "../Container"
 import {Footer} from '../Footer'
 import {Input} from "@chakra-ui/input"
@@ -12,6 +12,7 @@ import CardPrescription from "../card/prescription";
 import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
 import {UserContext} from "../../context/user";
 import {useForm} from "react-hook-form";
+
 interface PharmacistProps {
     num: number
 }
@@ -29,9 +30,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             for (var i = 0; i < response.length; i++) {
                 const presc = response[i];
                 var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
-                // TODO : getPatient in Prescurity.sol
                 var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from: context.selectedAddress});
-                console.log(patient);
                 var temp = {...presc, doctor: doctor, patient: patient}
                 res.push(Prescription.makePrescriptionWithArray(temp));
             }
@@ -66,10 +65,10 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                     {
                         noPrescriptions ?
                             <Box>
-                            <Alert status="warning">
-                                <AlertIcon/>
-                                No prescription found !
-                            </Alert>
+                                <Alert status="warning">
+                                    <AlertIcon/>
+                                    No prescription found !
+                                </Alert>
                             </Box>
                             :
                             prescritions.map((prescription: Prescription) => {
