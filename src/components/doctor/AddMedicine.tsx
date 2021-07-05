@@ -1,3 +1,5 @@
+// option pour ajouter plusieurs médicaments dans une prescription a supprimer
+
 
 // chakra
 import { Text } from "@chakra-ui/layout" ;

@@ -1,3 +1,6 @@
+// option pour ajouter plusieurs médicaments à supprimer 
+
+
 import { Box, Text } from "@chakra-ui/layout";
 import React from 'react';
 import { CloseButton } from "@chakra-ui/react";
