@@ -1,4 +1,4 @@
-import { Container, Button, Input, Text, Heading, Select, FormLabel, FormControl, useToast } from "@chakra-ui/react";
+import { Container, Button, Input, Text, Heading, Select, FormLabel, FormControl, useToast, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
 import { DeepMap, FieldError, useForm, UseFormRegister } from "react-hook-form";
@@ -87,26 +87,43 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         }
     }
     return (
-        <Container height="100vh" bg="none" alignItems="left">
+        <>
             <Header/>
-            <Heading>Welcome owner !</Heading>
-            <Container borderColor="blackAlpha.200" borderWidth="1px" p={5} my={5}>
-                <Text>Choose who you want to add</Text>
-                <Select mb={3} placeholder="Select a type of user to add" onChange={event => setTypeToAdd(event.target.value === "doctor" ? UserType.doctor : (event.target.value === "pharmacy" ? UserType.pharmacy : UserType.doctor))}>
-                    <option value={UserType.doctor}>{UserType.doctor}</option>
-                    <option value={UserType.pharmacy}>{UserType.pharmacy}</option>
-                </Select>
-                <form onClick={handleSubmit(onSubmit)}>
-                    <FormFields type={typeToAdd} register={register} errors={errors}/>
-                    <Button isFullWidth={true} mt={3}>Add a {typeToAdd}</Button>
-                </form>
+            <Container height="100vh">
+                <Tabs colorScheme="blackAlpha">
+                    <TabList>
+                        <Tab>New</Tab>
+                        <Tab>Old</Tab>
+                    </TabList>
+
+                    <TabPanels>
+                        <TabPanel>
+                            <Heading>Welcome owner !</Heading>
+                            <Container borderColor="blackAlpha.200" borderWidth="1px" p={5} my={5}>
+                                <Text>Choose who you want to add</Text>
+                                <Select mb={3} placeholder="Select a type of user to add" onChange={event => setTypeToAdd(event.target.value === "doctor" ? UserType.doctor : (event.target.value === "pharmacy" ? UserType.pharmacy : UserType.doctor))}>
+                                    <option value={UserType.doctor}>{UserType.doctor}</option>
+                                    <option value={UserType.pharmacy}>{UserType.pharmacy}</option>
+                                </Select>
+                                <form onClick={handleSubmit(onSubmit)}>
+                                    <FormFields type={typeToAdd} register={register} errors={errors}/>
+                                    <Button isFullWidth={true} mt={3}>Add a {typeToAdd}</Button>
+                                </form>
+                            </Container>
+                        </TabPanel>
+                        <TabPanel>
+                            <Input value={docAddress} onChange={(event) => setDocAddress(event.target.value)} placeholder="Doctor address"/>
+                            <Input value={patientAddress} onChange={(event) => setPatientAddress(event.target.value)} placeholder="Patient address"/>
+                            <Input value={pharmacyAddress} onChange={(event) => setPharmacyAddress(event.target.value)} placeholder="Pharmacy address"/>
+                            <Button onClick={setDocPatient} disabled={canSubmit()}>Set doc & patient</Button>
+                            {canSubmit() ? <Text>Fill all the inputs before clicking</Text> : <></>}
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+                
+                
             </Container>
-            <Input value={docAddress} onChange={(event) => setDocAddress(event.target.value)} placeholder="Doctor address"/>
-            <Input value={patientAddress} onChange={(event) => setPatientAddress(event.target.value)} placeholder="Patient address"/>
-            <Input value={pharmacyAddress} onChange={(event) => setPharmacyAddress(event.target.value)} placeholder="Pharmacy address"/>
-            <Button onClick={setDocPatient} disabled={canSubmit()}>Set doc & patient</Button>
-            {canSubmit() ? <Text>Fill all the inputs before clicking</Text> : <></>}
-        </Container>
+        </>
     );
 }
 
