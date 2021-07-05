@@ -10,6 +10,7 @@ import React, {useContext, useState} from "react"
 import {useForm} from "react-hook-form";
 import { AlertContext } from "../../context/alert";
 import firebase from "../../utils/client";
+import {initWeb3} from "../../utils/web3";
 
 
 interface LoginProps {
@@ -132,6 +133,8 @@ export const FormSignUp = (props) => {
                     setErrorExist(true);
                 } else {
                     const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
+                    const [web,contract] = await initWeb3();
+                    const response = await contract.methods.addPatient(props.numSecu,props.address).send({from:props.address});
                     window.localStorage.setItem('emailForSignUp', props.email);
                     setEmailSended(true);
                 }
@@ -165,7 +168,7 @@ export const FormSignUp = (props) => {
                             : ""
                     }
                     <Flex flexDirection={"column"}>
-                        <FormControl id="nom" isInvalid={errors.name ? true : false} mb={"1rem"}>
+                        <FormControl id="nom" isInvalid={!!errors.name} mb={"1rem"}>
                             <FormLabel>Name 👤</FormLabel>
                             <Input  {...register("name", {required: true})}/>
                             <FormErrorMessage>
@@ -173,7 +176,7 @@ export const FormSignUp = (props) => {
                                 {!["required"].includes(errors.name?.type) && errors.name?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="email" isInvalid={errors.email ? true : false} mb={"1rem"}>
+                        <FormControl id="email" isInvalid={!!errors.email} mb={"1rem"}>
                             <FormLabel>Email address 📧</FormLabel>
                             <Input  {...register("email", {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im})}/>
                             <FormErrorMessage>
@@ -182,7 +185,7 @@ export const FormSignUp = (props) => {
                                 {!["pattern", "required"].includes(errors.email?.type) && errors.email?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl id="numSecu" isInvalid={errors.numSecu ? true : false} mb={"1rem"}>
+                        <FormControl id="numSecu" isInvalid={!!errors.numSecu} mb={"1rem"}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
                             <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im})}/>
                             <FormErrorMessage>
