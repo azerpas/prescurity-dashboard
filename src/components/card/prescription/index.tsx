@@ -2,13 +2,11 @@ import React, {useContext, useState} from "react";
 import {Prescription} from "../../../entity/Prescription";
 import {Box} from "@chakra-ui/layout";
 import {SimpleGrid, Heading, Text, Badge, IconButton, Accordion, AccordionButton, AccordionItem, AccordionPanel, Divider} from "@chakra-ui/react";
-import {ChevronDownIcon} from "@chakra-ui/icons";
 import {Button} from "@chakra-ui/button";
-import {Patient} from "../../../entity/Patient"
 import {Contract} from "web3-eth-contract";
 import {UserContext} from "../../../context/user";
 import { UserType } from "../../../types/user";
-import { FaLessThanEqual } from "react-icons/fa";
+
 
 const Index = ({prescription , contrat}: { prescription: Prescription , contrat:Contract }) => {
     const userData = useContext(UserContext);
@@ -33,12 +31,8 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
             prescription.paid=true;
             console.log(response);
         }catch (e){
-
             console.log(e);
-
         }
-    
-
     }
     getUserType();
 
@@ -89,42 +83,44 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
 
                             {
                                 userType === UserType.patient ?
-                                (prescription.claimed ===false ?
-                                (prescription.paid ===false  ?
-                                    <Box>
-                                        <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
-                                    </Box>
+                                    (prescription.claimed ===false ?
+                                        (prescription.paid ===false  ?
+                                        <Box>
+                                            <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
+                                        </Box>
+                                        :
+                                        <>
+                                        </>
+                                        )
                                     :
                                     <>
                                     </>
                                     )
-                                    :
-                                    <>
-                                    </>)
-                                    :
-                                    <>
-                                    </>
+                                :
+                                <>
+                                </>
                             }
 
                             {
                                 userType === UserType.pharmacy ?
-                                (prescription.claimed ===false ?
-                                (prescription.paid ===false  ?
-                                    <>
-                                    </>
+                                    (prescription.claimed ===false ?
+                                        (prescription.paid ===false  ?
+                                        <>
+                                        </>
+                                        :
+                                        <>
+                                        <Box>
+                                            <Button fontSize="sm" onClick={claimPrescription}>claim</Button>
+                                        </Box>
+                                        </>
+                                        )
                                     :
                                     <>
-                                    <Box>
-                                        <Button fontSize="sm" onClick={claimPrescription}>claim</Button>
-                                    </Box>
                                     </>
                                     )
-                                    :
-                                    <>
-                                    </>)
-                                    :
-                                    <>
-                                    </>
+                                :
+                                <>
+                                </>
                             }
                             
                         </SimpleGrid>
