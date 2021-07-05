@@ -12,11 +12,13 @@ interface DoctorProps {
     address: string;
     name: string;
     speciality: string;
+    email: string;
 }
 
 interface PharmacyProps {
     address: string;
     name: string;
+    email: string;
 }
 
 const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
@@ -45,6 +47,17 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
             try {
                 //@ts-ignore
                 const response = await contrat.methods.addDoctor(props.address,props.name,props.speciality).send({from: selectedAddr});
+                const res = await fetch("/api/user", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(props)
+                });
+                if (!response.ok) {
+                    throw new Error(response);
+                }
                 toast({
                     title: "Doctor created.",
                     description: "We've linked the Ethereum address to a doctor.",
@@ -67,6 +80,17 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
             try {
                 //@ts-ignore
                 const response = await contrat.methods.addPharmacy(props.address,props.name).send({from: selectedAddr});
+                const res = await fetch("/api/user", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(props)
+                });
+                if (!response.ok) {
+                    throw new Error(response);
+                }
                 toast({
                     title: "Pharmacy created.",
                     description: "We've linked the Ethereum address to a Pharmacy.",
@@ -137,6 +161,10 @@ const FormFields = (props: FormProps) => {
     if(props.type === UserType.doctor){
         return (
             <>
+                <FormControl id="email" isInvalid={props.errors.name ? true : false}>
+                    <FormLabel>Email</FormLabel>
+                    <Input {...props.register("email", {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im })}/>
+                </FormControl>
                 <FormControl id="name" isInvalid={props.errors.name ? true : false}>
                     <FormLabel>Name</FormLabel>
                     <Input {...props.register("name", {required: true })}/>
@@ -146,7 +174,7 @@ const FormFields = (props: FormProps) => {
                     <Input {...props.register("speciality", {required: true })}/>
                 </FormControl>
                 <FormControl id="address" isInvalid={props.errors.address ? true : false}>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>Ethereum address</FormLabel>
                     <Input {...props.register("address", {required: true })}/>
                 </FormControl>
             </>
@@ -154,12 +182,16 @@ const FormFields = (props: FormProps) => {
     }else if (props.type === UserType.pharmacy){
         return (
             <>
+                <FormControl id="email" isInvalid={props.errors.name ? true : false}>
+                    <FormLabel>Email</FormLabel>
+                    <Input {...props.register("email", {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/im })}/>
+                </FormControl>
                 <FormControl id="name" isInvalid={props.errors.name ? true : false}>
                     <FormLabel>Name</FormLabel>
                     <Input {...props.register("name", {required: true })}/>
                 </FormControl>
                 <FormControl id="address" isInvalid={props.errors.address ? true : false}>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>Ethereum address</FormLabel>
                     <Input {...props.register("address", {required: true })}/>
                 </FormControl>
             </>
