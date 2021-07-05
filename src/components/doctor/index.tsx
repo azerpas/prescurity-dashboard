@@ -13,21 +13,29 @@ import {Contract} from "web3-eth-contract";
 import {getSelectedAddress} from "../../utils/web3";
 
 // components
-
-import Medicine from "./Medicine"
-import {Alert, AlertIcon, Grid, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormControl, FormLabel, Grid, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
 import {Prescription} from "../../entity/Prescription";
 import {Patient} from "../../entity/Patient";
 import Header from "../header";
+import {useForm} from "react-hook-form";
+
+
+interface PrescriptionProps {
+    patientAddress: string
+    medicine: string
+    frequency: string
+    amount: number
+}
+
 
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
-
+    const {isOpen, onOpen, onClose} = useDisclosure()
     const [patientAddress, setPatientAddress] = useState("")
     const [pharmacistAddress, setPharmacistAddress] = useState("")
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
     const [patients, setPatients] = useState<Patient[]>([]);
     const [newPrescription, setNewPrescription] = useState<boolean>(false);
-
+    const {register, formState: {errors}, handleSubmit, getValues} = useForm<PrescriptionProps>();
 
     const setContent = async (index) => {
         if (index == 0) {
@@ -51,6 +59,12 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
 
     }
 
+    const createPrescription = () => {
+
+        // add medicine to the posting prescription
+
+    }
+
 
     // https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/?node-id=170%3A9169
 
@@ -66,123 +80,118 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
 
             <Container height="100vh" bg="none">
 
-                {
-                    newPrescription ?
-                        <>
-                            <Flex direction={{base: "column", md: "row"}} justifyContent={{md: "space-between"}} margin="1rem" padding="1rem">
-                                <Flex direction="column" alignItems="flex-start" margin={{md: "1rem"}} padding={{md: "1rem"}} marginLeft={{base: "2rem"}}>
-                                    <Heading fontSize={{base: "lg", md: "xl"}} marginLeft="1rem">Informations</Heading>
-                                    <Container alignItems="left" bg="none" margin="2rem">
-                                        <Text fontSize={{base: "sm", md: "md"}} color="gray.700"> Patient address </Text>
-                                        <Input
-                                            size="md"
-                                            borderRadius="6px"
-                                            borderColor="gray.200"
-                                            width="20rem"
-                                            onChange={(e) => setPatientAddress(e.target.value)}
-                                        />
-                                        <Text fontSize={{base: "xs", md: "sm"}} as="u" color="gray.500">OR scan the QR code</Text>
+                <>
+                    <Button onClick={onOpen}>New prescription</Button>
+                    <Tabs onChange={setContent}>
+                        <TabList>
+                            <Tab w={"50%"}>Prescriptions</Tab>
+                            <Tab w={"50%"}>Patients</Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel>
+                                <Grid>
+                                    {
+                                        prescriptions.map((prescription: Prescription) => {
 
-                                    </Container>
+                                        })
+                                    }
+                                    {
+                                        prescriptions.length == 0 ?
+                                            <Box>
+                                                <Alert status="warning">
+                                                    <AlertIcon/>
+                                                    No prescription found !
+                                                </Alert>
+                                            </Box> : ""
+                                    }
+                                </Grid>
+                            </TabPanel>
 
-                                    <Container alignItems="left" bg="none" margin="2rem">
+                            <TabPanel>
+                                <Grid>
+                                    {
+                                        patients.map((patient: Patient) => {
 
-                                        <Text fontSize={{base: "sm", md: "md"}} color="gray.700"> Pharmacist address</Text>
-                                        <Input
-                                            size="md"
-                                            borderRadius="6px"
-                                            borderColor="gray.200"
-                                            width="20rem"
-                                            onChange={(e) => setPatientAddress(e.target.value)}
-                                        />
-                                        <Text fontSize={{base: "xs", md: "sm"}} as="u" color="gray.500">OR scan the QR code</Text>
+                                        })
+                                    }
+                                    {
+                                        patients.length == 0 ?
+                                            <Box>
+                                                <Alert status="warning">
+                                                    <AlertIcon/>
+                                                    No patient found !
+                                                </Alert>
+                                            </Box>
+                                            :
+                                            ""
 
-                                    </Container>
-
-
-                                </Flex>
-
-
-                                <Flex direction="column" alignItems="flex-start" margin={{md: "1rem"}} padding={{md: "1rem"}} marginLeft={{base: "2rem"}}>
-                                    <Heading fontSize={{base: "lg", md: "xl"}} marginLeft="1rem" marginBottom="1rem">Medicine</Heading>
-
-                                    <Medicine/>
-
-                                </Flex>
-                                <Button
-                                    marginTop="1rem"
-                                    alignSelf={{base: "center", md: "left"}}
-                                    fontSize={{base: "xs", md: "sm"}}
-                                >
-                                    Add new medicine
-                                </Button>
-
-                            </Flex>
-                            <Button colorScheme="red" onClick={()=>{setNewPrescription(false)}} margin="2rem" >Cancel</Button>
-                            <Button colorScheme="blackAlpha" margin="2rem">Transfer</Button>
-                        </>
-                        :
-
-                        <>
-                            <Button onClick={()=>{setNewPrescription(true)}}>New prescription</Button>
-                            <Tabs onChange={setContent}>
-                                <TabList>
-                                    <Tab w={"50%"}>Prescriptions</Tab>
-                                    <Tab w={"50%"}>Patients</Tab>
-                                </TabList>
-                                <TabPanels>
-                                    <TabPanel>
-                                        <Grid>
-                                            {
-                                                prescriptions.map((prescription: Prescription) => {
-
-                                                })
-                                            }
-                                            {
-                                                prescriptions.length == 0 ?
-                                                    <Box>
-                                                        <Alert status="warning">
-                                                            <AlertIcon/>
-                                                            No prescription found !
-                                                        </Alert>
-                                                    </Box> : ""
-                                            }
-                                        </Grid>
-                                    </TabPanel>
-
-                                    <TabPanel>
-                                        <Grid>
-                                            {
-                                                patients.map((patient: Patient) => {
-
-                                                })
-                                            }
-                                            {
-                                                patients.length == 0 ?
-                                                    <Box>
-                                                        <Alert status="warning">
-                                                            <AlertIcon/>
-                                                            No patient found !
-                                                        </Alert>
-                                                    </Box>
-                                                    :
-                                                    ""
-
-                                            }
-                                        </Grid>
-                                    </TabPanel>
-                                </TabPanels>
-                            </Tabs>
-                        </>
-                }
+                                    }
+                                </Grid>
+                            </TabPanel>
+                        </TabPanels>
+                    </Tabs>
+                </>
 
             </Container>
-
-
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>New Prescription</ModalHeader>
+                    <ModalCloseButton/>
+                    <Container p={"2rem"}>
+                        <form onSubmit={handleSubmit(createPrescription)}>
+                            <FormControl isInvalid={!!errors.patientAddress}>
+                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient</FormLabel>
+                                <Input
+                                    size="md"
+                                    borderRadius="6px"
+                                    borderColor="gray.200"
+                                    width="20rem"
+                                    {...register("patientAddress", {required: true})}
+                                />
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.medicine}>
+                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
+                                <Input
+                                    size="md"
+                                    borderRadius="6px"
+                                    borderColor="gray.200"
+                                    width="20rem"
+                                    {...register("medicine", {required: true})}
+                                />
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.frequency}>
+                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
+                                <Input
+                                    size="md"
+                                    borderRadius="6px"
+                                    borderColor="gray.200"
+                                    width="20rem"
+                                    {...register("frequency", {required: true})}
+                                />
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.amount}>
+                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
+                                <Input
+                                    size="md"
+                                    borderRadius="6px"
+                                    borderColor="gray.200"
+                                    width="20rem"
+                                    type={"number"}
+                                    {...register("amount", {required: true})}
+                                />
+                            </FormControl>
+                            <Flex mt={"2rem"}>
+                                <Button m={"auto"} type={"submit"}>Create</Button>
+                                <Button m={"auto"} colorScheme={"red"} onClick={onClose}>Cancel</Button>
+                            </Flex>
+                        </form>
+                    </Container>
+                </ModalContent>
+            </Modal>
         </>
 
     )
 }
-
 export default Index;
 
