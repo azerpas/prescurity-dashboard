@@ -72,8 +72,7 @@ const HeaderContent = () => {
                                 <Link href="/signOut"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Sign Out</Button></a></Link>
                             :
                                 <>
-                                <Link href="/signUp"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Sign Up</Button></a></Link>
-                                <Link href="/login"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Login</Button></a></Link>
+                                <Link href="/login"><a><Button ml="5" shadow="lg" bg={button} color="white" variant="solid">Dashboard</Button></a></Link>
                                 </>
                         }
 

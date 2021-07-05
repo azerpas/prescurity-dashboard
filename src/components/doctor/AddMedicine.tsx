@@ -1,13 +1,20 @@
-import { Box, Text, Flex} from "@chakra-ui/layout" ;
-import { CloseButton } from "@chakra-ui/close-button";
+
+// chakra
+import { Text } from "@chakra-ui/layout" ;
+import { Input }  from "@chakra-ui/input" ;
+
+// react
 import { useState } from "react" ;
+import {Button} from "@chakra-ui/button";
 
 const AddMedicine = () => {
 
     const [medicine, setMedname] = useState<string|undefined>();
     const [frequency, setFrequency] = useState<string|undefined>();
 
-    const handleAdd = () =>{
+    const handleAdd = () => {
+
+        // add medicine to the posting prescription
         
     }
 
@@ -15,25 +22,29 @@ const AddMedicine = () => {
 
     return (
 
-        <Flex alignContent={{base:"center" , md:"left"}}    size={{base:"sm", md:"md"}} border="1px" borderColor="gray.600" borderRadius="6px" margin="0.5rem" marginLeft="2rem">
-                    
-    <Box padding="0.5rem" >
+        <>
+            <Text fontSize={{base:"sm", md:"md"}} color="gray.700">Medicine</Text>
+            <Input 
+                size="md" 
+                borderRadius="6px" 
+                borderColor="gray.200"  
+                width="20rem" 
+                
+            />
+            <Text fontSize={{base:"sm", md:"md"}}  color="gray.700">Frequency</Text> 
+            <Input 
+                size="md"
+                borderRadius="6px"
+                borderColor="gray.200"
+                width="20rem"
+            />
+            <Button onClick={handleAdd}>Add</Button>
 
-        <ul ><Text fontWeight="bold" >MedicineName</Text></ul>
-        <ul ><Text >doliprane </Text></ul>
+        
+        </>
 
-    </Box>
+        
 
-    <Box padding="0.5rem" >
-
-    <ul><Text fontWeight="bold">frequency</Text></ul>
-    <ul><Text >2x par jour</Text></ul>
-
-    </Box >
-
-    <CloseButton/>
-
-    </Flex>
     )
 
 }
