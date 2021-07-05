@@ -26,21 +26,18 @@ const Dashboard = () => {
     const router = useRouter();
     const [web3, setWeb3] = useState<undefined|Web3>();
     const [smartContract, setContract] = useState<undefined|Contract>();
-    const [userAddress, setUserAddress] = useState<undefined|string>(); // TODO: to set inside the UserContext directly
     const [userType, setUserType] = useState<undefined|UserType>(); // TODO: to set inside the UserContext directly
 
     const initializeBlockchain = async () => { // TODO: import from another file
         const [web, contract] = await initWeb3();
         setWeb3(web);
         setContract(contract);
-        const selected = await getSelectedAddress();
-        setUserAddress(selected);
     }
 
     const getUserType = async () => {
-        console.log(`Getting user type of: ${userAddress}`);
-        const type = await smartContract.methods.getUserType().call({from: userAddress});
-        console.log(`${userAddress} type of user: ${type}`);
+        console.log(`Getting user type of: ${userData.selectedAddress}`);
+        const type = await smartContract.methods.getUserType().call({from: userData.selectedAddress});
+        console.log(`${userData.selectedAddress} type of user: ${type}`);
         setUserType(type);
     }
 
@@ -59,7 +56,7 @@ const Dashboard = () => {
     // Les ifs sont organisés dans cet ordre précis pour être "rendus" en cascade
     if (!userData.user){
         return(<UserLoading/>);
-    }else if(web3 && userData.user && userAddress && userType) {
+    }else if(web3 && userData.user && userData.selectedAddress && userType) {
         // Doctor @hugo
         if(userType === UserType.doctor){
             return(
@@ -84,9 +81,9 @@ const Dashboard = () => {
         }else{
             return(<>Hello {userType === UserType.none ? "no type" : userType}</>); // page complète en fonction du rôle de l'user
         }
-    }else if (userData.user && (!web3 || !smartContract || !userAddress)){
+    }else if (userData.user && (!web3 || !smartContract || !userData.selectedAddress)){
         initializeBlockchain();
-        return(<><InitBlockchainLoading step={web3 ? 1 : (smartContract ? 2 : (userAddress ? 3 : (userType ? 4 : 0)))}/></>);
+        return(<><InitBlockchainLoading step={web3 ? 1 : (smartContract ? 2 : (userData.selectedAddress ? 3 : (userType ? 4 : 0)))}/></>);
     }else{
         return(<>Nothing to show rn</>)
     }

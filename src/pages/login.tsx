@@ -17,6 +17,7 @@ import { PresLink } from '../components/link';
 import { useContext } from 'react';
 import { AlertContext } from '../context/alert';
 import { MajorAlert } from '../components/alert';
+import * as ROUTES from '../constants/routes';
 
 function Login() {
     const router = useRouter();
@@ -28,7 +29,7 @@ function Login() {
         const signedWithLink = async () => {
             email = window.localStorage.getItem('emailForSignIn');
             if (!email){
-                await router.push('/login');
+                await router.push(ROUTES.LOGIN);
                 setChecking(false);
             }
             try {
@@ -56,6 +57,11 @@ function Login() {
         );
     }
 
+    if(success){
+        router.push(ROUTES.DASHBOARD);
+        return <></>;
+    }
+
     return (
         <Container height="100vh">
             <Header/>
@@ -68,7 +74,7 @@ function Login() {
                 { success ? 
                     <>
                         <Text>Your are signing in with {email} </Text>
-                        <Link href="/"><a><Button>Return to home</Button></a></Link>
+                        <Link href={ROUTES.DASHBOARD}><a><Button>Go to the dashboard</Button></a></Link>
                     </>
                     :
                     <>

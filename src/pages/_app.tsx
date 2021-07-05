@@ -12,6 +12,8 @@ import {getSelectedAddress, initWeb3} from "../utils/web3";
 import {Pharmacy} from "../entity/Pharmacy";
 import {Doctor} from "../entity/Doctor";
 import {Owner} from "../entity/Owner";
+import { useRouter } from 'next/router';
+import * as ROUTES from '../constants/routes';
 
 const onChainChange = () => {
     window.ethereum.on('chainChanged', (_chainId: string) => {
@@ -23,6 +25,8 @@ const onChainChange = () => {
 function MyApp({Component, pageProps}: AppProps) {
     const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     const [alertState, setAlertState] = useState<IAlertContext>({title: null, description: null});
+    const router = useRouter();
+
     useEffect(() => {
         if(!window.ethereum){
             setAlertState({title: "Browser not compatible", description: "Your browser is outdated. Please use Firefox, Brave Browser or Chrome. Prescurity will not work with your browser."});
@@ -55,6 +59,9 @@ function MyApp({Component, pageProps}: AppProps) {
             } catch (error) {
                 console.error("");
                 setAlertState({title: "Ethereum address not found", description: error.message});
+                if(router.pathname !== ROUTES.LOGIN && router.pathname !== ROUTES.SIGNUP){
+                    router.push(ROUTES.LOGIN)
+                }
                 return;
             }
             if (credentialUser) {
