@@ -1,4 +1,4 @@
-import {Flex, Heading, Text, Box} from "@chakra-ui/layout"
+import {Flex, Heading, Box} from "@chakra-ui/layout"
 import {Container} from "../Container"
 import {Footer} from '../Footer'
 import {Input} from "@chakra-ui/input"
@@ -7,30 +7,22 @@ import Header from '../../components/header'
 import React, {useContext, useState} from 'react'
 import Web3 from "web3";
 import {Contract} from "web3-eth-contract";
-import {initWeb3} from "../../utils/web3";
 import {Prescription} from "../../entity/Prescription";
 import CardPrescription from "../card/prescription";
-import {FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/react";
 import {UserContext} from "../../context/user";
 import {useForm} from "react-hook-form";
-import {Doctor} from "../../entity/Doctor";
-import {Patient} from "../../entity/Patient";
-import {randomInt} from "crypto";
-
-
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
-}
-
 interface PharmacistProps {
     num: number
 }
 
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
+    const [noPrescriptions, setNoPrescriptions] = useState<boolean>(false);
     const [prescritions, setPrescriptions] = useState<Prescription[]>([]);
     const {register, formState: {errors}, handleSubmit, getValues} = useForm<PharmacistProps>();
     const context = useContext(UserContext);
     const getPrescriptions = async () => {
+        setNoPrescriptions(false);
         try {
             const response = await contrat.methods.showPrescriptionPatient(getValues("num")).call({from: context.selectedAddress});
             var res: Prescription[] = [];
@@ -38,22 +30,16 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 const presc = response[i];
                 var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: context.selectedAddress});
                 // TODO : getPatient in Prescurity.sol
-                 var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from:context.selectedAddress});
+                var patient = await contrat.methods.getPatient(parseInt(presc.patientId)).call({from: context.selectedAddress});
                 console.log(patient);
-                var temp = {...presc, doctor: doctor , patient : patient}
+                var temp = {...presc, doctor: doctor, patient: patient}
                 res.push(Prescription.makePrescriptionWithArray(temp));
             }
+            setNoPrescriptions(response.length == 0);
             setPrescriptions(res);
         } catch (e) {
             console.log(e);
         }
-        /*const doctor = new Doctor('doctor',"accessToken","refreshToken","doctor@doctor.com","1234","généraliste","0x24687346");
-        const patient = new Patient('patient',"accessToken","refreshToken","patient@patient.com","4321","0x6873468");
-        const prescriptions: Prescription[] = [];
-        for (var i = 0 ; i  < 10 ; i++){
-            prescriptions.push(new Prescription(i,patient,doctor,"covid-"+i,"medic1;medic2,medic3",i+"/J",randomDate(new Date(2012, 0, 1), new Date()),randomDate(new Date(2012, 0, 1), new Date()),!!Math.floor(Math.random() * 2),!!Math.floor(Math.random() * 2)))
-
-        }*/
     }
     return (
         <Container height="100vh" bg="none" alignItems="left">
@@ -61,7 +47,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             <Flex direction="column" margin="1rem" align="center">
                 <Heading textAlign="center"> Welcome to your Prescurity pharmacist's area</Heading>
                 <form onSubmit={handleSubmit(getPrescriptions)}>
-                    <FormControl mt={"2rem"} bg={"none"} isInvalid={errors.num ? true : false}>
+                    <FormControl mt={"2rem"} bg={"none"} isInvalid={!!errors.num}>
                         <Flex flexDirection={"column"} experimental_spaceY={"3"}>
                             <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700"> Patient number 🏥</FormLabel>
                             <Input size="md" borderRadius="6px" borderColor="gray.200" width="20rem" {...register("num", {required: true, pattern: /[0-9]{15}/im})}/>
@@ -78,9 +64,18 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
                 <Container m={{base: "0", md: "0"}} bg={"none"}>
                     {
-                        prescritions.map((prescription: Prescription) => {
-                            return <CardPrescription prescription={prescription} contrat={contrat}/>
-                        })
+                        noPrescriptions ?
+                            <Box>
+                            <Alert status="warning">
+                                <AlertIcon/>
+                                No prescription found !
+                            </Alert>
+                            </Box>
+                            :
+                            prescritions.map((prescription: Prescription) => {
+                                return <CardPrescription prescription={prescription} contrat={contrat}/>
+                            })
+
                     }
                 </Container>
             </Flex>
