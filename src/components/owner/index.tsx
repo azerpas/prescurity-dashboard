@@ -55,7 +55,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     method: 'POST',
                     body: JSON.stringify(props)
                 });
-                if (!response.ok) {
+                if (!res.ok) {
                     throw new Error(response);
                 }
                 toast({
@@ -88,7 +88,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     method: 'POST',
                     body: JSON.stringify(props)
                 });
-                if (!response.ok) {
+                if (!res.ok) {
                     throw new Error(response);
                 }
                 toast({
