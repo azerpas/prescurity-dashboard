@@ -57,9 +57,10 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
                             <Box textAlign={{base: "left", sm: "center"}} d={"flex"}>
                                 {
                                     prescription.paid ?
-                                        (prescription.claimed ? <Badge m={"auto"} colorScheme="green">Claimed</Badge> : <Badge m={"auto"} colorScheme="red">Not claimed</Badge>)
+                                        (prescription.claimed ? <Badge m={"auto"} colorScheme="green">Claimed</Badge> : <Badge m={"auto"}>Not claimed</Badge>)
                                         :
-                                        <Badge m={"auto"}>Not paid</Badge>
+                                        <Badge m={"auto"} colorScheme="red">Not paid</Badge>
+                                        // TODO: Add a "step indicator", ex: Not claimed (Step 2/3)
                                 }
                             </Box>
                         </SimpleGrid>
@@ -86,7 +87,8 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
                                     (prescription.claimed === false ?
                                         (prescription.paid === false  ?
                                             <Box>
-                                                <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
+                                                <Heading fontSize="sm">Actions</Heading>
+                                                <Button fontSize="sm" onClick={payPrescription} size="xs" isFullWidth>Pay</Button>
                                             </Box>
                                         :
                                             <>
@@ -110,7 +112,8 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
                                         :
                                             <>
                                             <Box>
-                                                <Button fontSize="sm" onClick={claimPrescription}>claim</Button>
+                                                <Heading fontSize="sm">Actions</Heading>
+                                                <Button fontSize="sm" onClick={claimPrescription} size="xs" isFullWidth>Claim</Button>
                                             </Box>
                                             </>
                                         )
