@@ -13,7 +13,7 @@ import {Contract} from "web3-eth-contract";
 import {getSelectedAddress} from "../../utils/web3";
 
 // components
-import {Alert, AlertIcon, FormControl, FormLabel, Grid, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormControl, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
 import {Prescription} from "../../entity/Prescription";
 import {Patient} from "../../entity/Patient";
 import Header from "../header";
@@ -147,34 +147,36 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                 <ModalContent>
                     <ModalHeader>New Prescription</ModalHeader>
                     <ModalCloseButton/>
-
                     <form onSubmit={handleSubmit(createPrescription)}>
-                        <Container p={"2rem"} experimental_spaceY={"1rem"}>
-                            <FormControl isInvalid={!!errors.numSecu}>
-                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient</FormLabel>
-                                <Input {...register("numSecu", {required: true})} />
-                            </FormControl>
-                            <FormControl isInvalid={!!errors.medicine}>
-                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
-                                <Input {...register("medicine", {required: true})} />
-                            </FormControl>
-                            <FormControl isInvalid={!!errors.frequency}>
-                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
-                                <Input {...register("frequency", {required: true})} />
-                            </FormControl>
-                            <FormControl isInvalid={!!errors.frequency}>
-                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease</FormLabel>
-                                <Input {...register("disease", {required: true})} />
-                            </FormControl>
-                            <FormControl isInvalid={!!errors.amount}>
-                                <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
-                                <Input {...register("amount", {required: true})} />
-                            </FormControl>
-                            <Flex mt={"2rem"}>
-                                <Button m={"auto"} type={"submit"}>Create</Button>
-                                <Button m={"auto"} colorScheme={"red"} onClick={closeModal}>Cancel</Button>
-                            </Flex>
-                        </Container>
+                        <ModalBody>
+                            <Container p={"2rem"} experimental_spaceY={"1rem"}>
+                                <FormControl isInvalid={!!errors.numSecu}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient</FormLabel>
+                                    <Input {...register("numSecu", {required: true})} />
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.medicine}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
+                                    <Input {...register("medicine", {required: true})} />
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.frequency}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
+                                    <Input {...register("frequency", {required: true})} />
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.frequency}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease</FormLabel>
+                                    <Input {...register("disease", {required: true})} />
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.amount}>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
+                                    <Input {...register("amount", {required: true})} />
+                                </FormControl>
+
+                            </Container>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button m={"auto"} colorScheme={"green"} type={"submit"}>Create prescription</Button>
+                            <Button m={"auto"} colorScheme={"red"} onClick={closeModal}>Cancel</Button>
+                        </ModalFooter>
                     </form>
                 </ModalContent>
             </Modal>
