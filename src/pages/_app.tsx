@@ -54,7 +54,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 selectedAddress = getSelectedAddress();
             } catch (error) {
                 console.error("");
-                setAlertState({title: "Ethereum address not found !", description: error.message});
+                setAlertState({title: "Ethereum address not found", description: error.message});
                 return;
             }
             if (credentialUser) {

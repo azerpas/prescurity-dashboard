@@ -5,6 +5,7 @@ export interface IAlertContext {
     title: string;
     description: string;
     status?: AlertStatus;
+    display?: boolean;
 }
 
 export const AlertContext = createContext({} as IAlertContext);

@@ -6,8 +6,9 @@ import {
     FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert
 
 } from "@chakra-ui/react"
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import {useForm} from "react-hook-form";
+import { AlertContext } from "../../context/alert";
 import firebase from "../../utils/client";
 
 
@@ -28,6 +29,7 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
     const [emailSended, setEmailSended] = useState(false);
     const [errorUserExist, setErrorUserExist] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<LoginProps>();
+    const alertContext = useContext(AlertContext);
 
     const login = async (props: LoginProps) => {
         try {
@@ -84,7 +86,7 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
                             </Text> : ""
                     }
                     <Flex text-align="center" mt="3">
-                        <Input type="submit" color="white" value="Sign In" bgColor="black" disabled={emailSended || isSubmitting}/>
+                        <Input type="submit" color="white" value={alertContext.title ? alertContext.title : "Sign in"} bgColor={alertContext.title ? "red" : "black"} disabled={emailSended || isSubmitting || alertContext.title === "Browser not compatible" || alertContext.title === "Ethereum address not found"}/>
                     </Flex>
                 </form>
             }
