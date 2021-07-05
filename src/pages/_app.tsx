@@ -51,7 +51,6 @@ function MyApp({Component, pageProps}: AppProps) {
             setAlertState({title: null, description: null});
         });
 
-
         const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
             let selectedAddress: string | null = null;
             try {
