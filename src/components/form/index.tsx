@@ -3,7 +3,7 @@ import {
     Grid,
     FormControl,
     Input,
-    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert
+    FormLabel, HTMLChakraProps, Heading, Text, FormErrorMessage, AlertIcon, AlertTitle, CloseButton, Alert, useToast
 
 } from "@chakra-ui/react"
 import React, {useContext, useState} from "react"
@@ -113,7 +113,7 @@ export const FormSignUp = (props) => {
     const [errorExistBC, setErrorExistBC] = useState(false);
     const {register, formState: {errors, isSubmitting}, handleSubmit} = useForm<SignUpProps>();
     const alertContext = useContext(AlertContext);
-
+    const toast = useToast();
     const signUp = async (props: SignUpProps) => {
         try {
             const response = await fetch("/api/user", {
@@ -124,7 +124,7 @@ export const FormSignUp = (props) => {
                 method: 'POST',
                 body: JSON.stringify(props)
             });
-            const dataApi = await response.json()
+            const dataApi = await response.clone().json()
             if (!response.ok) {
                 if (dataApi.userExist) setErrorExist(true);
                 else throw new Error(dataApi.message);
@@ -145,7 +145,13 @@ export const FormSignUp = (props) => {
             var errorCode = error.code;
             var errorMessage = error.message;
             console.warn(errorCode, " ==> ", errorMessage);
-            setErrorExist(true);
+            toast({
+                title: "Sign up error",
+                description: error.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     }
 
@@ -211,7 +217,7 @@ export const FormSignUp = (props) => {
                     {
                         errorExistBC ?
                             <Alert status={"error"} mt={"1rem"}>
-                                <AlertIcon/>Ce numero de securité social est déjà utilisée !
+                                <AlertIcon/>Ce numero de securité social est déjà utilisé !
                             </Alert> : ""
                     }
                     <Flex text-align="center" mt="3">
