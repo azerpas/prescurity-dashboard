@@ -196,11 +196,11 @@ export const FormSignUp = (props) => {
                         </FormControl>
                         <FormControl id="numSecu" isInvalid={!!errors.numSecu} mb={"1rem"}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
-                            <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im})}/>
+                            <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im , maxLength:15})}/>
                             <FormErrorMessage>
-                                {errors.numSecu?.type === "pattern" && "Format du numero de securité sociale invalide"}
+                                {(errors.numSecu?.type === "pattern" || errors.numSecu?.type === "maxLength" )&& "Format du numero de securité sociale invalide"}
                                 {errors.numSecu?.type === "required" && "Entrez votre numéro de sécurité social"}
-                                {!["pattern", "required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
+                                {!["maxLength","pattern", "required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
                             </FormErrorMessage>
                         </FormControl>
                         <FormControl>
