@@ -21,6 +21,7 @@ import {useForm} from "react-hook-form";
 import {UserContext} from "../../context/user";
 import CardPrescription from "../card/prescription"
 import CardPatient from "../card/patient"
+import { isContext } from "vm";
 
 
 interface PrescriptionProps {
@@ -30,6 +31,8 @@ interface PrescriptionProps {
     amount: number,
     disease: string
 }
+
+
 
 
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
@@ -61,6 +64,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         // const response = contrat.methods.getPatients(...).call({from:...})
         // for(...response) { créer tableau de patient}
         // setPatients(patients)
+        
     }
 
     const getPrescriptions = async () => {
@@ -69,7 +73,20 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         // const response = contrat.methods.getPrescriptions(...).call({from:...})
         // for(...response) { créer tableau de prescription}
         // setPrescriptions(prescriptions)
-
+            try {
+                const response = await contrat.methods.showPrescriptionPatient(getValues("numSecu")).call({from: userData.selectedAddress});
+                var prescriptions : Prescription[] = [];
+                for (var i = 0; i < response.length; i++) {
+                    const presc = response[i];
+                    var prescription = await contrat.methods.getPrescription(presc.prescriptionId).call({from: userData.selectedAddress});
+                    console.log(prescription);
+                    var temp = {...presc, prescription: prescription}
+                    prescriptions.push(Prescription.makePrescriptionWithArray(temp))
+                }
+                setPrescriptions(prescriptions)
+            } catch (e) {
+                console.log(e);
+            }
     }
 
     const createPrescription = async () => {
