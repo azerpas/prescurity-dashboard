@@ -83,44 +83,44 @@ const Index = ({prescription , contrat}: { prescription: Prescription , contrat:
 
                             {
                                 userType === UserType.patient ?
-                                    (prescription.claimed ===false ?
-                                        (prescription.paid ===false  ?
-                                        <Box>
-                                            <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
-                                        </Box>
+                                    (prescription.claimed === false ?
+                                        (prescription.paid === false  ?
+                                            <Box>
+                                                <Button fontSize="sm" onClick={payPrescription}>Pay</Button>
+                                            </Box>
                                         :
-                                        <>
-                                        </>
+                                            <>
+                                            </>
                                         )
                                     :
-                                    <>
-                                    </>
+                                        <>
+                                        </>
                                     )
                                 :
-                                <>
-                                </>
+                                    <>
+                                    </>
                             }
 
                             {
                                 userType === UserType.pharmacy ?
-                                    (prescription.claimed ===false ?
-                                        (prescription.paid ===false  ?
-                                        <>
-                                        </>
+                                    (prescription.claimed === false ?
+                                        (prescription.paid === false  ?
+                                            <>
+                                            </>
                                         :
-                                        <>
-                                        <Box>
-                                            <Button fontSize="sm" onClick={claimPrescription}>claim</Button>
-                                        </Box>
-                                        </>
+                                            <>
+                                            <Box>
+                                                <Button fontSize="sm" onClick={claimPrescription}>claim</Button>
+                                            </Box>
+                                            </>
                                         )
                                     :
-                                    <>
-                                    </>
+                                        <>
+                                        </>
                                     )
                                 :
-                                <>
-                                </>
+                                    <>
+                                    </>
                             }
                             
                         </SimpleGrid>
