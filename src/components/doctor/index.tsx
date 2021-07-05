@@ -32,6 +32,8 @@ interface PrescriptionProps {
 }
 
 
+
+
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const {isOpen, onOpen, onClose} = useDisclosure()
     const [patientAddress, setPatientAddress] = useState("")
@@ -61,6 +63,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         // const response = contrat.methods.getPatients(...).call({from:...})
         // for(...response) { créer tableau de patient}
         // setPatients(patients)
+        
     }
 
     const getPrescriptions = async () => {
@@ -69,7 +72,6 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         // const response = contrat.methods.getPrescriptions(...).call({from:...})
         // for(...response) { créer tableau de prescription}
         // setPrescriptions(prescriptions)
-
         const response = contrat.methods.getLastDoctorPrescriptions(5).call({from:userData.selectedAddress});
         var res : Prescription[] = [];
         for (var i = 0; i < response.length; i++) {
@@ -80,7 +82,6 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             res.push(Prescription.makePrescriptionWithArray(temp));
         }
         setPrescriptions(res);
-
     }
 
     const createPrescription = async () => {
