@@ -66,7 +66,7 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
                     body: JSON.stringify(props)
                 });
                 if (!res.ok) {
-                    throw new Error((await res.json()).message);
+                    throw new Error((await res.clone().json()).message);
                 }
 
                 //@ts-ignore

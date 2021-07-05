@@ -44,7 +44,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     }, [])
 
     const getPrescriptions = async () => {
-        const response = await contrat.methods.getLastDoctorPrescriptions(5).call({from: userData.selectedAddress});
+        const response = await contrat.methods.getLastDoctorPrescriptions(7).call({from: userData.selectedAddress});
+        console.log(response)
         var res: Prescription[] = [];
         for (var i = 0; i < response.length; i++) {
             const presc = response[i];

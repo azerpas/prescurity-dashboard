@@ -121,9 +121,11 @@ export class Prescription {
 
 
     static makePrescriptionWithArray(array) {
+        const start = "" + (array.startTimestamp * 1000);
+        const end = "" + (array.endTimestamp * 1000);
         return new Prescription(array.id,
             new Patient(array.patient?.name, "", "", "", array.patient?.numero_secu, array.patient?.patientAddress),
             new Doctor(array.doctor?.name, "", "", "", array.doctor?.uid, array.doctor?.speciality, array.doctor?.doctorAddress),
-            array.disease, array.medicine, array.frequency, array.startTimestamp, array.endTimestamp,  array.claimed, array.paid);
+            array.disease, array.medicine, array.frequency, start,end,  array.claimed, array.paid);
     }
 }
