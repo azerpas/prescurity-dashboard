@@ -80,9 +80,10 @@ const FormLogin = (props: HTMLChakraProps<"form">) => {
                     </Flex>
                     {
                         errorUserExist ?
-                            <Text align={"center"} color={"red"} mt={"1rem"} fontWeight={"bold"}>
-                                Cette adresse mail ne correpond à aucun compte !
-                            </Text> : ""
+                            <Alert status="error" mt={"1rem"}>
+                                <AlertIcon/>
+                                <AlertTitle >Cette adresse mail ne correpond à aucun compte !</AlertTitle>
+                            </Alert> : ""
                     }
                     <Flex text-align="center" mt="3">
                         <Input type="submit" color="white" value={alertContext.title ? alertContext.title : "Sign in"} bgColor={alertContext.title ? "red" : "black"}
@@ -196,11 +197,11 @@ export const FormSignUp = (props) => {
                         </FormControl>
                         <FormControl id="numSecu" isInvalid={!!errors.numSecu} mb={"1rem"}>
                             <FormLabel>Social Security Number 🏥</FormLabel>
-                            <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im})}/>
+                            <Input type={"number"} {...register("numSecu", {required: true, pattern: /[0-9]{15}/im , maxLength:5})}/>
                             <FormErrorMessage>
-                                {errors.numSecu?.type === "pattern" && "Format du numero de securité sociale invalide"}
+                                {(errors.numSecu?.type === "pattern" || errors.numSecu?.type === "maxLength") && "Format du numero de securité sociale invalide"}
                                 {errors.numSecu?.type === "required" && "Entrez votre numéro de sécurité social"}
-                                {!["pattern", "required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
+                                {!["pattern", "required","maxLength"].includes(errors.numSecu?.type) && errors.numSecu?.message}
                             </FormErrorMessage>
                         </FormControl>
                         <FormControl>
