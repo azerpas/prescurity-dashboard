@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react';
+import {css, keyframes} from '@emotion/react';
 import styled from '@emotion/styled';
 
 type GradientProps = {number: number,colorFrom: string, colorTo: string, content: string, children: React.ReactNode, top?: string, bottom?: string}

@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {Prescription} from "../../../entity/Prescription";
 import {Box} from "@chakra-ui/layout";
-import {SimpleGrid, Heading, Text, Badge, IconButton, Accordion, AccordionButton, AccordionItem, AccordionPanel, Divider} from "@chakra-ui/react";
+import {Accordion, AccordionButton, AccordionItem, AccordionPanel, Badge, Heading, SimpleGrid, Text} from "@chakra-ui/react";
 import {Button} from "@chakra-ui/button";
 import {Contract} from "web3-eth-contract";
 import {UserContext} from "../../../context/user";

@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext} from 'react';
 import {User} from "../entity/User";
 
 export interface IUserContext {

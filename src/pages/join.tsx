@@ -1,13 +1,12 @@
 import {FormSignUp} from "../components/form";
-import {Button, Heading, Text} from "@chakra-ui/react";
+import {Heading} from "@chakra-ui/react";
 import {Footer} from "../components/Footer";
 import Header from "../components/header";
 import React, {useContext, useEffect, useState} from "react";
 import {Container} from "../components/Container";
 import firebase from "firebase";
 import {useRouter} from "next/router";
-import Link from "next/link";
-import {getSelectedAddress, initWeb3} from "../utils/web3";
+import {getSelectedAddress} from "../utils/web3";
 import {MajorAlert} from "../components/alert";
 import {AlertContext} from "../context/alert";
 import * as ROUTES from "../constants/routes";

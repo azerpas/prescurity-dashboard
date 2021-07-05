@@ -1,9 +1,9 @@
-import { IconButton, CloseButton, useColorModeValue, IconButtonProps, useBreakpointValue, useUpdateEffect, Flex, Box, BoxProps, Button, HStack, Center, Heading, Divider } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
+import {Box, BoxProps, Center, CloseButton, Divider, Flex, Heading, HStack, IconButton, IconButtonProps, useBreakpointValue, useColorModeValue, useUpdateEffect} from "@chakra-ui/react";
+import {useRouter} from "next/dist/client/router";
 import React from "react";
 import NextLink from "next/link";
-import { AiOutlineMenu } from "react-icons/ai";
-import { useElementScroll } from "framer-motion";
+import {AiOutlineMenu} from "react-icons/ai";
+import {useElementScroll} from "framer-motion";
 
 function NavLink({ href, children }) {
     const { pathname } = useRouter()

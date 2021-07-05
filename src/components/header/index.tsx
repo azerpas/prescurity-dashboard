@@ -1,22 +1,7 @@
-import {
-    chakra,
-    Button,
-    Flex,
-    Box,
-    HStack,
-    Icon,
-    IconButton,
-    Text,
-    Heading,
-    useColorMode,
-    useColorModeValue,
-    useDisclosure,
-    useUpdateEffect,
-    HTMLChakraProps,
-} from "@chakra-ui/react"
-import {FaMoon, FaSun, FaYoutube} from "react-icons/fa";
+import {Button, chakra, Flex, Heading, HStack, HTMLChakraProps, IconButton, useColorMode, useColorModeValue, useDisclosure, useUpdateEffect,} from "@chakra-ui/react"
+import {FaMoon, FaSun} from "react-icons/fa";
 import Link from "next/link"
-import React, {HTMLProps, useContext} from "react"
+import React, {useContext} from "react"
 import {MobileNavButton, MobileNavContent} from "./mobile";
 import {useViewportScroll} from "framer-motion";
 import styled from '@emotion/styled';

@@ -1,24 +1,12 @@
-import {
-    Box,
-    Button,
-    chakra,
-    Flex, Grid,
-    Heading,
-    SimpleGrid,
-    Text
-} from '@chakra-ui/react'
+import {Box, Button, chakra, Flex, Heading, SimpleGrid, Text} from '@chakra-ui/react'
 import Link from "next/link";
 import {Container} from '../components/Container'
-import {DarkModeSwitch} from '../components/DarkModeSwitch'
 import {Footer} from '../components/Footer'
 import {GradientWrapper} from '../components/gradient'
 import Header from '../components/header'
 import ContractSvg from '../components/svg/contract'
-import {Span} from "next/dist/telemetry/trace";
 import {useContext} from "react";
-import { UserContext} from "../context/user";
-import {User} from "../entity/User";
-import firebase from "../utils/client";
+import {UserContext} from "../context/user";
 
 const Word = (props: { children: React.ReactNode }) => {
     return (

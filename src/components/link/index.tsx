@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import Link, { LinkProps } from "next/link"
+import Link from "next/link"
 import React from "react";
 
 export const PresLink = (props) => {

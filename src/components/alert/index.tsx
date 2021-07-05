@@ -1,12 +1,6 @@
-import {
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    AlertDescription,
-    CloseButton,
-} from "@chakra-ui/react";
+import {Alert, AlertDescription, AlertIcon, AlertTitle,} from "@chakra-ui/react";
 import React from "react";
-import { IAlertContext } from "../../context/alert";
+import {IAlertContext} from "../../context/alert";
 
 export const MajorAlert = (props: IAlertContext) => {
     if(props.display === false){

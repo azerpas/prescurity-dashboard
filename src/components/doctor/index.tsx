@@ -2,7 +2,7 @@
 import React, {useContext, useEffect, useState} from "react";
 
 // chakra
-import {Container, Text, Flex, Heading, Box} from "@chakra-ui/layout";
+import {Box, Container, Heading} from "@chakra-ui/layout";
 import {Input} from "@chakra-ui/input";
 import {Button} from "@chakra-ui/button";
 
@@ -10,17 +10,14 @@ import {Button} from "@chakra-ui/button";
 // blockchain
 import Web3 from "web3";
 import {Contract} from "web3-eth-contract";
-import {getSelectedAddress} from "../../utils/web3";
 
 // components
-import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure} from "@chakra-ui/react";
 import {Prescription} from "../../entity/Prescription";
-import {Patient} from "../../entity/Patient";
 import Header from "../header";
 import {useForm} from "react-hook-form";
 import {UserContext} from "../../context/user";
 import CardPrescription from "../card/prescription"
-import CardPatient from "../card/patient"
 
 
 interface PrescriptionProps {

@@ -1,20 +1,12 @@
-import {
-    Heading,
-    Divider,
-    Flex,
-    Spacer,
-    Text, Button, Spinner, Alert, AlertIcon, AlertTitle, AlertDescription, useToast,
-} from '@chakra-ui/react'
+import {Button, Divider, Flex, Heading, Spinner, Text, useToast,} from '@chakra-ui/react'
 import Link from "next/link";
 import {Container} from '../components/Container'
 import Header from '../components/header'
 import firebase from "firebase";
 import {useRouter} from 'next/router';
 import FormLogin from "../components/form";
-import React, {useEffect} from 'react';
-import {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {PresLink} from '../components/link';
-import {useContext} from 'react';
 import {AlertContext} from '../context/alert';
 import {MajorAlert} from '../components/alert';
 import * as ROUTES from '../constants/routes';

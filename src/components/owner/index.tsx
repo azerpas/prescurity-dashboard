@@ -1,11 +1,10 @@
-import { Container, Button, Input, Text, Heading, Select, FormLabel, FormControl, useToast, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import React from "react";
-import { useState } from "react";
-import { DeepMap, FieldError, useForm, UseFormRegister } from "react-hook-form";
+import {Button, Container, FormControl, FormLabel, Heading, Input, Select, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useToast} from "@chakra-ui/react";
+import React, {useState} from "react";
+import {DeepMap, FieldError, useForm, UseFormRegister} from "react-hook-form";
 import Web3 from "web3";
-import { Contract } from "web3-eth-contract";
-import { UserType } from "../../types/user";
-import { getSelectedAddress } from "../../utils/web3";
+import {Contract} from "web3-eth-contract";
+import {UserType} from "../../types/user";
+import {getSelectedAddress} from "../../utils/web3";
 import Header from "../header";
 
 interface DoctorProps {
@@ -38,17 +37,6 @@ const Index = ({web, contrat}: {web: Web3, contrat: Contract}) => {
         console.log(response3);
         const response4 = await contrat.methods.addPharmacy(pharmacyAddress, "Pharmacie de la gare").send({from: selectedAddr});
         console.log(response4);
-
-    }
-    const setPrescription = async () => {
-        const selectedAddr = await getSelectedAddress();
-        const response2 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
-
-        const response3 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
-
-        const response4 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
-
-        const response5 = await contrat.methods.addPrescription(1,281129375779184,"dolijo", "Mal de tête", "2 fois par jour").send({from: selectedAddr});
 
     }
     const canSubmit = () => !docAddress || !patientAddress || !pharmacyAddress;

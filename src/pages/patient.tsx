@@ -1,30 +1,8 @@
-
-import {
-  Box,
-  Button,
-  chakra,
-  Flex, 
-  Grid,
-  Heading,
-  Link,
-  SimpleGrid,
-  Text,
-  Center,
-  useDisclosure
-} from '@chakra-ui/react';
+import {Avatar, Box, Center, Select, Text, useDisclosure} from '@chakra-ui/react';
 import {Container} from '../components/Container';
-import {DarkModeSwitch} from '../components/DarkModeSwitch';
-import {Footer} from '../components/Footer';
-import {GradientWrapper} from '../components/gradient';
 import Header from '../components/header';
-import ContractSvg from '../components/svg/contract';
-import {Span} from "next/dist/telemetry/trace";
-import { Select } from "@chakra-ui/react";
-import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import React from 'react';
-import { Icon } from '@chakra-ui/react';
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import {Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,} from "@chakra-ui/react";
+import {ChevronRightIcon} from "@chakra-ui/icons";
 
 function Patient() {
   const { isOpen, onOpen, onClose } = useDisclosure()

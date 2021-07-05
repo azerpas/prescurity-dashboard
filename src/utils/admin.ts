@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin'
+
 let firebasePrivateKey = process.env.PRIVATE_KEY!;
 
 if (!admin.apps.length) {

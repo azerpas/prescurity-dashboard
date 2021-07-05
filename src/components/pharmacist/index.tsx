@@ -78,9 +78,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                     }
                 </Container>
             </Flex>
-
             <Footer/>
-
         </Container>
     );
 }

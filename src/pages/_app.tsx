@@ -2,9 +2,9 @@ import {ChakraProvider} from '@chakra-ui/react'
 
 import theme from '../theme'
 import {AppProps} from 'next/app'
-import {IUserContext, UserContext} from "../context/user";
+import {UserContext} from "../context/user";
 import {AlertContext, IAlertContext} from "../context/alert";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {User} from "../entity/User";
 import firebase from "../utils/client";
 import {Patient} from "../entity/Patient";
@@ -12,7 +12,7 @@ import {getSelectedAddress, initWeb3} from "../utils/web3";
 import {Pharmacy} from "../entity/Pharmacy";
 import {Doctor} from "../entity/Doctor";
 import {Owner} from "../entity/Owner";
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import * as ROUTES from '../constants/routes';
 
 const onChainChange = () => {

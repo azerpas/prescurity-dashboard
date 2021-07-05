@@ -1,16 +1,16 @@
 // NextJS React
-import { useRouter } from "next/router";
-import React, { useContext, useState, useEffect } from "react";
+import {useRouter} from "next/router";
+import React, {useContext, useEffect, useState} from "react";
 
 // Web3
 import Web3 from "web3";
 import {Contract} from "web3-eth-contract";
-import { getSelectedAddress, initWeb3 } from "../utils/web3";
+import {initWeb3} from "../utils/web3";
 
 // Misc
-import { UserContext } from "../context/user";
+import {UserContext} from "../context/user";
 import * as ROUTES from '../constants/routes';
-import { UserType } from "../types/user";
+import {UserType} from "../types/user";
 
 // Components
 import Owner from "../components/owner";
@@ -19,7 +19,7 @@ import Patient from "../components/patient";
 import Doctor from "../components/doctor";
 
 
-import { InitBlockchainLoading, UserLoading } from "../components/loading";
+import {InitBlockchainLoading, UserLoading} from "../components/loading";
 
 const Dashboard = () => {
     const userData = useContext(UserContext);
