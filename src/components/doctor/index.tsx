@@ -13,7 +13,7 @@ import {Contract} from "web3-eth-contract";
 import {getSelectedAddress} from "../../utils/web3";
 
 // components
-import {Alert, AlertIcon, FormControl, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormControl, FormErrorMessage, FormLabel, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure} from "@chakra-ui/react";
 import {Prescription} from "../../entity/Prescription";
 import {Patient} from "../../entity/Patient";
 import Header from "../header";
@@ -32,66 +32,43 @@ interface PrescriptionProps {
 }
 
 
-
-
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const [patientAddress, setPatientAddress] = useState("")
-    const [pharmacistAddress, setPharmacistAddress] = useState("")
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-    const [patients, setPatients] = useState<Patient[]>([]);
-    const [newPrescription, setNewPrescription] = useState<boolean>(false);
+    const [error, setError] = useState(false);
     const {register, formState: {errors}, handleSubmit, getValues, setValue} = useForm<PrescriptionProps>();
     const userData = useContext(UserContext);
 
-    useEffect(()=>{
-        setContent(0);
-    })
-
-    const setContent = async (index) => {
-        if (index == 0) {
-            await getPrescriptions();
-        } else if (index == 1) {
-            await getPatients();
-        }
-    }
-
-
-    const getPatients = async () => {
-        // TODO :
-        //
-        // const response = contrat.methods.getPatients(...).call({from:...})
-        // for(...response) { créer tableau de patient}
-        // setPatients(patients)
-        
-    }
+    useEffect(() => {
+        getPrescriptions();
+    }, [])
 
     const getPrescriptions = async () => {
-        // TODO :
-        //
-        // const response = contrat.methods.getPrescriptions(...).call({from:...})
-        // for(...response) { créer tableau de prescription}
-        // setPrescriptions(prescriptions)
-        const response = contrat.methods.getLastDoctorPrescriptions(5).call({from:userData.selectedAddress});
-        var res : Prescription[] = [];
+        const response = await contrat.methods.getLastDoctorPrescriptions(5).call({from: userData.selectedAddress});
+        var res: Prescription[] = [];
         for (var i = 0; i < response.length; i++) {
             const presc = response[i];
             var doctor = await contrat.methods.getDoctor(parseInt(presc.doctorId)).call({from: userData.selectedAddress});
-            // TODO : getPatient in Prescurity.sol
             var temp = {...presc, doctor: doctor}
             res.push(Prescription.makePrescriptionWithArray(temp));
         }
         setPrescriptions(res);
     }
-
     const createPrescription = async () => {
         const amount = getValues("amount");
         const frequency = getValues("frequency");
         const medicine = getValues("medicine");
         const numSecu = getValues("numSecu");
         const disease = getValues("disease");
-        const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress});
-        console.log(res);
+        try {
+            const res = await contrat.methods.addPrescription(amount, numSecu, medicine, disease, frequency).send({from: userData.selectedAddress});
+            setError(false);
+            await getPrescriptions();
+            closeModal();
+        } catch (e) {
+            console.log(e);
+            setError(true);
+        }
     }
 
     const closeModal = () => {
@@ -108,55 +85,28 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
             <Header/>
             <Container bg="none">
                 <>
-                    <Button onClick={onOpen}>New prescription</Button>
-                    <Tabs onChange={setContent}>
-                        <TabList>
-                            <Tab w={"50%"}>Prescriptions</Tab>
-                            <Tab w={"50%"}>Patients</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                                <Grid>
-                                    {
-                                        prescriptions.map((prescription: Prescription) => {
-                                            <CardPrescription prescription={prescription} contrat={contrat}/>
-                                        })
-                                    }
-                                    {
-                                        prescriptions.length == 0 ?
-                                            <Box>
-                                                <Alert status="warning">
-                                                    <AlertIcon/>
-                                                    No prescription found !
-                                                </Alert>
-                                            </Box> : ""
-                                    }
-                                </Grid>
-                            </TabPanel>
+                    <Heading mb={"1rem"}>Last Prescriptions</Heading>
+                    <Box w={"100%"} textAlign={"right"} mb={"1rem"}>
+                        <Button onClick={onOpen}>New prescription</Button>
+                    </Box>
+                    <Grid>
+                        {
 
-                            <TabPanel>
-                                <Grid>
-                                    {
-                                        patients.map((patient: Patient) => {
-                                            <CardPatient patient={patient} contrat={contrat}/>
-                                        })
-                                    }
-                                    {
-                                        patients.length == 0 ?
-                                            <Box>
-                                                <Alert status="warning">
-                                                    <AlertIcon/>
-                                                    No patient found !
-                                                </Alert>
-                                            </Box>
-                                            :
-                                            ""
+                            prescriptions.map((prescription: Prescription) => {
+                                return <CardPrescription prescription={prescription} contrat={contrat}/>
+                            })
+                        }
+                        {
+                            prescriptions.length == 0 ?
+                                <Box>
+                                    <Alert status="warning">
+                                        <AlertIcon/>
+                                        No prescription found !
+                                    </Alert>
+                                </Box> : ""
+                        }
+                    </Grid>
 
-                                    }
-                                </Grid>
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
                 </>
 
             </Container>
@@ -169,26 +119,53 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                         <ModalBody>
                             <Container p={"2rem"} experimental_spaceY={"1rem"}>
                                 <FormControl isInvalid={!!errors.numSecu}>
-                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient</FormLabel>
-                                    <Input {...register("numSecu", {required: true})} />
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Patient Security Number</FormLabel>
+                                    <Input {...register("numSecu", {required: true})} type={"number"}/>
+                                    <FormErrorMessage>
+                                        {errors.numSecu?.type === "required" && "Entrez un numero de securité social"}
+                                        {!["required"].includes(errors.numSecu?.type) && errors.numSecu?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.medicine}>
                                     <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Medicine</FormLabel>
                                     <Input {...register("medicine", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.medicine?.type === "required" && "Entrez un medicament"}
+                                        {!["required"].includes(errors.medicine?.type) && errors.medicine?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.frequency}>
                                     <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Frequency</FormLabel>
                                     <Input {...register("frequency", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.frequency?.type === "required" && "Entrez une frequence"}
+                                        {!["required"].includes(errors.frequency?.type) && errors.frequency?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.frequency}>
-                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease</FormLabel>
+                                    <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Disease </FormLabel>
                                     <Input {...register("disease", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.disease?.type === "required" && "Entrez une maladie"}
+                                        {!["required"].includes(errors.disease?.type) && errors.disease?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.amount}>
                                     <FormLabel fontSize={{base: "sm", md: "md"}} color="gray.700">Amount</FormLabel>
                                     <Input {...register("amount", {required: true})} />
+                                    <FormErrorMessage>
+                                        {errors.amount?.type === "required" && "Entrez un montant"}
+                                        {!["required"].includes(errors.amount?.type) && errors.amount?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
-
+                                {
+                                    error ?
+                                        <Box>
+                                            <Alert status={"error"}>
+                                                <AlertIcon/> Une erreur est survenue, veuillez réessayer plus tard
+                                            </Alert>
+                                        </Box> : ""
+                                }
                             </Container>
                         </ModalBody>
                         <ModalFooter>
