@@ -124,32 +124,28 @@ export const FormSignUp = (props) => {
                 method: 'POST',
                 body: JSON.stringify(props)
             });
+            const dataApi = await response.json()
             if (!response.ok) {
-                console.error(response);
+                if (dataApi.userExist) setErrorExist(true);
+                else throw new Error(dataApi.message);
             } else {
                 const dataApi = await response.json()
-                if (dataApi.userExist) {
-                    console.log("ERROR EXIST");
-                    setErrorExist(true);
-                } else {
-                    try {
-                        const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
-                        const [web, contract] = await initWeb3();
-                        const response = await contract.methods.addPatient(props.numSecu, props.address).send({from: props.address});
-                        setErrorExistBC(false);
-                        window.localStorage.setItem('emailForSignUp', props.email);
-                        setEmailSended(true);
-                    } catch (e) {
-                        console.log(e);
-                        setErrorExistBC(true);
-                    }
-
+                try {
+                    const user = await firebase.auth().sendSignInLinkToEmail(props.email, actionCodeSettingsSignUp);
+                    const [web, contract] = await initWeb3();
+                    const response = await contract.methods.addPatient(props.numSecu, props.address).send({from: props.address});
+                    setErrorExistBC(false);
+                    window.localStorage.setItem('emailForSignUp', props.email);
+                    setEmailSended(true);
+                } catch (e) {
+                    setErrorExistBC(true);
                 }
             }
         } catch (error) {
             var errorCode = error.code;
             var errorMessage = error.message;
             console.warn(errorCode, " ==> ", errorMessage);
+            setErrorExist(true);
         }
     }
 
