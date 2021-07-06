@@ -14,8 +14,6 @@ Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/Iy
 - [Typescript support (Typed Javascript)](https://www.typescriptlang.org/)
 ### Blockchain support ⛓
 - [Web3.js (Ethereum support)](https://web3js.readthedocs.io/en/v1.3.4/getting-started.html)
-### Database 💿
-- [Realtime Database (Cloud Hosted NoSQL database)](https://firebase.google.com/docs/database/web/start)
 ### Blockchain wallet 💰
 - [Metamask](https://metamask.io/)
 
