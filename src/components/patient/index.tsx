@@ -10,11 +10,6 @@ import {UserContext} from "../../context/user";
 import CardPrescription from "../card/prescription";
 import {Input} from "@chakra-ui/input";
 
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toTimeString();
-}
-
-
 const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
     const [prescriptionSelected, setPrescriptionSelected] = useState(false)
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
@@ -47,9 +42,8 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                         borderColor="blackAlpha.200" borderWidth={1} borderRadius={5}
                         alignSelf={"flex-start"} flexDirection="column"
                     >
-                        <Heading mx="0.5" textAlign={"center"}>Welcome</Heading>
                         <Avatar size='xl' src="https://bit.ly/broken-link" m={"auto"}/>
-                        <Text fontSize={"lg"} align="center">{context.user.name} </Text>
+                        <Text fontSize={"sm"} mt="2" align="center">{context.user.name} </Text>
                         <Flex direction="column" align="center" w="100%" my="4">
                             <Text fontSize="sm" textAlign="center">Security social number:</Text>
                             <Flex w="100%" textAlign={"center"} alignContent={"baseline"} >
