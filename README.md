@@ -1,7 +1,7 @@
 # Prescurity Dashboard
 
 Prescurity dashboard.       
-Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/IyhCpbbaLwfUO4TRwOuBGF/Prescurity?node-id=1%3A10402)
+Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/Prescurity?node-id=1%3A10400)
 
 ## Stack
 ### Platform 📑
@@ -24,9 +24,4 @@ Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/Iy
 - Modify the `.env.local` variables with the right ones
 - `yarn dev`
 - Navigate to `http://localhost:3000`
-
-## Notes
-
-Chakra has supported Gradients and RTL in `v1.1`. To utilize RTL, [add RTL direction and swap](https://chakra-ui.com/docs/features/rtl-support).
-
-If you don't have multi-direction app, you should make `<Html lang="ar" dir="rtl">` inside `_document.ts`.
+- [Setup the blockchain](https://github.com/azerpas/prescurity-blockchain#how-to-use)
