@@ -26,9 +26,9 @@ const Dashboard = () => {
     const router = useRouter();
     const [web3, setWeb3] = useState<undefined|Web3>();
     const [smartContract, setContract] = useState<undefined|Contract>();
-    const [userType, setUserType] = useState<undefined|UserType>(); // TODO: to set inside the UserContext directly
+    const [userType, setUserType] = useState<undefined|UserType>();
 
-    const initializeBlockchain = async () => { // TODO: import from another file
+    const initializeBlockchain = async () => {
         const [web, contract] = await initWeb3();
         setWeb3(web);
         setContract(contract);

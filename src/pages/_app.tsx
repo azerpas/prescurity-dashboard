@@ -15,13 +15,6 @@ import {Owner} from "../entity/Owner";
 import {useRouter} from 'next/router';
 import * as ROUTES from '../constants/routes';
 
-const onChainChange = () => {
-    window.ethereum.on('chainChanged', (_chainId: string) => {
-        // TODO: changed chain id, alert user
-        window.location.reload();
-    })
-}
-
 function MyApp({Component, pageProps}: AppProps) {
     const [userState, setUserState] = useState({loggedIn: null, user: null, selectedAddress: null});
     const [alertState, setAlertState] = useState<IAlertContext>({title: null, description: null});
@@ -32,6 +25,16 @@ function MyApp({Component, pageProps}: AppProps) {
             setAlertState({title: "Browser not compatible", description: "Your browser is outdated. Please use Firefox, Brave Browser or Chrome. Prescurity will not work with your browser."});
             return;
         }
+
+        window.ethereum.on('connect', (connectInfo: {chainId: string}) => {
+            console.log('Connected to MetaMask');
+            console.log(`Selected address: ${getSelectedAddress()}`)
+        });
+
+        window.ethereum.on('message', (message: {type: string; data: unknown;}) => {
+            console.log(message);
+        });
+
         window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
             console.log(`Accounts changed triggered`)
             if (accounts.length === 0 && !userState.user) {
@@ -51,13 +54,19 @@ function MyApp({Component, pageProps}: AppProps) {
             setAlertState({title: null, description: null});
         });
 
-        const unsubscribe = firebase.auth().onAuthStateChanged(async credentialUser => {
+        window.ethereum.on('chainChanged', (_chainId: string) => {
+            // TODO: changed chain id, alert user
+            window.location.reload();
+        })
+
+        firebase.auth().onAuthStateChanged(async credentialUser => {
             let selectedAddress: string | null = null;
             try {
                 selectedAddress = getSelectedAddress();
             } catch (error) {
-                console.error("");
+                console.error(error);
                 setAlertState({title: "Ethereum address not found", description: error.message});
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
                 if(router.pathname !== ROUTES.LOGIN && router.pathname !== ROUTES.SIGNUP){
                     router.push(ROUTES.LOGIN)
                 }
@@ -90,10 +99,6 @@ function MyApp({Component, pageProps}: AppProps) {
                 setUserState({selectedAddress: selectedAddress, loggedIn: false, user: null});
             }
         });
-        onChainChange();
-        return () => {
-            unsubscribe();
-        }
     }, []);
 
     return (

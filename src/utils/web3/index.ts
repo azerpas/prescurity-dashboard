@@ -27,15 +27,28 @@ export const initWeb3 = async () => new Promise<[Web3, Contract?]>(async (resolv
     }
 });
 
+export class ConnectError extends Error {
+    constructor(m: string) {
+        super(m);
+        Object.setPrototypeOf(this, ConnectError.prototype);
+    }
+}
+
 export const getSelectedAddress = (): string => {
     if(window.ethereum.isMetaMask && window.ethereum.selectedAddress){
         console.log("%c GET_SELECTED_ADDRESS : "  , 'background: #222; color: #bada55' ,window.ethereum.selectedAddress);
         return window.ethereum.selectedAddress;
     }else {
         if(window.ethereum.isMetaMask && !window.ethereum.selectedAddress){
-            const m = "Please select an address in MetaMask";
-            console.error(m);
-            throw new Error(m);
+            if(!window.ethereum.isConnected()){
+                const m = "Please connect to MetaMask";
+                console.error(m);
+                throw new ConnectError(m);
+            }else{
+                const m = "Please select an address in MetaMask";
+                console.error(m);
+                throw new Error(m);
+            }
         }
         if(!window.ethereum.isMetaMask){
             const m = "Please install MetaMask to use Prescurity.";
