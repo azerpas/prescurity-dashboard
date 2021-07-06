@@ -44,7 +44,7 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
         <Container height="100vh" bg="none" alignItems="left">
             <Header/>
             <Flex direction="column" margin="1rem" align="center">
-                <Heading textAlign="center"> Welcome to your Prescurity pharmacist's area</Heading>
+                <Heading textAlign="center"> Welcome to your pharmacist's area</Heading>
                 <form onSubmit={handleSubmit(getPrescriptions)}>
                     <FormControl mt={"2rem"} bg={"none"} isInvalid={!!errors.num}>
                         <Flex flexDirection={"column"} experimental_spaceY={"3"}>
@@ -56,27 +56,22 @@ const Index = ({web, contrat}: { web: Web3, contrat: Contract }) => {
                                 {!["pattern", "required"].includes(errors.num?.type) && errors.num?.message}
                             </FormErrorMessage>
                             <Button mt={"1rem"} type={"submit"}>Show prescriptions</Button>
+                            {
+                                noPrescriptions ?
+                                    <Box>
+                                        <Alert status="warning">
+                                            <AlertIcon/>
+                                            No prescription found !
+                                        </Alert>
+                                    </Box>
+                                    :
+                                    prescritions.map((prescription: Prescription) => {
+                                        return <CardPrescription prescription={prescription} contrat={contrat}/>
+                                    })
+                            }
                         </Flex>
                     </FormControl>
                 </form>
-            </Flex>
-            <Flex direction="column" alignItems="left" justifyContent="flex-start" margin={{base: "auto", md: "1rem"}}>
-                <Container m={{base: "0", md: "0"}} bg={"none"}>
-                    {
-                        noPrescriptions ?
-                            <Box>
-                                <Alert status="warning">
-                                    <AlertIcon/>
-                                    No prescription found !
-                                </Alert>
-                            </Box>
-                            :
-                            prescritions.map((prescription: Prescription) => {
-                                return <CardPrescription prescription={prescription} contrat={contrat}/>
-                            })
-
-                    }
-                </Container>
             </Flex>
             <Footer/>
         </Container>
