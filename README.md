@@ -1,6 +1,6 @@
 # Prescurity Dashboard
 
-Prescurity dashboard.       
+Prescurity dashboard. Blockchain can be found [here](https://github.com/azerpas/prescurity-blockchain).       
 Digital mockup can be found here: [Maquette Figma](https://www.figma.com/file/JfmVykHVYvBuqpZ6u6AE7q/Prescurity?node-id=1%3A10400)
 
 ## Stack
